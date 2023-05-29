@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33712.159
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroAdventureCreator.Core", "RetroAdventureCreator.Core\RetroAdventureCreator.Core.csproj", "{3063C413-6197-449B-B44D-272B8BD3BA10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroAdventureCreator.Test", "RetroAdventureCreator.Test\RetroAdventureCreator.Test.csproj", "{7A24A746-EA6D-4365-91F8-16FD2938DD13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroAdventureCreator.Infrastructure.Game", "RetroAdventureCreator.Infrastructure.Game\RetroAdventureCreator.Infrastructure.Game.csproj", "{E65CAE95-C6F7-483E-A8AA-5825B61B9696}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3063C413-6197-449B-B44D-272B8BD3BA10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3063C413-6197-449B-B44D-272B8BD3BA10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3063C413-6197-449B-B44D-272B8BD3BA10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3063C413-6197-449B-B44D-272B8BD3BA10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A24A746-EA6D-4365-91F8-16FD2938DD13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A24A746-EA6D-4365-91F8-16FD2938DD13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A24A746-EA6D-4365-91F8-16FD2938DD13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A24A746-EA6D-4365-91F8-16FD2938DD13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E65CAE95-C6F7-483E-A8AA-5825B61B9696}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E65CAE95-C6F7-483E-A8AA-5825B61B9696}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E65CAE95-C6F7-483E-A8AA-5825B61B9696}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E65CAE95-C6F7-483E-A8AA-5825B61B9696}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A9708A06-D6D1-4A5A-A53C-B90C0BB142BB}
+	EndGlobalSection
+EndGlobal

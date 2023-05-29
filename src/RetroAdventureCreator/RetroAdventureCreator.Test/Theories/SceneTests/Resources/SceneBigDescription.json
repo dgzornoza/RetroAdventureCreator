@@ -1,0 +1,8 @@
+{
+  "Code": "TestScene",
+  "Description": "Una habitación oscura y fría, con las paredes desconchadas y llenas de grietas. El suelo cruje con cada paso y está cubierto de polvo y telarañas. En un rincón hay una cama de hierro con las sábanas sucias y rasgadas. Sobre la mesita de noche hay una vela apagada y un libro antiguo con extraños símbolos. En la pared opuesta hay un espejo roto que refleja una figura borrosa y amenazante. De repente, se escucha un grito desgarrador que proviene del armario. Al abrirlo, se ve el cadáver de una mujer colgado de una soga, con los ojos abiertos y la boca ensangrentada.",
+  "Link": {
+    "N": "RiverScene",
+    "ENTER": "HouseScene"
+  }
+}
