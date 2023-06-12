@@ -36,4 +36,3 @@ public enum TextModifier
     /// <example>$"Current colors {{TextModifier.InvertColor}} Text with inverted colors"</example>
     InvertColor = 5,
 }
-

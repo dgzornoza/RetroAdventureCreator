@@ -6,9 +6,9 @@
 public record SceneModel
 {
     /// <summary>
-    /// Unique code for identify scene
+    /// Unique Id in game for identify scene
     /// </summary>
-    public string Code { get; init; } = default!;
+    public string Id { get; init; } = default!;
 
     /// <summary>
     /// Scene description, can be use <see cref="TextModifier"/> for text description
@@ -16,9 +16,17 @@ public record SceneModel
     public string Description { get; init; } = default!;
 
     /// <summary>
-    /// Scene links to other scenes, where 
-    /// Key = Vocabulary Code
-    /// Value = Scene Code
+    /// Scene links to other scenes 
     /// </summary>
-    public IDictionary<string, string> Link { get; init; } = default!;
+    public IEnumerable<VocabularyModel>? Links { get; init; } = default!;
+
+    /// <summary>
+    /// Scene dispatchers 
+    /// </summary>
+    public IEnumerable<DispatcherModel>? Dispatchers { get; init; } = default!;
+
+    /// <summary>
+    /// Objects in scene
+    /// </summary>
+    public IEnumerable<ObjectModel>? Objects { get; init; } = default!;
 }

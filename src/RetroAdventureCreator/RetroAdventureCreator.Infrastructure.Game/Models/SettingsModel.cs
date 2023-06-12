@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RetroAdventureCreator.Infrastructure.Game.Models;
+﻿namespace RetroAdventureCreator.Infrastructure.Game.Models;
 
 public record SettingsModel
 {
-    public string Name { get; init; } = default!;
+    public int Charset { get; init; }
 
-    public string Description { get; init; } = default!;
+    public int Color { get; init; }
 
-    public string Author { get; init; } = default!;
+    public int BackgroundColor { get; init; }
 
-    public string Copyright { get; init; } = default!;
+    public int FlashEffect { get; init; }
+
+    public int InvertColor { get; init; }
+
+    public int Over { get; init; }
+
+    public int Border { get; init; }
 }
+

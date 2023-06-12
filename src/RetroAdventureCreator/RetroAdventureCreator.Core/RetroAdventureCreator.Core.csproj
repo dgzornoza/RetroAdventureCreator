@@ -10,4 +10,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RetroAdventureCreator.Infrastructure.Game\RetroAdventureCreator.Infrastructure.Game.csproj" />
+  </ItemGroup>
+
 </Project>

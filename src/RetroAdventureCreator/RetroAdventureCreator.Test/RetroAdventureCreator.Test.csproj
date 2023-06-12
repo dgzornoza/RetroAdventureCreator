@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RetroAdventureCreator.Core\RetroAdventureCreator.Core.csproj" />
     <ProjectReference Include="..\RetroAdventureCreator.Infrastructure.Game\RetroAdventureCreator.Infrastructure.Game.csproj" />
   </ItemGroup>
 

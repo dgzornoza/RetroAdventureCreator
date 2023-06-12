@@ -19,5 +19,5 @@ public enum Color
     BrightGreen = 11,
     BrightCyan = 12,
     BrightYellow = 13,
-    WhiteWithe = 14,
+    BrightWhite = 14,
 }
