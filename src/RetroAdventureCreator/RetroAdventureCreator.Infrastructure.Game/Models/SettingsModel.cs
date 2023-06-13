@@ -1,19 +1,18 @@
-﻿namespace RetroAdventureCreator.Infrastructure.Game.Models;
+﻿using RetroAdventureCreator.Infrastructure.Game.Enums;
 
+namespace RetroAdventureCreator.Infrastructure.Game.Models;
+
+/// <summary>
+/// Model for define settings model in game
+/// </summary>
 public record SettingsModel
 {
     public int Charset { get; init; }
 
-    public int Color { get; init; }
+    public Color Color { get; init; }
 
-    public int BackgroundColor { get; init; }
+    public Color BackgroundColor { get; init; }
 
-    public int FlashEffect { get; init; }
-
-    public int InvertColor { get; init; }
-
-    public int Over { get; init; }
-
-    public int Border { get; init; }
+    public Color BorderColor { get; init; }
 }
 

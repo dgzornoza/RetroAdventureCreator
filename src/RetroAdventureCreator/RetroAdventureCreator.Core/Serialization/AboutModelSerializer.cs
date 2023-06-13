@@ -5,13 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using RetroAdventureCreator.Infrastructure.Game.Models;
 
-namespace RetroAdventureCreator.Core.Serialization
+namespace RetroAdventureCreator.Core.Serialization;
+
+internal class AboutModelSerializer : ISerializer<AboutModel>
 {
-    internal class AboutModelSerializer : ISerializer<AboutModel>
+    public byte[] Serialize(AboutModel model)
     {
-        public byte[] Serialize(AboutModel model)
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
     }
 }

@@ -6,12 +6,6 @@ using System.Threading.Tasks;
 
 namespace RetroAdventureCreator.Infrastructure.Game.Enums;
 
-/// <summary>
-/// Flag enum for Object properties
-/// </summary>
-[Flags]
-public enum SceneProperties
+public enum CommandToken
 {
-    None = 0x00,
-    IsDark = 0x01,
 }

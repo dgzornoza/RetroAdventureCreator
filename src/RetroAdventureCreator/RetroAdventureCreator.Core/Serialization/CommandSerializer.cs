@@ -9,24 +9,24 @@ using RetroAdventureCreator.Infrastructure.Game.Models;
 namespace RetroAdventureCreator.Core.Serialization;
 
 /// <summary>
-/// Vocabulary model serializer
+/// Command model serializer
 /// </summary>
 /// <remarks>
-/// Format Vocabulary serializer:
+/// Format Command serializer:
 /// ----------------------------------------------
 /// 
 /// Header:
-/// Id = 6 bits (64)
-/// WordType = 3 bits (8)
-/// Synonyms = 8 bits (256)
+/// LogicalOperator = 1 bit
+/// Token = 6 bits (64)
+/// Arguments = 2 bits (4 ids max value)
 /// 
 /// Data:
-/// Synonyms = 0-256 bytes
+/// Arguments = 0-24
 /// 
 /// </remarks>
-internal class VocabularyModelSerializer : ISerializer<VocabularyModel>
+internal class CommandSerializer : ISerializer<CommandModel>
 {
-    public byte[] Serialize(VocabularyModel model)
+    public byte[] Serialize(CommandModel model)
     {
         throw new NotImplementedException();
     }

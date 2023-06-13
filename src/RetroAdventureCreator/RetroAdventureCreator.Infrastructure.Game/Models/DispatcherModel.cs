@@ -17,10 +17,10 @@ public record DispatcherModel
     /// <summary>
     /// Input commands (only in triggers AfterInputCommand)
     /// </summary>
-    public IEnumerable<string>? InputCommands { get; init; }
+    public IEnumerable<InputCommandModel>? InputCommands { get; init; }
 
     /// <summary>
-    /// Command to execute
+    /// Commands to execute
     /// </summary>
-    public IEnumerable<string>? Commands { get; init; }
+    public IEnumerable<CommandModel>? Commands { get; init; }
 }

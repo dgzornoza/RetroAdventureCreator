@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RetroAdventureCreator.Core.Services
+namespace RetroAdventureCreator.Core.Services;
+
+public class SceneService
 {
-    public class SceneService
+    public byte[] Serialize()
     {
-        public byte[] Serialize()
-        {
-            return null;
-        }
+        return null;
     }
 }

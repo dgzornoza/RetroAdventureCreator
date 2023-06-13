@@ -2,6 +2,9 @@
 
 namespace RetroAdventureCreator.Infrastructure.Game.Models;
 
+/// <summary>
+/// Model for define vocabulary model in game
+/// </summary>
 public record VocabularyModel
 {
     /// <summary>
