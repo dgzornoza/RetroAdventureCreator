@@ -10,7 +10,7 @@ namespace RetroAdventureCreator.Infrastructure.Game.Models;
 /// <summary>
 /// Command model
 /// </summary>
-public record CommandModel
+public class CommandModel
 {
     /// <summary>
     /// Unique Id in game for identify object
@@ -20,15 +20,15 @@ public record CommandModel
     /// <summary>
     /// Logical operator
     /// </summary>
-    public LogicalOperator LogicalOperator { get; set; }
+    public LogicalOperator LogicalOperator { get; init; }
 
     /// <summary>
     /// Command Token
     /// </summary>
-    public CommandToken Token { get; set; }
+    public CommandToken Token { get; init; }
 
     /// <summary>
     /// Arguments (based in command token)
     /// </summary>
-    public IEnumerable<string> Argument { get; set; } = default!;
+    public IEnumerable<string> Argument { get; init; } = default!;
 }

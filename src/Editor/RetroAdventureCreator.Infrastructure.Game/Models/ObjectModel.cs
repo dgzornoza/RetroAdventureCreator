@@ -5,7 +5,7 @@ namespace RetroAdventureCreator.Infrastructure.Game.Models;
 /// <summary>
 /// Model for define object in game
 /// </summary>
-public record ObjectModel
+public class ObjectModel
 {
     /// <summary>
     /// Unique Id in game for identify object

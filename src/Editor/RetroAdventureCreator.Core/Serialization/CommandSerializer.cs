@@ -16,12 +16,13 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Header:
+/// Id = 8 bits (256)
 /// LogicalOperator = 1 bit
 /// Token = 6 bits (64)
 /// Arguments = 2 bits (4 ids max value)
 /// 
 /// Data:
-/// Arguments = 0-24
+/// Arguments = 0-32
 /// 
 /// </remarks>
 internal class CommandSerializer : ISerializer<CommandModel>

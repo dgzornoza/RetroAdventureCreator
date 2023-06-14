@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RetroAdventureCreator.Infrastructure.Game.Models;
 
-public record InputCommandModel
+public class InputCommandModel
 {
     /// <summary>
     /// Unique Id in game for identify object
@@ -16,10 +16,10 @@ public record InputCommandModel
     /// <summary>
     /// Verb to recognize
     /// </summary>
-    public VocabularyModel Verb { get; set; } = default!;
+    public VocabularyModel Verb { get; init; } = default!;
 
     /// <summary>
     /// Noun list to recognize
     /// </summary>
-    public IEnumerable<VocabularyModel> Nouns { get; set; } = default!;
+    public IEnumerable<VocabularyModel> Nouns { get; init; } = default!;
 }

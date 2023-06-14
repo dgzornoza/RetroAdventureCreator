@@ -3,7 +3,7 @@
 /// <summary>
 /// Model for define scene in game
 /// </summary>
-public record SceneModel
+public class SceneModel
 {
     /// <summary>
     /// Unique Id in game for identify scene
@@ -14,11 +14,6 @@ public record SceneModel
     /// Scene description, can be use <see cref="TextModifier"/> for text description
     /// </summary>
     public string Description { get; init; } = default!;
-
-    /// <summary>
-    /// Scene links to other scenes 
-    /// </summary>
-    public IEnumerable<VocabularyModel>? Links { get; init; } = default!;
 
     /// <summary>
     /// Scene dispatchers 

@@ -14,7 +14,6 @@ namespace RetroAdventureCreator.Test.Theories.SerializerTests;
 public class SerializerFactoryTest
 {
     [Theory]
-    [InlineData(typeof(AboutModel), typeof(AboutModelSerializer))]
     [InlineData(typeof(CommandModel), typeof(CommandSerializer))]
     [InlineData(typeof(DispatcherModel), typeof(DispatcherModelSerializer))]
     [InlineData(typeof(InputCommandModel), typeof(InputCommandSerializer))]

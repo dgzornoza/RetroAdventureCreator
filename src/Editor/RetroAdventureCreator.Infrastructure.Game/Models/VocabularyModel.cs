@@ -5,7 +5,7 @@ namespace RetroAdventureCreator.Infrastructure.Game.Models;
 /// <summary>
 /// Model for define vocabulary model in game
 /// </summary>
-public record VocabularyModel
+public class VocabularyModel
 {
     /// <summary>
     /// Unique Id in game for identify object

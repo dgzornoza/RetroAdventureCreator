@@ -7,17 +7,22 @@ using RetroAdventureCreator.Infrastructure.Game.Enums;
 
 namespace RetroAdventureCreator.Infrastructure.Game.Models;
 
-public record DispatcherModel
+public class DispatcherModel
 {
+    /// <summary>
+    /// Unique Id in game for identify object
+    /// </summary>
+    public string Id { get; init; } = default!;
+
     /// <summary>
     /// Trigger for launch dispatcher command
     /// </summary>
     public Trigger Trigger { get; init; }
 
     /// <summary>
-    /// Input commands (only in triggers AfterInputCommand)
+    /// Input command (only in triggers AfterInputCommand)
     /// </summary>
-    public IEnumerable<InputCommandModel>? InputCommands { get; init; }
+    public InputCommandModel? InputCommands { get; init; }
 
     /// <summary>
     /// Commands to execute

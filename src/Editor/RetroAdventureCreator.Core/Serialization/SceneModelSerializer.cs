@@ -14,15 +14,15 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Scene serializer:
 /// 
 /// Header:
-/// Id = 6 bits
-/// Description Size = 10 bits
+/// Id = 6 bits (64)
+/// Description Size = 9 bits (512)
+/// Dispatcher = 5 bits (32 ids dispatchers)
+/// Objects = 3 bits (8)
 /// 
-/// 
-/// 
-/// 
-/// 
-/// Id = 6 bits = 64 scenes
-/// Description = 10 bits (description size) 
+/// Data:
+/// Description = 0-512 bytes
+/// Dispatcher = 0-256 bytes
+/// Objects = 0-40 bytes
 /// 
 /// </remarks>
 internal class SceneModelSerializer : ISerializer<SceneModel>
@@ -33,10 +33,3 @@ internal class SceneModelSerializer : ISerializer<SceneModel>
     }
 }
 
-//public record SceneModel
-//{
-//public string Id { get; init; } = default!;
-//public string Description { get; init; } = default!;
-//public IDictionary<string, string>? Link { get; init; } = default!;
-//public IEnumerable<ObjectModel>? Objects { get; init; } = default!;
-//}

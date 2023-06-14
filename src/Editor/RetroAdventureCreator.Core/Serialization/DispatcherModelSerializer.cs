@@ -16,12 +16,13 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Header:
+/// Id = 8 bits (256)
 /// Trigger = 6 bits (64)
-/// InputCommands = 3 bits (8)
+/// InputCommand = 6 bits (64 ids input command)
 /// Commands = 3 bits (8)
 /// 
 /// Data:
-/// Commands = 0-256 bytes
+/// Commands = 0-64 bytes
 /// 
 /// </remarks>
 internal class DispatcherModelSerializer : ISerializer<DispatcherModel>
@@ -31,18 +32,3 @@ internal class DispatcherModelSerializer : ISerializer<DispatcherModel>
         throw new NotImplementedException();
     }
 }
-
-///// <summary>
-///// Trigger for launch dispatcher command
-///// </summary>
-//public Trigger Trigger { get; init; }
-
-///// <summary>
-///// Input commands (only in triggers AfterInputCommand)
-///// </summary>
-//public IEnumerable<string>? InputCommands { get; init; }
-
-///// <summary>
-///// Command to execute
-///// </summary>
-//public IEnumerable<string>? Commands { get; init; }

@@ -5,7 +5,7 @@ namespace RetroAdventureCreator.Infrastructure.Game.Models;
 /// <summary>
 /// Model for define settings model in game
 /// </summary>
-public record SettingsModel
+public class SettingsModel
 {
     public int Charset { get; init; }
 
