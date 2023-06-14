@@ -30,5 +30,5 @@ public class CommandModel
     /// <summary>
     /// Arguments (based in command token)
     /// </summary>
-    public IEnumerable<string> Argument { get; init; } = default!;
+    public IEnumerable<string>? Arguments { get; init; }
 }

@@ -18,9 +18,9 @@ public class ObjectModel
     public VocabularyModel Name { get; init; } = default!;
 
     /// <summary>
-    /// Object description, can be use <see cref="TextModifier"/> for text description
+    /// Object description
     /// </summary>
-    public string Description { get; init; } = default!;
+    public MessageModel Description { get; init; } = default!;
 
     /// <summary>
     /// Object Weight from 0 to 31
@@ -40,16 +40,16 @@ public class ObjectModel
     /// <summary>
     /// Child Objects (only if has property ObjectProperties.Container)
     /// </summary>
-    public IEnumerable<ObjectModel>? ChildObjects { get; init; } = default!;
+    public IEnumerable<ObjectModel>? ChildObjects { get; init; }
 
     /// <summary>
     /// Required Complements Objects for use object
     /// </summary>
-    public IEnumerable<ObjectModel>? RequiredComplements { get; init; } = default!;
+    public IEnumerable<ObjectModel>? RequiredComplements { get; init; }
 
     /// <summary>
     /// Current Complements Objects
     /// </summary>
-    public IEnumerable<ObjectModel>? Complements { get; init; } = default!;
+    public IEnumerable<ObjectModel>? Complements { get; init; }
 
 }

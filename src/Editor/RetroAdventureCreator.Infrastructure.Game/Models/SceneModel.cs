@@ -11,17 +11,17 @@ public class SceneModel
     public string Id { get; init; } = default!;
 
     /// <summary>
-    /// Scene description, can be use <see cref="TextModifier"/> for text description
+    /// Scene description
     /// </summary>
-    public string Description { get; init; } = default!;
+    public MessageModel Description { get; init; } = default!;
 
     /// <summary>
     /// Scene dispatchers 
     /// </summary>
-    public IEnumerable<DispatcherModel>? Dispatchers { get; init; } = default!;
+    public IEnumerable<DispatcherModel>? Dispatchers { get; init; }
 
     /// <summary>
     /// Objects in scene
     /// </summary>
-    public IEnumerable<ObjectModel>? Objects { get; init; } = default!;
+    public IEnumerable<ObjectModel>? Objects { get; init; }
 }

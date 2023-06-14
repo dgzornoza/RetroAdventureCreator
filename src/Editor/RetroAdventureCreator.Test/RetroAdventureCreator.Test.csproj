@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Facts\**" />
+    <EmbeddedResource Remove="Facts\**" />
+    <None Remove="Facts\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
@@ -23,15 +29,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Facts\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\RetroAdventureCreator.Core\RetroAdventureCreator.Core.csproj" />
     <ProjectReference Include="..\RetroAdventureCreator.Infrastructure.Game\RetroAdventureCreator.Infrastructure.Game.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Theories\GameTests\Resources\GameInPawsTutorial.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Theories\SceneTests\Resources\SceneBigDescription.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

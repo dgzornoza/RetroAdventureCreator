@@ -14,7 +14,8 @@ public enum ObjectProperties
 {
     None = 0x00,
     InVisible = 0x01,
-    InUse = 0x01 << 1,
-    Container = 0x01 << 2,
-    Portable = 0x01 << 3,
+    IsEnabled = 0x01 << 1,
+    InUse = 0x01 << 2,
+    Container = 0x01 << 3,
+    Portable = 0x01 << 4,
 }

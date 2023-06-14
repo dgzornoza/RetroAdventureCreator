@@ -6,20 +6,15 @@ using System.Threading.Tasks;
 
 namespace RetroAdventureCreator.Infrastructure.Game.Models;
 
-public class InputCommandModel
+public class MessageModel
 {
     /// <summary>
-    /// Unique Id in game for identify object
+    /// Unique Id in game for identify scene
     /// </summary>
     public string Id { get; init; } = default!;
 
     /// <summary>
-    /// Verb to recognize
+    /// Message text, can be use <see cref="TextModifier"/> for text description
     /// </summary>
-    public VocabularyModel Verb { get; init; } = default!;
-
-    /// <summary>
-    /// Noun list to recognize
-    /// </summary>
-    public IEnumerable<VocabularyModel>? Nouns { get; init; }
+    public string Text { get; init; } = default!;
 }

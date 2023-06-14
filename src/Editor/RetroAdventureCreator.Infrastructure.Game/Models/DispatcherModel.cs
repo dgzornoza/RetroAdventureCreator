@@ -7,6 +7,9 @@ using RetroAdventureCreator.Infrastructure.Game.Enums;
 
 namespace RetroAdventureCreator.Infrastructure.Game.Models;
 
+/// <summary>
+/// Model for dispatch game commands
+/// </summary>
 public class DispatcherModel
 {
     /// <summary>
@@ -20,9 +23,9 @@ public class DispatcherModel
     public Trigger Trigger { get; init; }
 
     /// <summary>
-    /// Input command (only in triggers AfterInputCommand)
+    /// Input commands (only in triggers AfterInputCommand)
     /// </summary>
-    public InputCommandModel? InputCommands { get; init; }
+    public IEnumerable<InputCommandModel>? InputCommands { get; init; }
 
     /// <summary>
     /// Commands to execute
