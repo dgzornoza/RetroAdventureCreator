@@ -1,14 +1,16 @@
-﻿namespace RetroAdventureCreator.Infrastructure.Game.Models;
+﻿using RetroAdventureCreator.Infrastructure.Game.Interfaces;
+
+namespace RetroAdventureCreator.Infrastructure.Game.Models;
 
 /// <summary>
 /// Model for define scene in game
 /// </summary>
-public class SceneModel
+public class SceneModel : IUniqueKey
 {
     /// <summary>
-    /// Unique Id in game for identify scene
+    /// Unique Code for identify Scene
     /// </summary>
-    public string Id { get; init; } = default!;
+    public string Code { get; init; } = default!;
 
     /// <summary>
     /// Scene description

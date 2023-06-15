@@ -1,16 +1,17 @@
 ﻿using RetroAdventureCreator.Infrastructure.Game.Enums;
+using RetroAdventureCreator.Infrastructure.Game.Interfaces;
 
 namespace RetroAdventureCreator.Infrastructure.Game.Models;
 
 /// <summary>
 /// Model for define vocabulary model in game
 /// </summary>
-public class VocabularyModel
+public class VocabularyModel : IUniqueKey
 {
     /// <summary>
-    /// Unique Id in game for identify object
+    /// Unique Code for identify Vocabulary
     /// </summary>
-    public string Id { get; init; } = default!;
+    public string Code { get; init; } = default!;
 
     /// <summary>
     /// Word type in vocabulary

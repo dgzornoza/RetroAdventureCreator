@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RetroAdventureCreator.Infrastructure.Game.Interfaces;
 
 namespace RetroAdventureCreator.Infrastructure.Game.Models;
 
-public class InputCommandModel
+public class InputCommandModel : IUniqueKey
 {
     /// <summary>
-    /// Unique Id in game for identify object
+    /// Unique Code for identify InputCommand
     /// </summary>
-    public string Id { get; init; } = default!;
+    public string Code { get; init; } = default!;
 
     /// <summary>
     /// Verb to recognize

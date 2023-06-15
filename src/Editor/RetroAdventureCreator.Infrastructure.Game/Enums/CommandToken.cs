@@ -10,8 +10,8 @@ public enum CommandToken
 {
     AT,
     MESSAGE,
-    ZERO,
-    NOT_ZERO,
+    IS_SET,
+    IS_UNSET,
     IN_USE,
     NOT_IN_USE,
     END_GAME,

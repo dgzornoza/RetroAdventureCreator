@@ -19,7 +19,7 @@ public class GameModel
     /// <summary>
     /// Main game scene
     /// </summary>
-    public string MainSceneId { get; init; } = default!;
+    public string MainSceneCode { get; init; } = default!;
 
     /// <summary>
     /// Game scenes

@@ -1,16 +1,17 @@
 ﻿using RetroAdventureCreator.Infrastructure.Game.Enums;
+using RetroAdventureCreator.Infrastructure.Game.Interfaces;
 
 namespace RetroAdventureCreator.Infrastructure.Game.Models;
 
 /// <summary>
 /// Model for define object in game
 /// </summary>
-public class ObjectModel
+public class ObjectModel : IUniqueKey
 {
     /// <summary>
-    /// Unique Id in game for identify object
+    /// Unique Code for identify Object
     /// </summary>
-    public string Id { get; init; } = default!;
+    public string Code { get; init; } = default!;
 
     /// <summary>
     /// Vocabulary with object name

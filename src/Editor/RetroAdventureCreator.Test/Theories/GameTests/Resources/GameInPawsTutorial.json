@@ -3,14 +3,14 @@
     "Health": 7,
     "Objects": [
       {
-        "Id": "GuantesObject",
+        "Code": "GuantesObject",
         "Name": {
-          "Id": "",
+          "Code": "GuantesVocabulary",
           "WordType": 0,
           "Synonyms": [ "GUANT" ]
         },
         "Description": {
-          "Id": "",
+          "Code": "",
           "Text": "Unos guantes"
         },
         "Weight": 1,
@@ -22,34 +22,29 @@
       }
     ]
   },
-  "MainSceneId": "EntradaScene",
+  "MainSceneCode": "EntradaScene",
   "Scenes": [
     {
-      "Id": "EntradaScene",
+      "Code": "EntradaScene",
       "Description": {
-        "Id": "EntradaSceneDescription",
+        "Code": "EntradaSceneDescription",
         "Text": "^^Tras meses de exploración en lo profundo de la selva, y después de haber sido perseguido, mordido, enfermado, pasado hambre y renunciado al todo, ahora por fin has encontrado lo que buscabas, el Templo de Ok, donde según cuenta la leyenda se guarda el Gran Diamante del Rajá Al-Meredin, rechazado por su amada y condenado a ser encerrado eternamente en lo profundo de la selva.^^ Hasta hoy."
       },
       "Dispatchers": [
         {
-          "Id": "",
+          "Code": "",
           "Trigger": 1,
+          "SceneCode": null,
           "InputCommands": null,
           "Commands": [
             {
-              "Id": "",
-              "LogicalOperator": 0,
-              "Token": 0,
-              "Arguments": [ "EntradaScene" ]
-            },
-            {
-              "Id": "",
+              "Code": "IsSetOpenEntry",
               "LogicalOperator": 0,
               "Token": 2,
               "Arguments": [ "openEntry" ]
             },
             {
-              "Id": "",
+              "Code": "ShowMessageBloquePiedra",
               "LogicalOperator": 0,
               "Token": 1,
               "Arguments": [ "Un enorme bloque de piedra bloquea la entrada." ]
@@ -57,24 +52,19 @@
           ]
         },
         {
-          "Id": "",
+          "Code": "",
           "Trigger": 1,
+          "SceneCode": null,
           "InputCommands": null,
           "Commands": [
             {
-              "Id": "",
-              "LogicalOperator": 0,
-              "Token": 0,
-              "Arguments": [ "EntradaScene" ]
-            },
-            {
-              "Id": "",
+              "Code": "IsUnSetOpenEntry",
               "LogicalOperator": 0,
               "Token": 3,
               "Arguments": [ "openEntry" ]
             },
             {
-              "Id": "",
+              "Code": "ShowMessageInteriorTemplo",
               "LogicalOperator": 0,
               "Token": 1,
               "Arguments": [ "Un siniestro pasaje conduce al interior del templo." ]
@@ -82,111 +72,101 @@
           ]
         },
         {
-          "Id": "",
+          "Code": "",
           "Trigger": 0,
+          "SceneCode": null,
           "InputCommands": [
             {
-              "Id": "",
+              "Code": "AbreEntradaInputCommand",
               "Verb": {
-                "Id": "",
+                "Code": "AbreVocabulary",
                 "WordType": 1,
                 "Synonyms": [ "ABRE" ]
               },
               "Nouns": [
                 {
-                  "Id": "",
+                  "Code": "EntraVocabulary",
                   "WordType": 0,
                   "Synonyms": [ "ENTRA" ]
                 }
               ]
             },
             {
-              "Id": "",
+              "Code": "AbreBloqueInputCommand",
               "Verb": {
-                "Id": "",
+                "Code": "AbreVocabulary",
                 "WordType": 1,
                 "Synonyms": [ "ABRE" ]
               },
               "Nouns": [
                 {
-                  "Id": "",
+                  "Code": "BloqueVocabulary",
                   "WordType": 0,
-                  "Synonyms": [ "BLOQU" ]
+                  "Synonyms": [ "BLOQU", "PIEDR" ]
                 }
               ]
             }
           ],
           "Commands": [
             {
-              "Id": "",
-              "LogicalOperator": 0,
-              "Token": 0,
-              "Arguments": [ "EntradaScene" ]
-            },
-            {
-              "Id": "",
-              "LogicalOperator": 0,
-              "Token": 2,
-              "Arguments": [ "openEntry" ]
-            },
-            {
-              "Id": "",
-              "LogicalOperator": 0,
-              "Token": 1,
-              "Arguments": [ "Ni la fuerza combinada de diez como tú podría mover\r\n//\tese mastodonte de piedra." ]
-            }
-          ]
-        },
-        {
-          "Id": "",
-          "Trigger": 0,
-          "InputCommands": [
-            {
-              "Id": "",
-              "Verb": {
-                "Id": "",
-                "WordType": 1,
-                "Synonyms": [ "ABRE" ]
-              },
-              "Nouns": [
-                {
-                  "Id": "",
-                  "WordType": 0,
-                  "Synonyms": [ "ENTRA" ]
-                }
-              ]
-            },
-            {
-              "Id": "",
-              "Verb": {
-                "Id": "",
-                "WordType": 1,
-                "Synonyms": [ "ABRE" ]
-              },
-              "Nouns": [
-                {
-                  "Id": "",
-                  "WordType": 0,
-                  "Synonyms": [ "BLOQU" ]
-                }
-              ]
-            }
-          ],
-          "Commands": [
-            {
-              "Id": "",
-              "LogicalOperator": 0,
-              "Token": 0,
-              "Arguments": [ "EntradaScene" ]
-            },
-            {
-              "Id": "",
+              "Code": "IsUnSetOpenEntry",
               "LogicalOperator": 0,
               "Token": 3,
               "Arguments": [ "openEntry" ]
             },
             {
-              "Id": "",
+              "Code": "ShowMessageFuerza",
+              "LogicalOperator": 0,
+              "Token": 1,
+              "Arguments": [ "Ni la fuerza combinada de diez como tú podría mover ese mastodonte de piedra." ]
+            }
+          ]
+        },
+        {
+          "Code": "",
+          "Trigger": 0,
+          "SceneCode": null,
+          "InputCommands": [
+            {
+              "Code": "AbreEntradaInputCommand",
+              "Verb": {
+                "Code": "AbreVocabulary",
+                "WordType": 1,
+                "Synonyms": [ "ABRE" ]
+              },
+              "Nouns": [
+                {
+                  "Code": "EntraVocabulary",
+                  "WordType": 0,
+                  "Synonyms": [ "ENTRA" ]
+                }
+              ]
+            },
+            {
+              "Code": "AbreBloqueInputCommand",
+              "Verb": {
+                "Code": "AbreVocabulary",
+                "WordType": 1,
+                "Synonyms": [ "ABRE" ]
+              },
+              "Nouns": [
+                {
+                  "Code": "BloqueVocabulary",
+                  "WordType": 0,
+                  "Synonyms": [ "BLOQU", "PIEDR" ]
+                }
+              ]
+            }
+          ],
+          "Commands": [
+            {
+              "Code": "IsSetOpenEntry",
+              "LogicalOperator": 0,
+              "Token": 2,
+              "Arguments": [ "openEntry" ]
+            },
+            {
+              "Code": "ShowMessageNoBloque",
               "LogicalOperator": 0,
               "Token": 1,
               "Arguments": [ "Ya no hay bloque que abrir." ]
@@ -194,34 +174,29 @@
           ]
         },
         {
-          "Id": "",
+          "Code": "",
           "Trigger": 0,
+          "SceneCode": null,
           "InputCommands": [
             {
-              "Id": "",
+              "Code": "ExaminarBoquete",
               "Verb": {
-                "Id": "",
+                "Code": "ExaminaVocabulary",
                 "WordType": 1,
                 "Synonyms": [ "EX" ]
               },
               "Nouns": [
                 {
-                  "Id": "",
+                  "Code": "BoqueteVocabulary",
                   "WordType": 0,
-                  "Synonyms": [ "BOQUE" ]
+                  "Synonyms": [ "BOQUE", "PALAN" ]
                 }
               ]
             }
           ],
           "Commands": [
             {
-              "Id": "",
-              "LogicalOperator": 0,
-              "Token": 0,
-              "Arguments": [ "EntradaScene" ]
-            },
-            {
-              "Id": "",
+              "Code": "ShowMessageBoquete",
               "LogicalOperator": 0,
               "Token": 1,
               "Arguments": [ "Un oscuro boquete cuadrado, excavado por la mano del hombre, en cuyo interior ves una especie de palanca. También crees divisar ojos que te observan desde dentro." ]
@@ -229,49 +204,50 @@
           ]
         },
         {
-          "Id": "",
+          "Code": "",
           "Trigger": 0,
+          "SceneCode": null,
           "InputCommands": [
             {
-              "Id": "",
+              "Code": "MuevePalanca",
               "Verb": {
-                "Id": "",
+                "Code": "MueveVocabulary",
                 "WordType": 1,
                 "Synonyms": [ "MUEVE" ]
               },
               "Nouns": [
                 {
-                  "Id": "",
+                  "Code": "PalancaVocabulary",
                   "WordType": 0,
                   "Synonyms": [ "PALAN" ]
                 }
               ]
             },
             {
-              "Id": "",
+              "Code": "EmpujaPalanca",
               "Verb": {
-                "Id": "",
+                "Code": "EmpujaVocabulary",
                 "WordType": 1,
                 "Synonyms": [ "EMPUJ" ]
               },
               "Nouns": [
                 {
-                  "Id": "",
+                  "Code": "PalancaVocabulary",
                   "WordType": 0,
                   "Synonyms": [ "PALAN" ]
                 }
               ]
             },
             {
-              "Id": "",
+              "Code": "TiraPalanca",
               "Verb": {
-                "Id": "",
+                "Code": "TiraVocabulary",
                 "WordType": 1,
                 "Synonyms": [ "TIRA" ]
               },
               "Nouns": [
                 {
-                  "Id": "",
+                  "Code": "PalancaVocabulary",
                   "WordType": 0,
                   "Synonyms": [ "PALAN" ]
                 }
@@ -280,31 +256,19 @@
           ],
           "Commands": [
             {
-              "Id": "",
+              "Code": "IsUnSetOpenEntry",
               "LogicalOperator": 0,
-              "Token": 0,
-              "Arguments": [ "EntradaScene" ]
-            },
-            {
-              "Id": "",
-              "LogicalOperator": 0,
-              "Token": 2,
+              "Token": 3,
               "Arguments": [ "openEntry" ]
             },
             {
-              "Id": "",
-              "LogicalOperator": 0,
-              "Token": 5,
-              "Arguments": [ "GuantesObject" ]
-            },
-            {
-              "Id": "",
+              "Code": "ShowMessageAraña",
               "LogicalOperator": 0,
               "Token": 1,
               "Arguments": [ "Al meter la mano en el boquete notas un pichazo agudo. Casi al instante tu vista se comienza a nublar y vas perdiendo contacto con la realidad.^^       *** ESTAS MUERTO ***" ]
             },
             {
-              "Id": "",
+              "Code": "EndGame",
               "LogicalOperator": 0,
               "Token": 6,
               "Arguments": null
@@ -312,49 +276,50 @@
           ]
         },
         {
-          "Id": "",
+          "Code": "",
           "Trigger": 0,
+          "SceneCode": null,
           "InputCommands": [
             {
-              "Id": "",
+              "Code": "MuevePalanca",
               "Verb": {
-                "Id": "",
+                "Code": "MueveVocabulary",
                 "WordType": 1,
                 "Synonyms": [ "MUEVE" ]
               },
               "Nouns": [
                 {
-                  "Id": "",
+                  "Code": "PalancaVocabulary",
                   "WordType": 0,
                   "Synonyms": [ "PALAN" ]
                 }
               ]
             },
             {
-              "Id": "",
+              "Code": "EmpujaPalanca",
               "Verb": {
-                "Id": "",
+                "Code": "EmpujaVocabulary",
                 "WordType": 1,
                 "Synonyms": [ "EMPUJ" ]
               },
               "Nouns": [
                 {
-                  "Id": "",
+                  "Code": "PalancaVocabulary",
                   "WordType": 0,
                   "Synonyms": [ "PALAN" ]
                 }
               ]
             },
             {
-              "Id": "",
+              "Code": "TiraPalanca",
               "Verb": {
-                "Id": "",
+                "Code": "TiraVocabulary",
                 "WordType": 1,
                 "Synonyms": [ "TIRA" ]
               },
               "Nouns": [
                 {
-                  "Id": "",
+                  "Code": "PalancaVocabulary",
                   "WordType": 0,
                   "Synonyms": [ "PALAN" ]
                 }
@@ -363,31 +328,25 @@
           ],
           "Commands": [
             {
-              "Id": "",
+              "Code": "IsUnSetOpenEntry",
               "LogicalOperator": 0,
-              "Token": 0,
-              "Arguments": [ "EntradaScene" ]
-            },
-            {
-              "Id": "",
-              "LogicalOperator": 0,
-              "Token": 2,
+              "Token": 3,
               "Arguments": [ "openEntry" ]
             },
             {
-              "Id": "",
+              "Code": "IsInUseGuantes",
               "LogicalOperator": 0,
               "Token": 4,
               "Arguments": [ "GuantesObject" ]
             },
             {
-              "Id": "",
+              "Code": "SetOpenEntry",
               "LogicalOperator": 0,
               "Token": 7,
               "Arguments": [ "openEntry" ]
             },
             {
-              "Id": "",
+              "Code": "ShowMessageTiraPalanca",
               "LogicalOperator": 0,
               "Token": 1,
               "Arguments": [ "Con no poco repelús metes la mano enguantada y mueves la palanca. Oyes un chasquido, y luego un ruido de correas deslizándose. Al cabo de un rato, el enorme bloque cede y se hunde en el suelo como tragado por el infierno. La entrada está libre." ]
@@ -395,49 +354,50 @@
           ]
         },
         {
-          "Id": "",
+          "Code": "",
           "Trigger": 0,
+          "SceneCode": null,
           "InputCommands": [
             {
-              "Id": "",
+              "Code": "MuevePalanca",
               "Verb": {
-                "Id": "",
+                "Code": "MueveVocabulary",
                 "WordType": 1,
                 "Synonyms": [ "MUEVE" ]
               },
               "Nouns": [
                 {
-                  "Id": "",
+                  "Code": "PalancaVocabulary",
                   "WordType": 0,
                   "Synonyms": [ "PALAN" ]
                 }
               ]
             },
             {
-              "Id": "",
+              "Code": "EmpujaPalanca",
               "Verb": {
-                "Id": "",
+                "Code": "EmpujaVocabulary",
                 "WordType": 1,
                 "Synonyms": [ "EMPUJ" ]
               },
               "Nouns": [
                 {
-                  "Id": "",
+                  "Code": "PalancaVocabulary",
                   "WordType": 0,
                   "Synonyms": [ "PALAN" ]
                 }
               ]
             },
             {
-              "Id": "",
+              "Code": "TiraPalanca",
               "Verb": {
-                "Id": "",
+                "Code": "TiraVocabulary",
                 "WordType": 1,
                 "Synonyms": [ "TIRA" ]
               },
               "Nouns": [
                 {
-                  "Id": "",
+                  "Code": "PalancaVocabulary",
                   "WordType": 0,
                   "Synonyms": [ "PALAN" ]
                 }
@@ -446,19 +406,13 @@
           ],
           "Commands": [
             {
-              "Id": "",
+              "Code": "IsSetOpenEntry",
               "LogicalOperator": 0,
-              "Token": 0,
-              "Arguments": [ "EntradaScene" ]
-            },
-            {
-              "Id": "",
-              "LogicalOperator": 0,
-              "Token": 3,
+              "Token": 2,
               "Arguments": [ "openEntry" ]
             },
             {
-              "Id": "",
+              "Code": "ShowMessagePalancaUsada",
               "LogicalOperator": 0,
               "Token": 1,
               "Arguments": [ "No necesitas volver a meter la mano en \"eso\"." ]
@@ -466,14 +420,15 @@
           ]
         },
         {
-          "Id": "",
+          "Code": "",
           "Trigger": 0,
+          "SceneCode": null,
           "InputCommands": [
             {
-              "Id": "",
+              "Code": "Entra",
               "Verb": {
-                "Id": "",
-                "WordType": 1,
+                "Code": "EntraVocabulary",
+                "WordType": 0,
                 "Synonyms": [ "ENTRA" ]
               },
               "Nouns": null
@@ -481,19 +436,13 @@
           ],
           "Commands": [
             {
-              "Id": "",
+              "Code": "IsSetOpenEntry",
               "LogicalOperator": 0,
-              "Token": 0,
-              "Arguments": [ "EntradaScene" ]
-            },
-            {
-              "Id": "",
-              "LogicalOperator": 0,
-              "Token": 3,
+              "Token": 2,
               "Arguments": [ "openEntry" ]
             },
             {
-              "Id": "",
+              "Code": "GotoInteriorScene",
               "LogicalOperator": 0,
               "Token": 9,
               "Arguments": [ "InteriorScene" ]
@@ -504,9 +453,9 @@
       "Objects": null
     },
     {
-      "Id": "InteriorScene",
+      "Code": "InteriorScene",
       "Description": {
-        "Id": "InteriorSceneSceneDescription",
+        "Code": "InteriorSceneDescription",
         "Text": "^^Has finalizado el primer puzzle^^ !!Bien echo.!!"
       },
       "Dispatchers": null,
@@ -515,19 +464,64 @@
   ],
   "Vocabulary": [
     {
-      "Id": "BoqueteVocabulary",
+      "Code": "GuantesVocabulary",
+      "WordType": 0,
+      "Synonyms": [ "GUANT" ]
+    },
+    {
+      "Code": "BoqueteVocabulary",
       "WordType": 0,
       "Synonyms": [ "BOQUE", "PALAN" ]
     },
     {
-      "Id": "TemploVocabulary",
+      "Code": "PalancaVocabulary",
+      "WordType": 0,
+      "Synonyms": [ "PALAN" ]
+    },
+    {
+      "Code": "TemploVocabulary",
       "WordType": 0,
       "Synonyms": [ "TEMPL" ]
     },
     {
-      "Id": "BloqueVocabulary",
+      "Code": "BloqueVocabulary",
       "WordType": 0,
       "Synonyms": [ "BLOQU", "PIEDR" ]
+    },
+    {
+      "Code": "AbreVocabulary",
+      "WordType": 1,
+      "Synonyms": [ "ABRE" ]
+    },
+    {
+      "Code": "EntraVocabulary",
+      "WordType": 0,
+      "Synonyms": [ "ENTRA" ]
+    },
+    {
+      "Code": "BloqueVocabulary",
+      "WordType": 0,
+      "Synonyms": [ "BLOQU" ]
+    },
+    {
+      "Code": "ExaminaVocabulary",
+      "WordType": 1,
+      "Synonyms": [ "EX" ]
+    },
+    {
+      "Code": "MueveVocabulary",
+      "WordType": 1,
+      "Synonyms": [ "MUEVE" ]
+    },
+    {
+      "Code": "EmpujaVocabulary",
+      "WordType": 1,
+      "Synonyms": [ "EMPUJ" ]
+    },
+    {
+      "Code": "TiraVocabulary",
+      "WordType": 1,
+      "Synonyms": [ "TIRA" ]
     }
   ],
   "Messages": null,

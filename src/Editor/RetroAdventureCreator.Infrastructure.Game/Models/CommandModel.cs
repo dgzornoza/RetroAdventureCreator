@@ -4,18 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
+using RetroAdventureCreator.Infrastructure.Game.Interfaces;
 
 namespace RetroAdventureCreator.Infrastructure.Game.Models;
 
 /// <summary>
 /// Command model
 /// </summary>
-public class CommandModel
+public class CommandModel : IUniqueKey
 {
     /// <summary>
-    /// Unique Id in game for identify object
+    /// Unique Code for identify Command
     /// </summary>
-    public string Id { get; init; } = default!;
+    public string Code { get; init; } = default!;
 
     /// <summary>
     /// Logical operator
