@@ -3,33 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Core.Serialization;
 
 /// <summary>
-/// Scene model serializer
+/// Message model serializer
 /// </summary>
 /// <remarks>
-/// Format Scene serializer:
+/// Format Message serializer:
+/// ----------------------------------------------
 /// 
 /// Header:
-/// Id = 6 bits (64)
-/// Description Size = 9 bits (512)
-/// Dispatcher = 5 bits (32 ids dispatchers)
-/// Objects = 3 bits (8)
 /// 
 /// Data:
-/// Description = 0-512 bytes
-/// Dispatcher = 0-256 bytes
-/// Objects = 0-40 bytes
 /// 
 /// </remarks>
-internal class SceneModelSerializer : ISerializer<SceneModel>
+internal class MessagesSerializer : ISerializer
 {
-    public byte[] Serialize(SceneModel model)
+    public byte[] Serialize(GameModel game)
     {
         throw new NotImplementedException();
     }
 }
-

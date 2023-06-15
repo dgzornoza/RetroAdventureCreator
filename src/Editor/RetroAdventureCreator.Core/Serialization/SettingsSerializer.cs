@@ -16,9 +16,9 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// BorderColor = 4 bits (15)
 /// 
 /// </remarks>
-internal class SettingsModelSerializer : ISerializer<SettingsModel>
+internal class SettingsSerializer : ISerializer
 {
-    public byte[] Serialize(SettingsModel model)
+    public byte[] Serialize(GameModel game)
     {
         throw new NotImplementedException();
     }

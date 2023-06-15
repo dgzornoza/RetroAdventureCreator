@@ -25,9 +25,9 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Arguments = 0-32
 /// 
 /// </remarks>
-internal class CommandSerializer : ISerializer<CommandModel>
+internal class CommandsSerializer : ISerializer
 {
-    public byte[] Serialize(CommandModel model)
+    public byte[] Serialize(GameModel game)
     {
         throw new NotImplementedException();
     }

@@ -24,9 +24,9 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Nouns = 0-48 bytes
 /// 
 /// </remarks>
-internal class InputCommandSerializer : ISerializer<InputCommandModel>
+internal class InputCommandsSerializer : ISerializer
 {
-    public byte[] Serialize(InputCommandModel model)
+    public byte[] Serialize(GameModel game)
     {
         throw new NotImplementedException();
     }

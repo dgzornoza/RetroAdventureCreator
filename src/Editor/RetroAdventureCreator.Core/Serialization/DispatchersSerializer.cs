@@ -25,9 +25,9 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Commands = 0-64 bytes
 /// 
 /// </remarks>
-internal class DispatcherModelSerializer : ISerializer<DispatcherModel>
+internal class DispatchersSerializer : ISerializer
 {
-    public byte[] Serialize(DispatcherModel model)
+    public byte[] Serialize(GameModel game)
     {
         throw new NotImplementedException();
     }
