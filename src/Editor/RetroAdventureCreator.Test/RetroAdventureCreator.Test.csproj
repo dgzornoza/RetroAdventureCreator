@@ -31,6 +31,9 @@
     <None Update="Facts\SerializerTests\Resources\GameInPawsTutorial.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Theories\ExtensionsTests\Resources\GameObjectFullImplemented.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Theories\GameTests\Resources\GameInPawsTutorial.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

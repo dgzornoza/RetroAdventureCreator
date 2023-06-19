@@ -33,38 +33,7 @@ internal class VocabularySerializer : ISerializer
 
     public byte[] Serialize(GameModel game)
     {
-        GetProperties(game);
-        
         return null;
     }
 
-    public IEnumerable<T> GetDepthPropertyValuesOfType<T>(T @object) where T : class
-    {
-        var type = @object.GetType();
-        var properties = type.GetProperties();
-
-        var result = properties.Where(item => item.PropertyType == typeof(IEnumerable<T>))
-            .Select(item => item.GetValue(@object))
-            .Where(item => item != null)
-            .OfType<IEnumerable<T>>()
-            .ToList();
-
-        var result = properties.Where(item => item.PropertyType == type)
-            .Select(item => item.GetValue(@object))
-            .Where(item => item != null)
-            .ToList();
-
-
-
-        properties.Where(item => item.PropertyType == typeof(VocabularyModel));
-
-
-
-         
-
-
-        var result = imagens.Select(item => (VocabularyModel)item.GetValue(game))
-            .Where(item => item != null)
-            .ToList();
-    }
 }
