@@ -3,7 +3,7 @@
 /// <summary>
 /// Enum with word types
 /// </summary>
-public enum WordType
+public enum WordType : byte
 {
     Noun = 0,
     Verb = 1,
