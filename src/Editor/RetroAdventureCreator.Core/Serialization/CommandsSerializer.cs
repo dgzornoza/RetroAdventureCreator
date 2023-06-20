@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RetroAdventureCreator.Core.Models;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
 
@@ -27,7 +28,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// </remarks>
 internal class CommandsSerializer : ISerializer
 {
-    public byte[] Serialize(GameModel game)
+    public SerializerResultModel Serialize(GameModel game)
     {
         throw new NotImplementedException();
     }

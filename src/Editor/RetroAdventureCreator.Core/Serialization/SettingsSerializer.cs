@@ -1,4 +1,5 @@
-﻿using RetroAdventureCreator.Infrastructure.Game.Models;
+﻿using RetroAdventureCreator.Core.Models;
+using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Core.Serialization;
 
@@ -18,7 +19,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// </remarks>
 internal class SettingsSerializer : ISerializer
 {
-    public byte[] Serialize(GameModel game)
+    public SerializerResultModel Serialize(GameModel game)
     {
         throw new NotImplementedException();
     }

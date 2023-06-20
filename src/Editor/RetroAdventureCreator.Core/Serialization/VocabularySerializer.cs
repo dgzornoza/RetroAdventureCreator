@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,8 +21,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Header:
-/// Id = 8 bits (256)
-/// WordType = 3 bits (8)
+/// WordType = 8 bits (256)
 /// Synonyms = 8 bits (256)
 /// 
 /// Data:
@@ -30,24 +30,29 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// </remarks>
 internal class VocabularySerializer : ISerializer
 {
-    private record struct Header(byte index, byte WordType, byte Synonyms);
+    private record struct Header(byte WordType, byte Synonyms);
 
     private record struct Data(string Synonyms);
 
-    public byte[] Serialize(GameModel game)
+    public SerializerResultModel Serialize(GameModel game)
     {
-        var vocabularies = game.GetDepthPropertyValuesOfType<VocabularyModel>();
+        var vocabularies = game.Vocabulary ?? Enumerable.Empty<VocabularyModel>();
 
         if (vocabularies.Count() > byte.MaxValue)
         {
             throw new InvalidOperationException(string.Format(Properties.Resources.MaxNumberVocabularyAllowedError, byte.MaxValue));
         }
 
-        byte index = 0;
         var componentKeys = new List<GameComponentKeyModel>(vocabularies.Count());
+        var result = new List<byte>();
         foreach (var vocabulary in vocabularies)
         {
-            componentKeys.Add(new GameComponentKeyModel(index, vocabulary.Code));
+            if (componentKeys.Any(item => item.Code == vocabulary.Code))
+            {
+                throw new InvalidOperationException(string.Format(Properties.Resources.DuplicateCodeError, vocabulary.Code));
+            }
+
+            componentKeys.Add(new GameComponentKeyModel(vocabulary.Code, result.Count));
 
             var synonyms = string.Join('|', vocabulary.Synonyms ?? Enumerable.Empty<string>());
             if (synonyms.Length > byte.MaxValue)
@@ -55,31 +60,21 @@ internal class VocabularySerializer : ISerializer
                 throw new InvalidOperationException(string.Format(Properties.Resources.MaxSizeOfSynonyms, byte.MaxValue));
             }
 
-            var header = new Header(index, (byte)vocabulary.WordType, (byte)synonyms.Length);
-            var data = new Data(synonyms);
+            var header = new Header((byte)vocabulary.WordType, (byte)synonyms.Length);
+            result.AddRange(CreateHeaderBytes(header));
 
-            index++;
+            var data = new Data(synonyms);
+            result.AddRange(CreateDataBytes(data));
         }
 
-
-
-        return new SerializerResultModel(componentKeys, );
+        return new SerializerResultModel(componentKeys, result.ToArray());
     }
 
-
-    private byte[] CreateHeaderBytes(Header header)
+    private byte[] CreateHeaderBytes(Header header) => new byte[]
     {
-        var bits = new BitArray(19, false);
+            header.WordType,
+            header.Synonyms
+    };
 
-        var intBits = 0b_00000000_00000000_00000000_00000000;
-        var idMask = 0b_00000000_111_11111111;
-        var idBits = new BitArray(header.index);
-        
-        bits.Xor()
-    }
-
-    private byte[] CreateDataBytes(Data data)
-    {
-
-    }
+    private byte[] CreateDataBytes(Data data) => Encoding.ASCII.GetBytes(data.Synonyms);
 }

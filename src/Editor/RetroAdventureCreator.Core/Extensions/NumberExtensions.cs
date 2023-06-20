@@ -8,21 +8,21 @@ namespace RetroAdventureCreator.Core.Extensions;
 
     internal static class NumberExtensions
     {
-        public static string ToHexString(this int n, int numDigits) => string.Format($"{{0:X{numDigits}}}", n);
+        public static string ToHexString(this int number, int numDigits) => string.Format($"{{0:X{numDigits}}}", number);
 
-        public static string ToHexString(this uint n, int numDigits) => string.Format($"{{0:X{numDigits}}}", n);
+        public static string ToHexString(this uint number, int numDigits) => string.Format($"{{0:X{numDigits}}}", number);
 
-        public static string ToHexString(this long n, int numDigits) => string.Format($"{{0:X{numDigits}}}", n);
+        public static string ToHexString(this long number, int numDigits) => string.Format($"{{0:X{numDigits}}}", number);
 
-        public static string ToHexString(this ulong n, int numDigits) => string.Format($"{{0:X{numDigits}}}", n);
+        public static string ToHexString(this ulong number, int numDigits) => string.Format($"{{0:X{numDigits}}}", number);
 
-        public static bool HasBit(this byte b, int index) => (b & (1 << index)) != 0;
+        public static bool HasBit(this byte number, int index) => (number & (1 << index)) != 0;
 
-        public static bool HasBit(this int b, int index) => (b & (1 << index)) != 0;
+        public static bool HasBit(this int number, int index) => (number & (1 << index)) != 0;
 
-        public static bool HasBit(this ushort b, int index) => (b & (1 << index)) != 0;
+        public static bool HasBit(this ushort number, int index) => (number & (1 << index)) != 0;
 
-        public static byte BinToBCD(this byte v) => (byte)(((v / 10) * 16) + (v % 10));
+        public static byte BinToBCD(this byte number) => (byte)(((number / 10) * 16) + (number % 10));
 
-        public static byte BCDtoBin(this byte v) => (byte)(((v / 16) * 10) + (v % 16));
+        public static byte BCDtoBin(this byte number) => (byte)(((number / 16) * 10) + (number % 16));
     }

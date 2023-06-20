@@ -28,7 +28,7 @@ public class ObjectExtensionsTest
     public void GetDepthPropertyValuesOfType_AsExpected(Type type, int objectCount)
     {
         // Arrange
-        var game = FilesHelpers.GetLocalResourceJsonObject<GameModel>("GameObjectFullImplemented.json") ?? throw new InvalidOperationException();
+        var game = FilesHelpers.GetLocalResourceJsonObject<GameModel>("GameRandom.json") ?? throw new InvalidOperationException();
 
         // Act 
         MethodInfo method = typeof(ObjectExtensions).GetMethod(nameof(ObjectExtensions.GetDepthPropertyValuesOfType)) ?? throw new InvalidOperationException();

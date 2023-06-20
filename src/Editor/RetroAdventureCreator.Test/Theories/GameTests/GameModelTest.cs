@@ -8,7 +8,7 @@ using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
 using RetroAdventureCreator.Test.Helpers;
 
-namespace RetroAdventureCreator.Test.Theories.SceneTests;
+namespace RetroAdventureCreator.Test.Theories.GameTests;
 
 public class GameModelTest
 {
@@ -19,16 +19,19 @@ public class GameModelTest
         // Arrange
         var gameJson = FilesHelpers.GetLocalResourceJsonObject<SceneModel>(jsonFile) ?? throw new InvalidOperationException();
 
-        var globDescriptionMessage = new MessageModel { Code = "", Text = "Unos guantes" };
-        var entradaSceneDescriptionMessage = new MessageModel
+        var messages = new List<MessageModel>
         {
-            Code = "EntradaSceneDescription",
-            Text = "^^Tras meses de exploración en lo profundo de la selva, y después de haber sido perseguido, mordido, enfermado, pasado hambre y renunciado al todo, ahora por fin has encontrado lo que buscabas, el Templo de Ok, donde según cuenta la leyenda se guarda el Gran Diamante del Rajá Al-Meredin, rechazado por su amada y condenado a ser encerrado eternamente en lo profundo de la selva.^^ Hasta hoy.",
-        };
-        var interiorSceneDescriptiownMessage = new MessageModel
-        {
-            Code = "InteriorSceneDescription",
-            Text = "^^Has finalizado el primer puzzle^^ !!Bien echo.!!",
+            new MessageModel { Code = "globDescriptionMessage", Text = "Unos guantes" },
+            new MessageModel
+            {
+                Code = "EntradaSceneDescription",
+                Text = "^^Tras meses de exploración en lo profundo de la selva, y después de haber sido perseguido, mordido, enfermado, pasado hambre y renunciado al todo, ahora por fin has encontrado lo que buscabas, el Templo de Ok, donde según cuenta la leyenda se guarda el Gran Diamante del Rajá Al-Meredin, rechazado por su amada y condenado a ser encerrado eternamente en lo profundo de la selva.^^ Hasta hoy.",
+            },
+            new MessageModel
+            {
+                Code = "InteriorSceneDescription",
+                Text = "^^Has finalizado el primer puzzle^^ !!Bien echo.!!",
+            }
         };
 
         var vocabulary = new List<VocabularyModel>
@@ -40,7 +43,6 @@ public class GameModelTest
             new VocabularyModel { Code = "BloqueVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "BLOQU", "PIEDR" }},
             new VocabularyModel { Code = "AbreVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "ABRE"  } },
             new VocabularyModel { Code = "EntraVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "ENTRA" } },
-            new VocabularyModel { Code = "BloqueVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "BLOQU" } },
             new VocabularyModel { Code = "ExaminaVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "EX" } },
             new VocabularyModel { Code = "MueveVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "MUEVE" } },
             new VocabularyModel { Code = "EmpujaVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "EMPUJ" } },
@@ -53,7 +55,7 @@ public class GameModelTest
             {
                 Code = "GuantesObject",
                 Name = vocabulary.Find("GuantesVocabulary"),
-                Description = globDescriptionMessage,
+                Description = messages.Find("globDescriptionMessage"),
                 Weight = 1,
             }
         };
@@ -100,7 +102,7 @@ public class GameModelTest
             new InputCommandModel
             {
                 Code = "MuevePalanca",
-                Verb = vocabulary.Find("MueveVocabulary"),                
+                Verb = vocabulary.Find("MueveVocabulary"),
                 Nouns = new List<VocabularyModel> {vocabulary.Find("PalancaVocabulary") },
             },
             new InputCommandModel
@@ -137,19 +139,22 @@ public class GameModelTest
                 BorderColor = Color.Black,
                 Color = Color.White,
             },
+            Messages = messages,
             Vocabulary = vocabulary,
+            Objects = objects,
+            Commands = commands,
+            InputCommands = inputCommands,
             MainSceneCode = "EntradaScene",
             Scenes = new List<SceneModel>
             {
                 new SceneModel
                 {
                     Code = "EntradaScene",
-                    Description = entradaSceneDescriptionMessage,
+                    Description = messages.Find("EntradaSceneDescription"),
                     Dispatchers = new List<DispatcherModel>
                     {
                         new DispatcherModel
                         {
-                            Code = "",
                             Trigger = Trigger.BeforeInputCommand,
                             Commands = new List<CommandModel>
                             {
@@ -159,7 +164,6 @@ public class GameModelTest
                         },
                         new DispatcherModel
                         {
-                            Code = "",
                             Trigger = Trigger.BeforeInputCommand,
                             Commands = new List<CommandModel>
                             {
@@ -169,7 +173,6 @@ public class GameModelTest
                         },
                         new DispatcherModel
                         {
-                            Code = "",
                             Trigger = Trigger.AfterInputCommand,
                             InputCommands = new List<InputCommandModel>
                             {
@@ -184,7 +187,6 @@ public class GameModelTest
                         },
                         new DispatcherModel
                         {
-                            Code = "",
                             Trigger = Trigger.AfterInputCommand,
                             InputCommands = new List<InputCommandModel>
                             {
@@ -199,7 +201,6 @@ public class GameModelTest
                         },
                         new DispatcherModel
                         {
-                            Code = "",
                             Trigger = Trigger.AfterInputCommand,
                             InputCommands = new List<InputCommandModel>
                             {
@@ -212,7 +213,6 @@ public class GameModelTest
                         },
                         new DispatcherModel
                         {
-                            Code = "",
                             Trigger = Trigger.AfterInputCommand,
                             InputCommands = new List<InputCommandModel>
                             {
@@ -229,7 +229,6 @@ public class GameModelTest
                         },
                         new DispatcherModel
                         {
-                            Code = "",
                             Trigger = Trigger.AfterInputCommand,
                             InputCommands = new List<InputCommandModel>
                             {
@@ -247,7 +246,6 @@ public class GameModelTest
                         },
                         new DispatcherModel
                         {
-                            Code = "",
                             Trigger = Trigger.AfterInputCommand,
                             InputCommands = new List<InputCommandModel>
                             {
@@ -263,7 +261,6 @@ public class GameModelTest
                         },
                         new DispatcherModel
                         {
-                            Code = "",
                             Trigger = Trigger.AfterInputCommand,
                             InputCommands = new List<InputCommandModel>
                             {
@@ -280,14 +277,14 @@ public class GameModelTest
                 new SceneModel
                 {
                     Code = "InteriorScene",
-                    Description = interiorSceneDescriptiownMessage
+                    Description = messages.Find("InteriorSceneDescription"),
                 }
             }
         };
 
 
         // Act
-        var json = Newtonsoft.Json.JsonConvert.SerializeObject(game);        
+        var json = Newtonsoft.Json.JsonConvert.SerializeObject(game);
 
         // Assert
         Assert.NotNull(gameJson);

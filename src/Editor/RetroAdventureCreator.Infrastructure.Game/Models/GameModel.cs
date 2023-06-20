@@ -37,6 +37,26 @@ public class GameModel
     public IEnumerable<MessageModel>? Messages { get; init; }
 
     /// <summary>
+    /// Game objects
+    /// </summary>
+    public IEnumerable<ObjectModel>? Objects { get; init; }
+
+    /// <summary>
+    /// Game Input commands
+    /// </summary>
+    public IEnumerable<InputCommandModel>? InputCommands { get; init; }
+
+    /// <summary>
+    /// Game commands
+    /// </summary>
+    public IEnumerable<CommandModel>? Commands { get; init; }
+
+    /// <summary>
+    /// Game dispatcher commands
+    /// </summary>
+    public IEnumerable<DispatcherModel>? Dispatchers { get; init; }
+
+    /// <summary>
     /// Game Flags
     /// </summary>
     public IDictionary<string, bool>? Flags { get; init; }

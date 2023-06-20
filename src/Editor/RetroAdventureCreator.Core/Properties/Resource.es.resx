@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DuplicateCodeError" xml:space="preserve">
+    <value>El Codigo '{0}' esta duplicado, el Codigo debe ser unico en las partes del juego.</value>
+  </data>
   <data name="MaxNumberVocabularyAllowedError" xml:space="preserve">
     <value>El número máximo de vocabularios permitido es de {0}</value>
   </data>

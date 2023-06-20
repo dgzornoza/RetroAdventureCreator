@@ -9,24 +9,14 @@ using RetroAdventureCreator.Infrastructure.Game.Interfaces;
 namespace RetroAdventureCreator.Infrastructure.Game.Models;
 
 /// <summary>
-/// Model for dispatch game commands
+/// Model for dispatch game scene commands
 /// </summary>
-public class DispatcherModel : IUniqueKey
+public class DispatcherModel
 {
-    /// <summary>
-    /// Unique Code for identify dispatcher
-    /// </summary>
-    public string Code { get; init; } = default!;
-
     /// <summary>
     /// Trigger for launch dispatcher command
     /// </summary>
     public Trigger Trigger { get; init; }
-
-    /// <summary>
-    /// Dispatcher attached SceneCode
-    /// </summary>
-    public string? SceneCode { get; init; }
 
     /// <summary>
     /// Input commands (only in triggers AfterInputCommand)

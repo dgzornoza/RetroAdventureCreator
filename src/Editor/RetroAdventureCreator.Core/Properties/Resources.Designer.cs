@@ -61,6 +61,15 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Code &apos;{0}&apos; is duplicated, code property should be unique in game parts..
+        /// </summary>
+        internal static string DuplicateCodeError {
+            get {
+                return ResourceManager.GetString("DuplicateCodeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The maximum number of vocabularies allowed is {0}.
         /// </summary>
         internal static string MaxNumberVocabularyAllowedError {
