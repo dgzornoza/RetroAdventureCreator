@@ -28,15 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Facts\SerializerTests\Resources\GameInPawsTutorial.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Theories\ExtensionsTests\Resources\GameRandom.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Theories\GameTests\Resources\GameInPawsTutorial.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Theories\SceneTests\Resources\SceneBigDescription.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

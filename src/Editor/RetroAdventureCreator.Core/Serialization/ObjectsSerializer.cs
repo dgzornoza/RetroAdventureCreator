@@ -34,9 +34,9 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Complements = 0-40 bytes
 /// 
 /// </remarks>
-internal class ObjectsSerializer : ISerializer
+internal class ObjectsSerializer : ISerializer<ObjectModel>
 {
-    public SerializerResultModel Serialize(GameModel game)
+    public SerializerResultModel Serialize(ObjectModel @object)
     {
         throw new NotImplementedException();
     }

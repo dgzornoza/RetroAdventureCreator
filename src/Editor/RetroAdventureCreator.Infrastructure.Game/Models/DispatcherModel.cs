@@ -14,6 +14,11 @@ namespace RetroAdventureCreator.Infrastructure.Game.Models;
 public class DispatcherModel
 {
     /// <summary>
+    /// Owner scene code for dispatcher. if not specified, is for all scenes.
+    /// </summary>
+    public string OwnerSceneCode { get; init; } = default!;
+
+    /// <summary>
     /// Trigger for launch dispatcher command
     /// </summary>
     public Trigger Trigger { get; init; }

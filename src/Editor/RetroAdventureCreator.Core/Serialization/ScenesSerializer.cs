@@ -26,9 +26,9 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Objects = 0-40 bytes
 /// 
 /// </remarks>
-internal class ScenesSerializer : ISerializer
+internal class ScenesSerializer : ISerializer<SceneModel>
 {
-    public SerializerResultModel Serialize(GameModel game)
+    public SerializerResultModel Serialize(SceneModel @object)
     {
         throw new NotImplementedException();
     }

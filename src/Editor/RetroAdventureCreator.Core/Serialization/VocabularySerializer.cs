@@ -28,15 +28,15 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Synonyms = 0-256 bytes
 /// 
 /// </remarks>
-internal class VocabularySerializer : ISerializer
+internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>>
 {
     private record struct Header(byte WordType, byte Synonyms);
 
     private record struct Data(string Synonyms);
 
-    public SerializerResultModel Serialize(GameModel game)
+    public SerializerResultModel Serialize(IEnumerable<VocabularyModel> @object)
     {
-        var vocabularies = game.Vocabulary ?? Enumerable.Empty<VocabularyModel>();
+        var vocabularies = @object ?? throw new ArgumentNullException(nameof(@object));
 
         if (vocabularies.Count() > byte.MaxValue)
         {

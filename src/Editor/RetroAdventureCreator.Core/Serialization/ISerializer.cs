@@ -8,7 +8,7 @@ using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Core.Serialization;
 
-internal interface ISerializer
+internal interface ISerializer<T> where T : class
 {
-    SerializerResultModel Serialize(GameModel game);
+    SerializerResultModel Serialize(T @object);
 }

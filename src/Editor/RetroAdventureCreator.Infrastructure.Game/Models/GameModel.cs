@@ -22,47 +22,17 @@ public class GameModel
     public string MainSceneCode { get; init; } = default!;
 
     /// <summary>
-    /// Game scenes
-    /// </summary>
-    public IEnumerable<SceneModel>? Scenes { get; init; }
-
-    /// <summary>
-    /// Game Vocabulary
-    /// </summary>
-    public IEnumerable<VocabularyModel>? Vocabulary { get; init; }
-
-    /// <summary>
-    /// Game messages
-    /// </summary>
-    public IEnumerable<MessageModel>? Messages { get; init; }
-
-    /// <summary>
-    /// Game objects
-    /// </summary>
-    public IEnumerable<ObjectModel>? Objects { get; init; }
-
-    /// <summary>
-    /// Game Input commands
-    /// </summary>
-    public IEnumerable<InputCommandModel>? InputCommands { get; init; }
-
-    /// <summary>
-    /// Game commands
-    /// </summary>
-    public IEnumerable<CommandModel>? Commands { get; init; }
-
-    /// <summary>
-    /// Game dispatcher commands
-    /// </summary>
-    public IEnumerable<DispatcherModel>? Dispatchers { get; init; }
-
-    /// <summary>
     /// Game Flags
     /// </summary>
-    public IDictionary<string, bool>? Flags { get; init; }
+    public IDictionary<string, bool> Flags { get; init; } = default!;
 
     /// <summary>
     /// Default Game Settings
     /// </summary>
-    public SettingsModel? Settings { get; init; }
+    public SettingsModel Settings { get; init; } = default!;
+
+    /// <summary>
+    /// Game Assets
+    /// </summary>
+    public AssetsModel Assets { get; init; } = default!;
 }

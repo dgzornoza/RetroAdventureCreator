@@ -21,9 +21,9 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Data:
 /// 
 /// </remarks>
-internal class MessagesSerializer : ISerializer
+internal class MessagesSerializer : ISerializer<MessageModel>
 {
-    public SerializerResultModel Serialize(GameModel game)
+    public SerializerResultModel Serialize(MessageModel @object)
     {
         throw new NotImplementedException();
     }
