@@ -3,7 +3,7 @@
 /// <summary>
 /// Enum with available colors
 /// </summary>
-public enum Color
+public enum Color : byte
 {
     Black = 0,
     Blue = 1,

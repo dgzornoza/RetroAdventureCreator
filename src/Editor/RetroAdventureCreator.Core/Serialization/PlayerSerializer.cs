@@ -21,7 +21,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Data:
 /// 
 /// </remarks>
-internal class PlayerSerializer : ISerializer<PlayerModel>
+internal class PlayerSerializer : ISerializer<PlayerModel, SerializerResultModel>
 {
     public SerializerResultModel Serialize(PlayerModel @object)
     {

@@ -7,7 +7,7 @@ namespace RetroAdventureCreator.Infrastructure.Game.Models;
 /// </summary>
 public class SettingsModel
 {
-    public int Charset { get; init; }
+    public byte Charset { get; init; }
 
     public Color Color { get; init; }
 

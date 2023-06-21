@@ -1,4 +1,5 @@
-﻿using RetroAdventureCreator.Core.Models;
+﻿using System.Text;
+using RetroAdventureCreator.Core.Models;
 using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Core.Serialization;
@@ -11,16 +12,26 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Header:
-/// Charset = 3 bits (8)
-/// Color = 4 bits (15)
-/// BackgroundColor = 4 bits (15)
-/// BorderColor = 4 bits (15)
+/// Charset = 4 bits (16)
+/// Color = 4 bits (16)
+/// BackgroundColor = 4 bits (16)
+/// BorderColor = 4 bits (16)
 /// 
 /// </remarks>
-internal class SettingsSerializer : ISerializer<SettingsModel>
+internal class SettingsSerializer : ISerializer<SettingsModel, SerializerResultModel>
 {
     public SerializerResultModel Serialize(SettingsModel @object)
     {
-        throw new NotImplementedException();
+        var settings = @object ?? throw new ArgumentNullException(nameof(@object));
+
+        var headerBytes = CreateHeaderBytes(settings);
+
+        return new SerializerResultModel(headerBytes);
     }
+
+    private byte[] CreateHeaderBytes(SettingsModel settings) => new byte[]
+    {
+        (byte)(settings.Charset << 4 | (byte)settings.Color),
+        (byte)((byte)settings.BackgroundColor << 4 | (byte)settings.BorderColor),
+    };
 }

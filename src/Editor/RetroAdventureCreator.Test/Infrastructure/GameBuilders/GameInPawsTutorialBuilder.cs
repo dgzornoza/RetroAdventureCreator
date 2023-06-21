@@ -28,8 +28,8 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
         protected override SettingsModel BuildSettings() => new()
         {
             Charset = 1,
-            BackgroundColor = Color.Black,
-            BorderColor = Color.Black,
+            BackgroundColor = Color.White,
+            BorderColor = Color.BrightPurple,
             Color = Color.White,
         };
 
