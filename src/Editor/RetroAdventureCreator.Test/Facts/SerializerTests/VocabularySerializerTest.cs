@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RetroAdventureCreator.Core.Extensions;
+﻿using RetroAdventureCreator.Core;
 using RetroAdventureCreator.Core.Serialization;
 using RetroAdventureCreator.Infrastructure.Game.Models;
-using RetroAdventureCreator.Test.Helpers;
 using RetroAdventureCreator.Test.Infrastructure.Builders;
 
 namespace RetroAdventureCreator.Test.Facts.SerializerTests;
@@ -33,5 +27,50 @@ public class VocabularySerializerTest
         Assert.True(actual.GameComponentKeysModel.Count() == game.Assets.Vocabulary.Count());
         Assert.True(actual.GameComponentKeysModel.Select(item => item.Code).Distinct().Count() == game.Assets.Vocabulary.Count());
         Assert.True(actual.Data.Length == expectedDataSize);
+    }
+
+    [Fact]
+    public void VocabularySerializer_Serialize_MaxVocabularies_throwsExcepion()
+    {
+        // Arrange
+        var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.MaxNumberVocabularyAllowedError, byte.MaxValue);
+        var vocabularies = Enumerable.Range(0, byte.MaxValue + 1).Select(item => new VocabularyModel());
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(vocabularies)).Message == messageError);
+    }
+
+    [Fact]
+    public void VocabularySerializer_Serialize_DuplicateCode_throwsExcepion()
+    {
+        // Arrange
+        var code = "DuplicateCode";
+        var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.DuplicateCodeError, code);
+        var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { Code = code });
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(vocabularies)).Message == messageError);
+    }
+
+    [Fact]
+    public void VocabularySerializer_Serialize_MaxSizeSynonims_throwsExcepion()
+    {
+        // Arrange        
+        var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.MaxSizeOfSynonymsError, byte.MaxValue);
+        var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { Code = "code", Synonyms = Enumerable.Range(0, 300).Select(synonym => "Synonym") });
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(vocabularies)).Message == messageError);
+    }
+
+    [Fact]
+    public void VocabularySerializer_Serialize_CodeNull_throwsExcepion()
+    {
+        // Arrange        
+        var messageError = RetroAdventureCreator.Core.Properties.Resources.CodeIsRequiredError;
+        var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { });
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(vocabularies)).Message == messageError);
     }
 }

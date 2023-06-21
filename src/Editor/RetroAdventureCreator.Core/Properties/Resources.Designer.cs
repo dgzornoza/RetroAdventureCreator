@@ -61,6 +61,15 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Code property is required.
+        /// </summary>
+        internal static string CodeIsRequiredError {
+            get {
+                return ResourceManager.GetString("CodeIsRequiredError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Code &apos;{0}&apos; is duplicated, code property should be unique in game parts..
         /// </summary>
         internal static string DuplicateCodeError {
@@ -81,9 +90,9 @@ namespace RetroAdventureCreator.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The maximum size of synonys is {0}.
         /// </summary>
-        internal static string MaxSizeOfSynonyms {
+        internal static string MaxSizeOfSynonymsError {
             get {
-                return ResourceManager.GetString("MaxSizeOfSynonyms", resourceCulture);
+                return ResourceManager.GetString("MaxSizeOfSynonymsError", resourceCulture);
             }
         }
     }

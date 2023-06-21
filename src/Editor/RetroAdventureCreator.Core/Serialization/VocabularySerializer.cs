@@ -47,18 +47,22 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>>
         var result = new List<byte>();
         foreach (var vocabulary in vocabularies)
         {
+            var synonyms = string.Join('|', vocabulary.Synonyms ?? Enumerable.Empty<string>());
+
+            if (string.IsNullOrEmpty(vocabulary.Code))
+            {
+                throw new InvalidOperationException(Properties.Resources.CodeIsRequiredError);
+            }
             if (componentKeys.Any(item => item.Code == vocabulary.Code))
             {
                 throw new InvalidOperationException(string.Format(Properties.Resources.DuplicateCodeError, vocabulary.Code));
             }
-
-            componentKeys.Add(new GameComponentKeyModel(vocabulary.Code, result.Count));
-
-            var synonyms = string.Join('|', vocabulary.Synonyms ?? Enumerable.Empty<string>());
             if (synonyms.Length > byte.MaxValue)
             {
-                throw new InvalidOperationException(string.Format(Properties.Resources.MaxSizeOfSynonyms, byte.MaxValue));
+                throw new InvalidOperationException(string.Format(Properties.Resources.MaxSizeOfSynonymsError, byte.MaxValue));
             }
+
+            componentKeys.Add(new GameComponentKeyModel(vocabulary.Code, result.Count));
 
             var header = new Header((byte)vocabulary.WordType, (byte)synonyms.Length);
             result.AddRange(CreateHeaderBytes(header));
