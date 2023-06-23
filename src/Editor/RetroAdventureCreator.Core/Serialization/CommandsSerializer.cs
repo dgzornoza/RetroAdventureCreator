@@ -17,10 +17,9 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Header:
-/// Id = 8 bits (256)
 /// LogicalOperator = 1 bit
 /// Token = 6 bits (64)
-/// Arguments = 2 bits (4 ids max value)
+/// Arguments = 2 bits (4 ids 8 bits)
 /// 
 /// Data:
 /// Arguments = 0-32
