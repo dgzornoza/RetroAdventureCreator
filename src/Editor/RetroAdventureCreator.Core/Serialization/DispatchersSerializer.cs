@@ -23,7 +23,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Commands = 3 bits (8)
 /// 
 /// Data:
-/// Commands = 0-64 bytes
+/// Commands = 0-63 bytes
 /// 
 /// </remarks>
 internal class DispatchersSerializer : ISerializer<DispatcherModel, SerializerResultKeyModel>

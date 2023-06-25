@@ -25,7 +25,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Synonyms = 8 bits (256)
 /// 
 /// Data:
-/// Synonyms = 0-256 bytes
+/// Synonyms = 0-255 bytes
 /// 
 /// </remarks>
 internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, SerializerResultKeyModel>

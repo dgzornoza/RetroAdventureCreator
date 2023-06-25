@@ -10,24 +10,23 @@ using RetroAdventureCreator.Infrastructure.Game.Models;
 namespace RetroAdventureCreator.Core.Serialization;
 
 /// <summary>
-/// Command models serializer
+/// CommandGroup models serializer
 /// </summary>
 /// <remarks>
-/// Format Command serializer:
+/// Format CommandGroup serializer:
 /// ----------------------------------------------
 /// 
-/// Header:
-/// 
-/// Token = 6 bits (64)
-/// Arguments = 2 bits (3 ids 8 bits)
+/// Header commandGroup:
+/// LogicalOperator = 1 bit
+/// Commands = 3 bits (7 ids 8 bits)
 /// 
 /// Data:
-/// Arguments = 0-24
+/// Commands = 0-56
 /// 
 /// </remarks>
-internal class CommandsSerializer : ISerializer<CommandModel, SerializerResultKeyModel>
+internal class CommandGroupSerializer : ISerializer<CommandGroupModel, SerializerResultModel>
 {
-    public SerializerResultKeyModel Serialize(CommandModel @object)
+    public SerializerResultModel Serialize(CommandGroupModel @object)
     {
         throw new NotImplementedException();
     }

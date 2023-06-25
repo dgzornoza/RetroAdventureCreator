@@ -29,7 +29,8 @@ public class DispatcherModel
     public IEnumerable<InputCommandModel>? InputCommands { get; init; }
 
     /// <summary>
-    /// Commands to execute
+    /// Commands to execute.
+    /// will be executed in cascade as long as one does not return false.
     /// </summary>
-    public IEnumerable<CommandModel>? Commands { get; init; }
+    public IEnumerable<ICommandModel> Commands { get; init; } = default!;
 }

@@ -9,22 +9,17 @@ using RetroAdventureCreator.Infrastructure.Game.Interfaces;
 namespace RetroAdventureCreator.Infrastructure.Game.Models;
 
 /// <summary>
-/// Command model
+/// Group command model
 /// </summary>
-public class CommandModel : IUniqueKey, ICommandModel
+public class CommandGroupModel : ICommandModel
 {
     /// <summary>
-    /// Unique Code for identify Command
+    /// Logical operator
     /// </summary>
-    public string Code { get; init; } = default!;
+    public LogicalOperator LogicalOperator { get; init; }
 
     /// <summary>
-    /// Command Token
+    /// Commands in group
     /// </summary>
-    public CommandToken Token { get; init; }
-
-    /// <summary>
-    /// Arguments (based in command token)
-    /// </summary>
-    public IEnumerable<string>? Arguments { get; init; }
+    public IEnumerable<CommandModel> Commands { get; init; } = default!;
 }

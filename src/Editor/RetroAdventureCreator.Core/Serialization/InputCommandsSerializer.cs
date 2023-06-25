@@ -17,9 +17,8 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Header:
-/// Id = 6 bits (64)
 /// Verb = 6 bits (64) (id vocabulary)
-/// Nouns = 3 bits (8 ids vocabulary)
+/// Nouns = 3 bits (7 ids vocabulary)
 /// 
 /// Data:
 /// Nouns = 0-48 bytes

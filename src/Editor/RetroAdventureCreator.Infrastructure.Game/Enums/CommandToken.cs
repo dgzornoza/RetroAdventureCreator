@@ -8,14 +8,14 @@ namespace RetroAdventureCreator.Infrastructure.Game.Enums;
 
 public enum CommandToken
 {
-    AT,
-    MESSAGE,
-    IS_SET,
-    IS_UNSET,
-    IN_USE,
-    NOT_IN_USE,
-    END_GAME,
-    SET,
-    UNSET,
-    GOTO,
+    At,
+    Message,
+    IsSet,
+    IsUnset,
+    InUse,
+    NotInUse,
+    EndGame,
+    Set,
+    Unset,
+    Goto,
 }
