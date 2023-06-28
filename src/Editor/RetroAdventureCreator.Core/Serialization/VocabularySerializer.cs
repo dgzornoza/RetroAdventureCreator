@@ -7,6 +7,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using RetroAdventureCreator.Core.Extensions;
+using RetroAdventureCreator.Core.Infrastructure;
 using RetroAdventureCreator.Core.Models;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
@@ -38,9 +39,9 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
     {
         var vocabularies = @object ?? throw new ArgumentNullException(nameof(@object));
 
-        if (vocabularies.Count() > byte.MaxValue)
+        if (vocabularies.Count() > Constants.MaxNumberVocabularyCommandsAllowed)
         {
-            throw new InvalidOperationException(string.Format(Properties.Resources.MaxNumberVocabularyAllowedError, byte.MaxValue));
+            throw new InvalidOperationException(string.Format(Properties.Resources.MaxNumberVocabularyAllowedError, Constants.MaxNumberVocabularyCommandsAllowed));
         }
 
         var componentKeys = new List<GameComponentKeyModel>(vocabularies.Count());
@@ -57,9 +58,9 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
             {
                 throw new InvalidOperationException(string.Format(Properties.Resources.DuplicateCodeError, vocabulary.Code));
             }
-            if (synonyms.Length > byte.MaxValue)
+            if (synonyms.Length > Constants.MaxNumberVocabularyCommandsAllowed)
             {
-                throw new InvalidOperationException(string.Format(Properties.Resources.MaxSizeOfSynonymsError, byte.MaxValue));
+                throw new InvalidOperationException(string.Format(Properties.Resources.MaxSizeOfSynonymsError, Constants.MaxNumberVocabularyCommandsAllowed));
             }
 
             componentKeys.Add(new GameComponentKeyModel(vocabulary.Code, result.Count));
@@ -74,11 +75,11 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
         return new SerializerResultKeyModel(componentKeys, result.ToArray());
     }
 
-    private byte[] CreateHeaderBytes(Header header) => new byte[]
+    private static byte[] CreateHeaderBytes(Header header) => new byte[]
     {
             header.WordType,
-            header.Synonyms
+            header.Synonyms,
     };
 
-    private byte[] CreateDataBytes(Data data) => Encoding.ASCII.GetBytes(data.Synonyms);
+    private static byte[] CreateDataBytes(Data data) => Encoding.ASCII.GetBytes(data.Synonyms);
 }

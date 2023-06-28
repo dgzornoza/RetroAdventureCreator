@@ -120,8 +120,17 @@
   <data name="DuplicateCodeError" xml:space="preserve">
     <value>El Codigo '{0}' esta duplicado, el Codigo debe ser unico en las partes del juego.</value>
   </data>
+  <data name="MaxNumberCommandsAllowedError" xml:space="preserve">
+    <value>El número máximo de comandos permitido es de {0}</value>
+  </data>
+  <data name="MaxNumberMessagesAllowedError" xml:space="preserve">
+    <value>El número máximo de mensajes permitido es de {0}</value>
+  </data>
   <data name="MaxNumberVocabularyAllowedError" xml:space="preserve">
     <value>El número máximo de vocabularios permitido es de {0}</value>
+  </data>
+  <data name="MaxSizeOfCommandArgumentsError" xml:space="preserve">
+    <value>El tamaño maximo para los argumentos de comandos es de {0}</value>
   </data>
   <data name="MaxSizeOfSynonyms" xml:space="preserve">
     <value>El tamaño maximo para los sinónimos es de {0}</value>

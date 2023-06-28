@@ -11,8 +11,13 @@ namespace RetroAdventureCreator.Infrastructure.Game.Models;
 /// <summary>
 /// Group command model
 /// </summary>
-public class CommandGroupModel : ICommandModel
+public class CommandGroupModel : IUniqueKey, ICommandModel
 {
+    /// <summary>
+    /// Unique Code for identify Command group
+    /// </summary>
+    public string Code { get; init; } = default!;
+
     /// <summary>
     /// Logical operator
     /// </summary>
@@ -21,5 +26,5 @@ public class CommandGroupModel : ICommandModel
     /// <summary>
     /// Commands in group
     /// </summary>
-    public IEnumerable<CommandModel> Commands { get; init; } = default!;
+    public IEnumerable<ICommandModel> Commands { get; init; } = default!;
 }

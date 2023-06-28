@@ -1,0 +1,13 @@
+ ObjectModel -> MessageModel, VocabularyModel
+ InputCommandModel -> VocabularyModel
+ CommandModel
+ CommandGroupModel -> CommandModel
+ DispatcherModel -> InputCommandModel, CommandGroupModel
+ SceneModel -> MessageModel, DispatcherModel, ObjectModel
+ PlayerModel -> ObjectModel
+ GameModel -> PlayerModel, SettingsModel, AssetsModel
+
+
+ References address:
+
+ CommandModel: MessageModel, SceneModel, ObjectModel, GameModel

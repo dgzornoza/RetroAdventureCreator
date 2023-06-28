@@ -123,8 +123,17 @@
   <data name="DuplicateCodeError" xml:space="preserve">
     <value>Code '{0}' is duplicated, code property should be unique in game parts.</value>
   </data>
+  <data name="MaxNumberCommandsAllowedError" xml:space="preserve">
+    <value>The maximum number of commands allowed is {0}</value>
+  </data>
+  <data name="MaxNumberMessagesAllowedError" xml:space="preserve">
+    <value>The maximum number of messages allowed is {0}</value>
+  </data>
   <data name="MaxNumberVocabularyAllowedError" xml:space="preserve">
     <value>The maximum number of vocabularies allowed is {0}</value>
+  </data>
+  <data name="MaxSizeOfCommandArgumentsError" xml:space="preserve">
+    <value>The maximum size of command arguments is {0}</value>
   </data>
   <data name="MaxSizeOfSynonymsError" xml:space="preserve">
     <value>The maximum size of synonys is {0}</value>

@@ -17,6 +17,14 @@ public class GameModelTest
     [InlineData(typeof(GameInPawsTutorialBuilder))]
     public void CreateGameModel(Type gameBuilderType)
     {
+        string[] hexValues = new string[] {
+            "1022", "0FFA", "3EA3", "42A4"};
+
+        byte[] result = hexValues
+          .Select(value => Convert.ToByte(value, 16))
+          .ToArray();
+
+
         // Arrange
         var game = (Activator.CreateInstance(gameBuilderType) as GameBuilder)!.BuildGame();
 

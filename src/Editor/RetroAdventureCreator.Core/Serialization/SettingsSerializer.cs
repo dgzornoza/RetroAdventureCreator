@@ -29,7 +29,7 @@ internal class SettingsSerializer : ISerializer<SettingsModel, SerializerResultM
         return new SerializerResultModel(headerBytes);
     }
 
-    private byte[] CreateHeaderBytes(SettingsModel settings) => new byte[]
+    private static byte[] CreateHeaderBytes(SettingsModel settings) => new byte[]
     {
         (byte)(settings.Charset << 4 | (byte)settings.Color),
         (byte)((byte)settings.BackgroundColor << 4 | (byte)settings.BorderColor),

@@ -79,11 +79,38 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The maximum number of commands allowed is {0}.
+        /// </summary>
+        internal static string MaxNumberCommandsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxNumberCommandsAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum number of messages allowed is {0}.
+        /// </summary>
+        internal static string MaxNumberMessagesAllowedError {
+            get {
+                return ResourceManager.GetString("MaxNumberMessagesAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The maximum number of vocabularies allowed is {0}.
         /// </summary>
         internal static string MaxNumberVocabularyAllowedError {
             get {
                 return ResourceManager.GetString("MaxNumberVocabularyAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum size of command arguments is {0}.
+        /// </summary>
+        internal static string MaxSizeOfCommandArgumentsError {
+            get {
+                return ResourceManager.GetString("MaxSizeOfCommandArgumentsError", resourceCulture);
             }
         }
         
