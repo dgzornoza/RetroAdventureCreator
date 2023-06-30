@@ -6,7 +6,7 @@ using System.Reflection.PortableExecutable;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
-using RetroAdventureCreator.Core.Extensions;
+using RetroAdventureCreator.Core.Helpers;
 using RetroAdventureCreator.Core.Infrastructure;
 using RetroAdventureCreator.Core.Models;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
@@ -39,10 +39,8 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
     {
         var vocabularies = @object ?? throw new ArgumentNullException(nameof(@object));
 
-        if (vocabularies.Count() > Constants.MaxNumberVocabularyCommandsAllowed)
-        {
-            throw new InvalidOperationException(string.Format(Properties.Resources.MaxNumberVocabularyAllowedError, Constants.MaxNumberVocabularyCommandsAllowed));
-        }
+        EnsureHelpers.EnsureMaxLength(vocabularies, Constants.MaxNumberVocabularyCommandsAllowed,
+            string.Format(Properties.Resources.MaxNumberVocabularyAllowedError, Constants.MaxNumberVocabularyCommandsAllowed));
 
         var componentKeys = new List<GameComponentKeyModel>(vocabularies.Count());
         var result = new List<byte>();
@@ -50,18 +48,10 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
         {
             var synonyms = string.Join('|', vocabulary.Synonyms ?? Enumerable.Empty<string>());
 
-            if (string.IsNullOrEmpty(vocabulary.Code))
-            {
-                throw new InvalidOperationException(Properties.Resources.CodeIsRequiredError);
-            }
-            if (componentKeys.Any(item => item.Code == vocabulary.Code))
-            {
-                throw new InvalidOperationException(string.Format(Properties.Resources.DuplicateCodeError, vocabulary.Code));
-            }
-            if (synonyms.Length > Constants.MaxNumberVocabularyCommandsAllowed)
-            {
-                throw new InvalidOperationException(string.Format(Properties.Resources.MaxSizeOfSynonymsError, Constants.MaxNumberVocabularyCommandsAllowed));
-            }
+            EnsureHelpers.EnsureNotNullOrWhiteSpace(vocabulary.Code, Properties.Resources.CodeIsRequiredError);
+            EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == vocabulary.Code, string.Format(Properties.Resources.DuplicateCodeError, vocabulary.Code));
+            EnsureHelpers.EnsureMaxLength(synonyms.Length, Constants.MaxNumberVocabularyCommandsAllowed,
+                string.Format(Properties.Resources.MaxSizeOfSynonymsError, Constants.MaxNumberVocabularyCommandsAllowed));
 
             componentKeys.Add(new GameComponentKeyModel(vocabulary.Code, result.Count));
 

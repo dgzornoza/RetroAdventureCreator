@@ -11,12 +11,12 @@ namespace RetroAdventureCreator.Infrastructure.Game.Models;
 /// <summary>
 /// Model for dispatch game scene commands
 /// </summary>
-public class DispatcherModel
+public class DispatcherModel : IUniqueKey
 {
     /// <summary>
-    /// Owner scene code for dispatcher. if not specified, is for all scenes.
+    /// Unique Code for identify Command
     /// </summary>
-    public string OwnerSceneCode { get; init; } = default!;
+    public string Code { get; init; } = default!;
 
     /// <summary>
     /// Trigger for launch dispatcher command

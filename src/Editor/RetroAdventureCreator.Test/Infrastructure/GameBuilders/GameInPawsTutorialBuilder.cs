@@ -14,18 +14,18 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
     {
         protected override string MainSceneCode => "EntradaScene";
 
-        protected override IDictionary<string, bool> BuildFlags() => new Dictionary<string, bool>
+        protected override IDictionary<string, bool> CreateFlags() => new Dictionary<string, bool>
         {
             { "openEntry", false }
         };
 
-        protected override PlayerModel BuildPlayer() => new()
+        protected override PlayerModel CreatePlayer() => new()
         {
             Health = 7,
             Objects = Objects,
         };
 
-        protected override SettingsModel BuildSettings() => new()
+        protected override SettingsModel CreateSettings() => new()
         {
             Charset = 1,
             BackgroundColor = Color.White,
@@ -93,6 +93,8 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             new CommandModel { Code = "EndGame", Token = CommandToken.EndGame },
         };
 
+        protected override IEnumerable<CommandGroupModel> CreateCommandsGroups() => new List<CommandGroupModel>();
+
         protected override IEnumerable<InputCommandModel> CreateInputCommands() => new List<InputCommandModel>
         {
             new InputCommandModel
@@ -142,7 +144,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
         {
             new DispatcherModel
             {
-                OwnerSceneCode = MainSceneCode,
+                Code = $"{MainSceneCode}-1",
                 Trigger = Trigger.BeforeInputCommand,
                 Commands = new List<CommandModel>
                 {
@@ -152,7 +154,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             },
             new DispatcherModel
             {
-                OwnerSceneCode = MainSceneCode,
+                Code = $"{MainSceneCode}-2",
                 Trigger = Trigger.BeforeInputCommand,
                 Commands = new List<CommandModel>
                 {
@@ -162,7 +164,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             },
             new DispatcherModel
             {
-                OwnerSceneCode = MainSceneCode,
+                Code = $"{MainSceneCode}-3",
                 Trigger = Trigger.AfterInputCommand,
                 InputCommands = new List<InputCommandModel>
                 {
@@ -177,7 +179,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             },
             new DispatcherModel
             {
-                OwnerSceneCode = MainSceneCode,
+                Code = $"{MainSceneCode}-4",
                 Trigger = Trigger.AfterInputCommand,
                 InputCommands = new List<InputCommandModel>
                 {
@@ -192,7 +194,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             },
             new DispatcherModel
             {
-                OwnerSceneCode = MainSceneCode,
+                Code = $"{MainSceneCode}-5",
                 Trigger = Trigger.AfterInputCommand,
                 InputCommands = new List<InputCommandModel>
                 {
@@ -205,7 +207,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             },
             new DispatcherModel
             {
-                OwnerSceneCode = MainSceneCode,
+                Code = $"{MainSceneCode}-5",
                 Trigger = Trigger.AfterInputCommand,
                 InputCommands = new List<InputCommandModel>
                 {
@@ -222,7 +224,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             },
             new DispatcherModel
             {
-                OwnerSceneCode = MainSceneCode,
+                Code = $"{MainSceneCode}-6",
                 Trigger = Trigger.AfterInputCommand,
                 InputCommands = new List<InputCommandModel>
                 {
@@ -240,7 +242,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             },
             new DispatcherModel
             {
-                OwnerSceneCode = MainSceneCode,
+                Code = $"{MainSceneCode}-7",
                 Trigger = Trigger.AfterInputCommand,
                 InputCommands = new List<InputCommandModel>
                 {
@@ -256,7 +258,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             },
             new DispatcherModel
             {
-                OwnerSceneCode = MainSceneCode,
+                Code = $"{MainSceneCode}-8",
                 Trigger = Trigger.AfterInputCommand,
                 InputCommands = new List<InputCommandModel>
                 {
@@ -276,7 +278,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             {
                 Code = MainSceneCode,
                 Description = Messages.Find("EntradaSceneDescription"),
-                Dispatchers = Dispatchers.Where(item => item.OwnerSceneCode == MainSceneCode)
+                Dispatchers = Dispatchers.Where(item => item.Code.StartsWith(MainSceneCode))
             },
             new SceneModel
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
@@ -17,13 +18,14 @@ public class GameModelTest
     [InlineData(typeof(GameInPawsTutorialBuilder))]
     public void CreateGameModel(Type gameBuilderType)
     {
-        string[] hexValues = new string[] {
+        string[] hexValuesArray = new string[] {
             "1022", "0FFA", "3EA3", "42A4"};
+        string hexValues = string.Join("", hexValuesArray).Trim();
 
-        byte[] result = hexValues
-          .Select(value => Convert.ToByte(value, 16))
-          .ToArray();
-
+        var bytes = Regex.Split(hexValues, "(?<=\\G.{2})")
+            .Where(item => !string.IsNullOrEmpty(item))
+            .Select(item => Convert.ToByte(item, 16))
+            .ToArray();
 
         // Arrange
         var game = (Activator.CreateInstance(gameBuilderType) as GameBuilder)!.BuildGame();

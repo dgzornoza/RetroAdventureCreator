@@ -4,23 +4,13 @@ using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using RetroAdventureCreator.Core.Helpers;
 using RetroAdventureCreator.Core.Infrastructure;
 using RetroAdventureCreator.Core.Models;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Core.Serialization;
-
-internal abstract class Serializer<TModel, TResult> : ISerializer<TModel, TResult>
-    where TModel : class
-    where TResult : SerializerResultModel
-{
-    public abstract TResult Serialize(TModel @object);
-
-    protected abstract byte[] CreateHeaderBytes(Header header);
-
-    protected abstract byte[] CreateDataBytes(Data data);
-}
 
 /// <summary>
 /// Message model serializer
@@ -46,23 +36,15 @@ internal class MessagesSerializer : ISerializer<IEnumerable<MessageModel>, Seria
     {
         var messages = @object ?? throw new ArgumentNullException(nameof(@object));
 
-        if (messages.Count() > Constants.MaxNumberMessagesAllowed)
-        {
-            throw new InvalidOperationException(string.Format(Properties.Resources.MaxNumberMessagesAllowedError, Constants.MaxNumberMessagesAllowed));
-        }
+        EnsureHelpers.EnsureMaxLength(messages, Constants.MaxNumberMessagesAllowed,
+            string.Format(Properties.Resources.MaxNumberMessagesAllowedError, Constants.MaxNumberMessagesAllowed));
 
         var componentKeys = new List<GameComponentKeyModel>(messages.Count());
         var result = new List<byte>();
         foreach (var message in messages)
         {
-            if (string.IsNullOrEmpty(message.Code))
-            {
-                throw new InvalidOperationException(Properties.Resources.CodeIsRequiredError);
-            }
-            if (componentKeys.Any(item => item.Code == message.Code))
-            {
-                throw new InvalidOperationException(string.Format(Properties.Resources.DuplicateCodeError, message.Code));
-            }
+            EnsureHelpers.EnsureNotNullOrWhiteSpace(message.Code, Properties.Resources.CodeIsRequiredError);
+            EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == message.Code, string.Format(Properties.Resources.DuplicateCodeError, message.Code));
 
             componentKeys.Add(new GameComponentKeyModel(message.Code, result.Count));
 
