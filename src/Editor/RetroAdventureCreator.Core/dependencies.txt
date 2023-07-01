@@ -30,7 +30,8 @@
 
  Serialization Dependencies:
 
-    CommandModel: MessageModel, SceneModel, ObjectModel, GameModel
+    CommandModel -> MessageModel, SceneModel, ObjectModel, GameModel
+    ObjectModel -> MessageModel, VocabularyModel
 
  Serialization Order:
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using RetroAdventureCreator.Core.Helpers;
 using RetroAdventureCreator.Core.Infrastructure;
 using RetroAdventureCreator.Core.Models;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
@@ -33,14 +34,12 @@ internal class CommandsSerializer : ISerializer<IEnumerable<CommandModel>, Seria
 
     private record struct Data(string Arguments);
 
-    public SerializerResultKeyModel Serialize(IEnumerable<CommandModel> @object)
+    public SerializerResultKeyModel Serialize(IEnumerable<CommandModel> @objects)
     {
-        var commands = @object ?? throw new ArgumentNullException(nameof(@object));
+        var commands = @objects ?? throw new ArgumentNullException(nameof(@objects));
 
-        if (commands.Count() > Constants.MaxNumberCommandsAllowed)
-        {
-            throw new InvalidOperationException(string.Format(Properties.Resources.MaxNumberCommandsAllowedError, Constants.MaxNumberCommandsAllowed));
-        }
+        EnsureHelpers.EnsureMaxLength(commands, Constants.MaxNumberCommandsAllowed,
+            string.Format(Properties.Resources.MaxNumberCommandsAllowedError, Constants.MaxNumberCommandsAllowed));
 
         var componentKeys = new List<GameComponentKeyModel>(commands.Count());
         var result = new List<byte>();
@@ -48,18 +47,10 @@ internal class CommandsSerializer : ISerializer<IEnumerable<CommandModel>, Seria
         {
             var arguments = string.Join("", command.Arguments ?? Enumerable.Empty<string>());
 
-            if (string.IsNullOrEmpty(command.Code))
-            {
-                throw new InvalidOperationException(Properties.Resources.CodeIsRequiredError);
-            }
-            if (componentKeys.Any(item => item.Code == command.Code))
-            {
-                throw new InvalidOperationException(string.Format(Properties.Resources.DuplicateCodeError, command.Code));
-            }
-            if (arguments.Length > Constants.MaxNumberCommandArgumentsAllowed)
-            {
-                throw new InvalidOperationException(string.Format(Properties.Resources.MaxSizeOfCommandArgumentsError, Constants.MaxNumberCommandsAllowed));
-            }
+            EnsureHelpers.EnsureNotNullOrWhiteSpace(command.Code, Properties.Resources.CodeIsRequiredError);
+            EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == command.Code, string.Format(Properties.Resources.DuplicateCodeError, command.Code));
+            EnsureHelpers.EnsureMaxLength(arguments.Length, Constants.MaxNumberCommandArgumentsAllowed,
+                string.Format(Properties.Resources.MaxSizeOfCommandArgumentsError, Constants.MaxNumberCommandsAllowed));
 
             componentKeys.Add(new GameComponentKeyModel(command.Code, result.Count));
 

@@ -35,12 +35,12 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
 
     private record struct Data(string Synonyms);
 
-    public SerializerResultKeyModel Serialize(IEnumerable<VocabularyModel> @object)
+    public SerializerResultKeyModel Serialize(IEnumerable<VocabularyModel> @objects)
     {
-        var vocabularies = @object ?? throw new ArgumentNullException(nameof(@object));
+        var vocabularies = @objects ?? throw new ArgumentNullException(nameof(@objects));
 
-        EnsureHelpers.EnsureMaxLength(vocabularies, Constants.MaxNumberVocabularyCommandsAllowed,
-            string.Format(Properties.Resources.MaxNumberVocabularyAllowedError, Constants.MaxNumberVocabularyCommandsAllowed));
+        EnsureHelpers.EnsureMaxLength(vocabularies, Constants.MaxNumberVocabulariesAllowed,
+            string.Format(Properties.Resources.MaxNumberVocabularyAllowedError, Constants.MaxNumberVocabulariesAllowed));
 
         var componentKeys = new List<GameComponentKeyModel>(vocabularies.Count());
         var result = new List<byte>();
@@ -50,8 +50,8 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
 
             EnsureHelpers.EnsureNotNullOrWhiteSpace(vocabulary.Code, Properties.Resources.CodeIsRequiredError);
             EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == vocabulary.Code, string.Format(Properties.Resources.DuplicateCodeError, vocabulary.Code));
-            EnsureHelpers.EnsureMaxLength(synonyms.Length, Constants.MaxNumberVocabularyCommandsAllowed,
-                string.Format(Properties.Resources.MaxSizeOfSynonymsError, Constants.MaxNumberVocabularyCommandsAllowed));
+            EnsureHelpers.EnsureMaxLength(synonyms.Length, Constants.MaxNumberVocabulariesAllowed,
+                string.Format(Properties.Resources.MaxSizeOfSynonymsError, Constants.MaxNumberVocabulariesAllowed));
 
             componentKeys.Add(new GameComponentKeyModel(vocabulary.Code, result.Count));
 

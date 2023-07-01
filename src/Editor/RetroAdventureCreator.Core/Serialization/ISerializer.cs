@@ -8,6 +8,7 @@ using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Core.Serialization;
 
+
 internal interface ISerializer<T, TResult> where T : class where TResult : SerializerResultModel
 {
     TResult Serialize(T @object);
