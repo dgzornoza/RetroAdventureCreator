@@ -36,32 +36,34 @@ internal class CommandsSerializer : ISerializer<IEnumerable<CommandModel>, Seria
 
     public SerializerResultKeyModel Serialize(IEnumerable<CommandModel> @objects)
     {
-        var commands = @objects ?? throw new ArgumentNullException(nameof(@objects));
+        //var commands = @objects ?? throw new ArgumentNullException(nameof(@objects));
 
-        EnsureHelpers.EnsureMaxLength(commands, Constants.MaxNumberCommandsAllowed,
-            string.Format(Properties.Resources.MaxNumberCommandsAllowedError, Constants.MaxNumberCommandsAllowed));
+        //EnsureHelpers.EnsureMaxLength(commands, Constants.MaxNumberCommandsAllowed,
+        //    string.Format(Properties.Resources.MaxNumberCommandsAllowedError, Constants.MaxNumberCommandsAllowed));
 
-        var componentKeys = new List<GameComponentKeyModel>(commands.Count());
-        var result = new List<byte>();
-        foreach (var command in commands)
-        {
-            var arguments = string.Join("", command.Arguments ?? Enumerable.Empty<string>());
+        //var componentKeys = new List<GameComponentKeyModel>(commands.Count());
+        //var result = new List<byte>();
+        //foreach (var command in commands)
+        //{
+        //    var arguments = string.Join("", command.Arguments ?? Enumerable.Empty<string>());
 
-            EnsureHelpers.EnsureNotNullOrWhiteSpace(command.Code, Properties.Resources.CodeIsRequiredError);
-            EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == command.Code, string.Format(Properties.Resources.DuplicateCodeError, command.Code));
-            EnsureHelpers.EnsureMaxLength(arguments.Length, Constants.MaxNumberCommandArgumentsAllowed,
-                string.Format(Properties.Resources.MaxSizeOfCommandArgumentsError, Constants.MaxNumberCommandsAllowed));
+        //    EnsureHelpers.EnsureNotNullOrWhiteSpace(command.Code, Properties.Resources.CodeIsRequiredError);
+        //    EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == command.Code, string.Format(Properties.Resources.DuplicateCodeError, command.Code));
+        //    EnsureHelpers.EnsureMaxLength(arguments.Length, Constants.MaxNumberCommandArgumentsAllowed,
+        //        string.Format(Properties.Resources.MaxSizeOfCommandArgumentsError, Constants.MaxNumberCommandsAllowed));
 
-            componentKeys.Add(new GameComponentKeyModel(command.Code, result.Count));
+        //    componentKeys.Add(new GameComponentKeyModel(command.Code, result.Count));
 
-            var header = new Header((byte)command.Token, (byte)(command.Arguments?.Count() ?? 0));
-            result.AddRange(CreateHeaderBytes(header));
+        //    var header = new Header((byte)command.Token, (byte)(command.Arguments?.Count() ?? 0));
+        //    result.AddRange(CreateHeaderBytes(header));
 
-            var data = new Data(arguments);
-            result.AddRange(CreateDataBytes(data));
-        }
+        //    var data = new Data(arguments);
+        //    result.AddRange(CreateDataBytes(data));
+        //}
 
-        return new SerializerResultKeyModel(componentKeys, result.ToArray());
+        //return new SerializerResultKeyModel(componentKeys, result.ToArray());
+
+        throw new NotImplementedException();
     }
 
     private static byte[] CreateHeaderBytes(Header header) => new byte[]

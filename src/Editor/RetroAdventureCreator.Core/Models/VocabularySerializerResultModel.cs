@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RetroAdventureCreator.Infrastructure.Game.Interfaces;
 
 namespace RetroAdventureCreator.Core.Models;
 
-internal record GameComponentKeyModel(string Code, int HeaderIndex) : IUniqueKey;
+internal record VocabularySerializerResultModel(SerializerResultKeyModel Verbs, SerializerResultKeyModel Nouns);

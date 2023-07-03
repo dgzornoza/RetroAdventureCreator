@@ -26,7 +26,7 @@ internal class SettingsSerializer : ISerializer<SettingsModel, SerializerResultM
 
         var headerBytes = CreateHeaderBytes(settings);
 
-        return new SerializerResultModel(headerBytes);
+        return new SerializerResultModel(headerBytes, Array.Empty<byte>());
     }
 
     private static byte[] CreateHeaderBytes(SettingsModel settings) => new byte[]

@@ -5,11 +5,11 @@
 /// </summary>
 public enum WordType : byte
 {
-    Noun = 0,
-    Verb = 1,
-    Adjective = 2, 
-    Preposition = 3,
-    Adverb = 4, 
-    Conjunction = 5,
-    Pronoun = 6,
+    Verb = 0,
+    Noun = 1,
+    //Adjective = 2, 
+    //Preposition = 3,
+    //Adverb = 4, 
+    //Conjunction = 5,
+    //Pronoun = 6,
 }

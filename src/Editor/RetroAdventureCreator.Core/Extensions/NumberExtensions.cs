@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,4 +26,6 @@ namespace RetroAdventureCreator.Core.Extensions;
         public static byte BinToBCD(this byte number) => (byte)(((number / 10) * 16) + (number % 10));
 
         public static byte BCDtoBin(this byte number) => (byte)(((number / 16) * 10) + (number % 16));
+
+        public static byte GetByte(this short number, int index) => (byte)(number >> (--index * 8));
     }

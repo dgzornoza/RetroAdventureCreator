@@ -24,8 +24,10 @@ public class SettingsSerializerTest
 
         // Assert
         Assert.NotNull(actual);
+        Assert.NotNull(actual.Header);
         Assert.NotNull(actual.Data);
-        Assert.True(actual.Data.Length == expectedHeaderBytes.Length);
-        Assert.Equal(actual.Data, expectedHeaderBytes);
+        Assert.True(actual.Header.Length == expectedHeaderBytes.Length);
+        Assert.Equal(actual.Header, expectedHeaderBytes);
+        Assert.Empty(actual.Data);
     }
 }

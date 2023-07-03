@@ -35,19 +35,19 @@ internal record ObjectsSerializerArguments(IEnumerable<ObjectModel> Objects, Ser
 /// 
 /// Header:
 /// Name = 8 bits (256 ids vocabulary)
-/// Description Size = 8 bits (256)
+/// Description Size = 7 bits (128)
 /// Weight = 5 bits (32)
 /// Health = 3 bits (8)
 /// Properties = 8 bits (flag 8 properties)
-/// ChildObjects = 4 bits (15 ids 2 bytes, relative address Objects) 2 bits (15 ids 2 bytes, absolute address)
-/// RequiredComplements = 3 bits (8 ids Objects)
-/// Complements = 3 bits (8 ids Objects)
+/// ChildObjects = 4 bits (15 ids 2 bytes, relative address Objects)
+/// RequiredComplements = 3 bits (7 ids 2 bytes, relative address Objects)
+/// Complements = 3 bits (7 ids 2 bytes, relative address Objects)
 /// 
 /// Data:
-/// Description = 0-256 bytes
+/// Description = 0-127 bytes
 /// ChildObjects = 0-30 bytes
-/// RequiredComplements = 0-40 bytes
-/// Complements = 0-40 bytes
+/// RequiredComplements = 0-14 bytes
+/// Complements = 0-14 bytes
 /// 
 /// </remarks>
 internal class ObjectsSerializer : ISerializer<ObjectsSerializerArguments, SerializerResultKeyModel>
@@ -58,28 +58,30 @@ internal class ObjectsSerializer : ISerializer<ObjectsSerializerArguments, Seria
 
     public SerializerResultKeyModel Serialize(ObjectsSerializerArguments arguments)
     {
-        var objects = arguments.Objects ?? throw new ArgumentNullException(nameof(arguments.Objects));
+        //var objects = arguments.Objects ?? throw new ArgumentNullException(nameof(arguments.Objects));
 
-        EnsureHelpers.EnsureMaxLength(objects, Constants.MaxNumberVocabulariesAllowed,
-            string.Format(Properties.Resources.MaxNumberVocabularyAllowedError, Constants.MaxNumberVocabulariesAllowed));
+        //EnsureHelpers.EnsureMaxLength(objects, Constants.MaxNumberVocabularyAllowed,
+        //    string.Format(Properties.Resources.MaxNumberVocabularyAllowedError, Constants.MaxNumberVocabularyAllowed));
 
-        var componentKeys = new List<GameComponentKeyModel>(objects.Count());
-        var result = new List<byte>();
-        foreach (var @object in objects)
-        {
-            EnsureHelpers.EnsureNotNullOrWhiteSpace(@object.Code, Properties.Resources.CodeIsRequiredError);
-            EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == @object.Code, string.Format(Properties.Resources.DuplicateCodeError, @object.Code));
+        //var componentKeys = new List<GameComponentKeyModel>(objects.Count());
+        //var result = new List<byte>();
+        //foreach (var @object in objects)
+        //{
+        //    EnsureHelpers.EnsureNotNullOrWhiteSpace(@object.Code, Properties.Resources.CodeIsRequiredError);
+        //    EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == @object.Code, string.Format(Properties.Resources.DuplicateCodeError, @object.Code));
 
-            componentKeys.Add(new GameComponentKeyModel(@object.Code, result.Count));
+        //    componentKeys.Add(new GameComponentKeyModel(@object.Code, result.Count));
 
-            //var header = new Header((byte)@object.WordType, (byte)synonyms.Length);
-            //result.AddRange(CreateHeaderBytes(header));
+        //    //var header = new Header((byte)@object.WordType, (byte)synonyms.Length);
+        //    //result.AddRange(CreateHeaderBytes(header));
 
-            //var data = new Data(synonyms);
-            //result.AddRange(CreateDataBytes(data));
-        }
+        //    //var data = new Data(synonyms);
+        //    //result.AddRange(CreateDataBytes(data));
+        //}
 
-        return new SerializerResultKeyModel(componentKeys, result.ToArray());
+        //return new SerializerResultKeyModel(componentKeys, result.ToArray());
+
+        throw new NotImplementedException();
     }
 
     private static byte[] CreateHeaderBytes(Header header) => new byte[]

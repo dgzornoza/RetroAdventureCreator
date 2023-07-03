@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace RetroAdventureCreator.Core.Models;
 
-internal record SerializerResultKeyModel(IEnumerable<GameComponentKeyModel> GameComponentKeysModel, byte[] Data) : SerializerResultModel(Data);
+internal record SerializerResultModel(byte[] Header, byte[] Data);
 
-internal record SerializerResultModel(byte[] Data);
+internal record SerializerResultKeyModel(IEnumerable<GameComponentKeyModel> GameComponentKeysModel, byte[] Header, byte[] Data) : SerializerResultModel(Header, Data);
+
+
