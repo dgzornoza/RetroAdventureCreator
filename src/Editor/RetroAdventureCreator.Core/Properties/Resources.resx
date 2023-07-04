@@ -138,4 +138,7 @@
   <data name="MaxSizeOfSynonymsError" xml:space="preserve">
     <value>The maximum size of synonys is {0}</value>
   </data>
+  <data name="TextIsRequiredError" xml:space="preserve">
+    <value>Text property is required</value>
+  </data>
 </root>

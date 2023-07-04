@@ -122,5 +122,14 @@ namespace RetroAdventureCreator.Core.Properties {
                 return ResourceManager.GetString("MaxSizeOfSynonymsError", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text property is required.
+        /// </summary>
+        internal static string TextIsRequiredError {
+            get {
+                return ResourceManager.GetString("TextIsRequiredError", resourceCulture);
+            }
+        }
     }
 }
