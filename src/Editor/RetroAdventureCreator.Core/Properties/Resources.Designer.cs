@@ -106,6 +106,15 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The maximum size of text is {0}.
+        /// </summary>
+        internal static string MaxSizeMessageTextError {
+            get {
+                return ResourceManager.GetString("MaxSizeMessageTextError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The maximum size of command arguments is {0}.
         /// </summary>
         internal static string MaxSizeOfCommandArgumentsError {
@@ -115,11 +124,20 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The maximum size of synonys is {0}.
+        ///   Looks up a localized string similar to The maximum size of synonyms is {0}.
         /// </summary>
-        internal static string MaxSizeOfSynonymsError {
+        internal static string MaxSizeOfVocabularySynonymsError {
             get {
-                return ResourceManager.GetString("MaxSizeOfSynonymsError", resourceCulture);
+                return ResourceManager.GetString("MaxSizeOfVocabularySynonymsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synonyms property is required.
+        /// </summary>
+        internal static string SysnonymsAreRequiredError {
+            get {
+                return ResourceManager.GetString("SysnonymsAreRequiredError", resourceCulture);
             }
         }
         

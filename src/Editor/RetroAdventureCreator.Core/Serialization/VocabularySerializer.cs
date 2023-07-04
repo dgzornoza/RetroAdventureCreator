@@ -27,7 +27,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// DataAdress = 2 bytes
 /// 
 /// Data:
-/// Synonyms = 0-255 bytes
+/// Synonyms = 0-MaxSizeOfSynonymsAllowed bytes
 /// 
 /// </remarks>
 internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, VocabularySerializerResultModel>
@@ -59,12 +59,13 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
 
         foreach (var vocabulary in vocabularies)
         {
+            EnsureHelpers.EnsureNotNullOrEmpty(vocabulary.Synonyms, Properties.Resources.SysnonymsAreRequiredError);
             var synonyms = string.Join('|', vocabulary.Synonyms ?? Enumerable.Empty<string>());
 
             EnsureHelpers.EnsureNotNullOrWhiteSpace(vocabulary.Code, Properties.Resources.CodeIsRequiredError);
             EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == vocabulary.Code, string.Format(Properties.Resources.DuplicateCodeError, vocabulary.Code));
-            EnsureHelpers.EnsureMaxLength(synonyms.Length, Constants.MaxSizeOfSynonymsAllowed,
-                string.Format(Properties.Resources.MaxSizeOfSynonymsError, Constants.MaxSizeOfSynonymsAllowed));
+            EnsureHelpers.EnsureMaxLength(synonyms.Length, Constants.MaxSizeOfVocabularySynonymsAllowed,
+                string.Format(Properties.Resources.MaxSizeOfVocabularySynonymsError, Constants.MaxSizeOfVocabularySynonymsAllowed));
 
             componentKeys.Add(new GameComponentKeyModel(vocabulary.Code, componentKeys.Count));
 

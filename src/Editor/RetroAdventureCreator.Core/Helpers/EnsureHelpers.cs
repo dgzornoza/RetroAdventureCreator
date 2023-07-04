@@ -22,6 +22,11 @@ internal static class EnsureHelpers
         if (string.IsNullOrWhiteSpace(text)) throw new InvalidOperationException(messageError);
     }
 
+    public static void EnsureNotNullOrEmpty<T>(IEnumerable<T>? source, string messageError)
+    {
+        if (source == null || !source.Any()) throw new InvalidOperationException(messageError);
+    }
+
     public static void EnsureNotFound<T>(IEnumerable<T> source, Func<T, bool> predicate, string messageError)
     {
         if (source.Any(predicate)) throw new InvalidOperationException(messageError);

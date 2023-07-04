@@ -50,6 +50,8 @@ internal class MessagesSerializer : ISerializer<IEnumerable<MessageModel>, Seria
             EnsureHelpers.EnsureNotNullOrWhiteSpace(message.Code, Properties.Resources.CodeIsRequiredError);
             EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == message.Code, string.Format(Properties.Resources.DuplicateCodeError, message.Code));
             EnsureHelpers.EnsureNotNullOrWhiteSpace(message.Text, Properties.Resources.TextIsRequiredError);
+            EnsureHelpers.EnsureMaxLength(message.Text.Length, Constants.MaxSizeOfMessageTextAllowed,
+                string.Format(Properties.Resources.MaxSizeMessageTextError, Constants.MaxSizeOfMessageTextAllowed));
 
             componentKeys.Add(new GameComponentKeyModel(message.Code, componentKeys.Count));
 

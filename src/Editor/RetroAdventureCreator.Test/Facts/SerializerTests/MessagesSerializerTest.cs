@@ -68,6 +68,17 @@ public class MessagesSerializerTest
     }
 
     [Fact]
+    public void MessagesSerializer_Serialize_MaxSizeText_throwsExcepion()
+    {
+        // Arrange        
+        var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.MaxSizeMessageTextError, Constants.MaxSizeOfMessageTextAllowed);
+        var messages = Enumerable.Range(0, 2).Select(item => new MessageModel() { Code = "code1", Text = new string('1', Constants.MaxSizeOfMessageTextAllowed + 1) });
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(messages)).Message == messageError);
+    }
+
+    [Fact]
     public void MessagesSerializer_Serialize_CodeNull_throwsExcepion()
     {
         // Arrange        

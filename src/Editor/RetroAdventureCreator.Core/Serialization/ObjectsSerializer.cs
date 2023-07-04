@@ -35,16 +35,17 @@ internal record ObjectsSerializerArguments(IEnumerable<ObjectModel> Objects, Ser
 /// 
 /// Header:
 /// Name = 8 bits (256 ids vocabulary)
-/// Description Size = 7 bits (128)
+/// Description Size = 8 bits (256)
 /// Weight = 5 bits (32)
 /// Health = 3 bits (8)
 /// Properties = 8 bits (flag 8 properties)
 /// ChildObjects = 4 bits (15 ids 2 bytes, relative address Objects)
 /// RequiredComplements = 3 bits (7 ids 2 bytes, relative address Objects)
 /// Complements = 3 bits (7 ids 2 bytes, relative address Objects)
+/// DataAdress = 2 bytes
 /// 
 /// Data:
-/// Description = 0-127 bytes
+/// Description = 0-256 bytes
 /// ChildObjects = 0-30 bytes
 /// RequiredComplements = 0-14 bytes
 /// Complements = 0-14 bytes

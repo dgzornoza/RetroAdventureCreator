@@ -132,11 +132,17 @@
   <data name="MaxNumberVocabularyAllowedError" xml:space="preserve">
     <value>El número máximo de vocabularios permitido es de {0}</value>
   </data>
-  <data name="MaxSizeOfCommandArgumentsError" xml:space="preserve">
-    <value>El tamaño maximo para los argumentos de comandos es de {0}</value>
+  <data name="MaxSizeMessageTextError" xml:space="preserve">
+    <value>El tamaño máximo para el texto es de {0}</value>
   </data>
-  <data name="MaxSizeOfSynonymsError" xml:space="preserve">
-    <value>El tamaño maximo para los sinónimos es de {0}</value>
+  <data name="MaxSizeOfCommandArgumentsError" xml:space="preserve">
+    <value>El tamaño máximo para los argumentos de comandos es de {0}</value>
+  </data>
+  <data name="MaxSizeOfVocabularySynonymsError" xml:space="preserve">
+    <value>El tamaño máximo para los sinónimos es de {0}</value>
+  </data>
+  <data name="SysnonymsAreRequiredError" xml:space="preserve">
+    <value>La propiedad 'Synonyms' es requerida</value>
   </data>
   <data name="TextIsRequiredError" xml:space="preserve">
     <value>La propiedad 'Text' es requerida</value>

@@ -62,18 +62,29 @@ public class VocabularySerializerTest
         // Arrange
         var code = "DuplicateCode";
         var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.DuplicateCodeError, code);
-        var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { Code = code });
+        var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { Code = code, Synonyms = Enumerable.Range(0, 1).Select(synonym => "Synonym") });
 
         // Act && Assert
         Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(vocabularies)).Message == messageError);
     }
 
     [Fact]
-    public void VocabularySerializer_Serialize_MaxSizeSynonims_throwsExcepion()
+    public void VocabularySerializer_Serialize_MaxSizeSynonyms_throwsExcepion()
     {
         // Arrange        
-        var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.MaxSizeOfSynonymsError, Constants.MaxNumberVocabularyAllowed);
-        var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { Code = "code", Synonyms = Enumerable.Range(0, 300).Select(synonym => "Synonym") });
+        var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.MaxSizeOfVocabularySynonymsError, Constants.MaxNumberVocabularyAllowed);
+        var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { Code = "code", Synonyms = Enumerable.Range(0, Constants.MaxNumberVocabularyAllowed + 1).Select(synonym => "Synonym") });
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(vocabularies)).Message == messageError);
+    }
+
+    [Fact]
+    public void VocabularySerializer_Serialize_EmptySynonyms_throwsExcepion()
+    {
+        // Arrange        
+        var messageError = RetroAdventureCreator.Core.Properties.Resources.SysnonymsAreRequiredError;
+        var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { Code = "code", Synonyms = Enumerable.Empty<string>() });
 
         // Act && Assert
         Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(vocabularies)).Message == messageError);
@@ -84,7 +95,7 @@ public class VocabularySerializerTest
     {
         // Arrange        
         var messageError = RetroAdventureCreator.Core.Properties.Resources.CodeIsRequiredError;
-        var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { });
+        var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { Synonyms = Enumerable.Range(0, 1).Select(synonym => "Synonym") });
 
         // Act && Assert
         Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(vocabularies)).Message == messageError);

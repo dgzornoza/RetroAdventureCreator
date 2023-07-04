@@ -11,7 +11,8 @@ namespace RetroAdventureCreator.Core.Infrastructure
         public const int MaxNumberCommandsAllowed = byte.MaxValue;
         public const int MaxNumberCommandArgumentsAllowed = 3;
         public const int MaxNumberVocabularyAllowed = byte.MaxValue;
-        public const int MaxSizeOfSynonymsAllowed = byte.MaxValue;
+        public const int MaxSizeOfVocabularySynonymsAllowed = byte.MaxValue;
+        public const int MaxSizeOfMessageTextAllowed = 512;
         public const int MaxNumberMessagesAllowed = byte.MaxValue;
     }
 }

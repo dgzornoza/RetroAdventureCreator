@@ -16,10 +16,10 @@ public class VocabularyModel : IUniqueKey
     /// <summary>
     /// Word type in vocabulary
     /// </summary>
-    public WordType WordType { get; init; }  
+    public WordType WordType { get; init; }
 
     /// <summary>
     /// List of synonyms for vocabulary (First word is main vocabulary word)
     /// </summary>
-    public IEnumerable<string>? Synonyms { get; init; }
+    public IEnumerable<string> Synonyms { get; init; } = default!;
 }
