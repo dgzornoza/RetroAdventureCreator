@@ -32,6 +32,7 @@
 
     CommandModel -> MessageModel, SceneModel, ObjectModel, GameModel
     ObjectModel -> MessageModel, VocabularyModel
+    InputCommandModel -> VocabularyModel
 
  Serialization Order:
 
@@ -39,7 +40,6 @@
     MessageModel
     SettingsModel
     ObjectModel
-    InputCommandModel
-    ObjectModel
+    InputCommandModel    
     SceneModel
     

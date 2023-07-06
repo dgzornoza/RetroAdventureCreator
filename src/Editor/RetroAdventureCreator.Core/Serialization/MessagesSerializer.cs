@@ -20,8 +20,8 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Message serializer:
 /// ----------------------------------------------
 /// 
-/// Header:
-/// Text: 8 bits (256)
+/// Header: (3 bytes)
+/// Text: 8 bits
 /// DataAdress = 2 bytes
 /// 
 /// Data:
@@ -30,7 +30,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// </remarks>
 internal class MessagesSerializer : ISerializer<IEnumerable<MessageModel>, SerializerResultKeyModel>
 {
-    private record struct Header(byte Text, short DataAddress);
+    private record struct Header(byte TextLenght, short DataAddress);
 
     private record struct Data(string Text);
 
@@ -67,7 +67,7 @@ internal class MessagesSerializer : ISerializer<IEnumerable<MessageModel>, Seria
 
     private static byte[] CreateHeaderBytes(Header header) => new byte[]
     {
-        header.Text,
+        header.TextLenght,
         header.DataAddress.GetByte(2),
         header.DataAddress.GetByte(1),
     };

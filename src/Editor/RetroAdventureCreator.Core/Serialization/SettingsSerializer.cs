@@ -11,11 +11,11 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Settings serializer:
 /// ----------------------------------------------
 /// 
-/// Header:
-/// Charset = 4 bits (16)
-/// Color = 4 bits (16)
-/// BackgroundColor = 4 bits (16)
-/// BorderColor = 4 bits (16)
+/// Header: (2 bytes)
+/// Charset = 4 bits
+/// Color = 4 bits
+/// BackgroundColor = 4 bits
+/// BorderColor = 4 bits
 /// 
 /// </remarks>
 internal class SettingsSerializer : ISerializer<SettingsModel, SerializerResultModel>

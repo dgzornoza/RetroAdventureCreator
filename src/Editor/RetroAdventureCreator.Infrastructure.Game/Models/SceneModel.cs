@@ -15,7 +15,7 @@ public class SceneModel : IUniqueKey
     /// <summary>
     /// Scene description
     /// </summary>
-    public MessageModel Description { get; init; } = default!;
+    public IEnumerable<MessageModel> Description { get; init; } = default!;
 
     /// <summary>
     /// Scene dispatchers 

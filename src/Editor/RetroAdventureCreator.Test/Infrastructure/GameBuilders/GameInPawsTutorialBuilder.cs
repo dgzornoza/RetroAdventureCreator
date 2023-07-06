@@ -4,9 +4,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using RetroAdventureCreator.Core.Extensions;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
-using RetroAdventureCreator.Test.Helpers;
 
 namespace RetroAdventureCreator.Test.Infrastructure.Builders
 {
@@ -38,8 +38,13 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             new MessageModel { Code = "globDescriptionMessage", Text = "Unos guantes" },
             new MessageModel
             {
-                Code = "EntradaSceneDescription",
-                Text = "^^Tras meses de exploración en lo profundo de la selva, y después de haber sido perseguido, mordido, enfermado, pasado hambre y renunciado al todo, ahora por fin has encontrado lo que buscabas, el Templo de Ok, donde según cuenta la leyenda se guarda el Gran Diamante del Rajá Al-Meredin, rechazado por su amada y condenado a ser encerrado eternamente en lo profundo de la selva.^^ Hasta hoy.",
+                Code = "EntradaSceneDescription1",
+                Text = "^^Tras meses de exploración en lo profundo de la selva, y después de haber sido perseguido, mordido, enfermado, pasado hambre y renunciado al todo, ",
+            },
+            new MessageModel
+            {
+                Code = "EntradaSceneDescription2",
+                Text = "ahora por fin has encontrado lo que buscabas, el Templo de Ok, donde según cuenta la leyenda se guarda el Gran Diamante del Rajá Al-Meredin, rechazado por su amada y condenado a ser encerrado eternamente en lo profundo de la selva.^^ Hasta hoy.",
             },
             new MessageModel
             {
@@ -277,13 +282,13 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             new SceneModel
             {
                 Code = MainSceneCode,
-                Description = Messages.Find("EntradaSceneDescription"),
+                Description = Messages.Where(item => item.Code.StartsWith("EntradaSceneDescription")),
                 Dispatchers = Dispatchers.Where(item => item.Code.StartsWith(MainSceneCode))
             },
             new SceneModel
             {
                 Code = "InteriorScene",
-                Description = Messages.Find("InteriorSceneDescription"),
+                Description = Messages.Where(item => item.Code == "InteriorSceneDescription"),
             }
         };
     }

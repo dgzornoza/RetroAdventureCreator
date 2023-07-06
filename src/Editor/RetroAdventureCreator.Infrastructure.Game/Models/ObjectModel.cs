@@ -39,7 +39,7 @@ public class ObjectModel : IUniqueKey
     public ObjectProperties Properties { get; init; }
 
     /// <summary>
-    /// Child Objects (only if has property ObjectProperties.Container)
+    /// Child Objects
     /// </summary>
     public IEnumerable<ObjectModel>? ChildObjects { get; init; }
 

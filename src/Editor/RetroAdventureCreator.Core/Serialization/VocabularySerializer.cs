@@ -22,17 +22,17 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Vocabulary serializer:
 /// ----------------------------------------------
 /// 
-/// Header:
-/// Synonyms = 0-8 bits (256)
+/// Header: (3 bytes)
+/// Synonyms = 0-8 bits
 /// DataAdress = 2 bytes
 /// 
 /// Data:
-/// Synonyms = 0-MaxSizeOfSynonymsAllowed bytes
+/// Synonyms = 0-255 bytes
 /// 
 /// </remarks>
 internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, VocabularySerializerResultModel>
 {
-    private record struct Header(byte Synonyms, short DataAddress);
+    private record struct Header(byte SynonymsLenght, short DataAddress);
 
     private record struct Data(string Synonyms);
 
@@ -51,8 +51,7 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
 
     private SerializerResultKeyModel SerializeVocabularies(IEnumerable<VocabularyModel> vocabularies)
     {
-        var vocabularySize = vocabularies.Count();
-        var componentKeys = new List<GameComponentKeyModel>(vocabularySize);
+        var componentKeys = new List<GameComponentKeyModel>(vocabularies.Count());
 
         var headerBytes = new List<byte>();
         var dataBytes = new List<byte>();
@@ -60,7 +59,7 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
         foreach (var vocabulary in vocabularies)
         {
             EnsureHelpers.EnsureNotNullOrEmpty(vocabulary.Synonyms, Properties.Resources.SysnonymsAreRequiredError);
-            var synonyms = string.Join('|', vocabulary.Synonyms ?? Enumerable.Empty<string>());
+            var synonyms = string.Join('|', vocabulary.Synonyms);
 
             EnsureHelpers.EnsureNotNullOrWhiteSpace(vocabulary.Code, Properties.Resources.CodeIsRequiredError);
             EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == vocabulary.Code, string.Format(Properties.Resources.DuplicateCodeError, vocabulary.Code));
@@ -82,7 +81,7 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
 
     private static byte[] CreateHeaderBytes(Header header) => new byte[]
     {
-        header.Synonyms,
+        header.SynonymsLenght,
         header.DataAddress.GetByte(2),
         header.DataAddress.GetByte(1),
     };

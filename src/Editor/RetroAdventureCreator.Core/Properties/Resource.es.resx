@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ArgumentMessageSerializedRequired" xml:space="preserve">
+    <value>El argumento con los mensajes serializados es requerido</value>
+  </data>
+  <data name="ArgumentVocabularySerializedRequired" xml:space="preserve">
+    <value>El argumento con el vocabulario serializado es requerido</value>
+  </data>
   <data name="CodeIsRequiredError" xml:space="preserve">
     <value>La propiedad 'Code' es requerida</value>
+  </data>
+  <data name="DescriptionIsRequiredError" xml:space="preserve">
+    <value>La propiedad 'Description' es requerida</value>
   </data>
   <data name="DuplicateCodeError" xml:space="preserve">
     <value>El Codigo '{0}' esta duplicado, el Codigo debe ser unico en las partes del juego.</value>
@@ -129,17 +138,38 @@
   <data name="MaxNumberMessagesAllowedError" xml:space="preserve">
     <value>El número máximo de mensajes permitido es de {0}</value>
   </data>
+  <data name="MaxNumberObjectsAllowedError" xml:space="preserve">
+    <value>El número máximo de objetos permitido es de {0}</value>
+  </data>
   <data name="MaxNumberVocabularyAllowedError" xml:space="preserve">
     <value>El número máximo de vocabularios permitido es de {0}</value>
   </data>
   <data name="MaxSizeMessageTextError" xml:space="preserve">
     <value>El tamaño máximo para el texto es de {0}</value>
   </data>
+  <data name="MaxSizeOfChildObjectsAllowedError" xml:space="preserve">
+    <value>El tamaño máximo de los objetos hijos es de {0}</value>
+  </data>
   <data name="MaxSizeOfCommandArgumentsError" xml:space="preserve">
     <value>El tamaño máximo para los argumentos de comandos es de {0}</value>
   </data>
+  <data name="MaxSizeOfComplementsAllowedError" xml:space="preserve">
+    <value>El tamaño máximo de los complementos de un objeto es de {0}</value>
+  </data>
+  <data name="MaxSizeOfObjectHealthError" xml:space="preserve">
+    <value>El tamaño máximo para la vida del objeto es de {0}</value>
+  </data>
+  <data name="MaxSizeOfObjectWeightError" xml:space="preserve">
+    <value>El tamaño máximo para el peso del objecto es de {0}</value>
+  </data>
+  <data name="MaxSizeOfRequiredComplementsAllowedError" xml:space="preserve">
+    <value>El tamaño máximo de los complementos requeridos de un objeto es de {0}</value>
+  </data>
   <data name="MaxSizeOfVocabularySynonymsError" xml:space="preserve">
     <value>El tamaño máximo para los sinónimos es de {0}</value>
+  </data>
+  <data name="NameIsRequiredError" xml:space="preserve">
+    <value>La propiedad 'Name' es requerida</value>
   </data>
   <data name="SysnonymsAreRequiredError" xml:space="preserve">
     <value>La propiedad 'Synonyms' es requerida</value>

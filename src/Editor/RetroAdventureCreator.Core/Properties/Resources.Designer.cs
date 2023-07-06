@@ -61,11 +61,38 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Argument message serialized is required.
+        /// </summary>
+        internal static string ArgumentMessageSerializedRequired {
+            get {
+                return ResourceManager.GetString("ArgumentMessageSerializedRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Argument vocabulary serialized is required.
+        /// </summary>
+        internal static string ArgumentVocabularySerializedRequired {
+            get {
+                return ResourceManager.GetString("ArgumentVocabularySerializedRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Code property is required.
         /// </summary>
         internal static string CodeIsRequiredError {
             get {
                 return ResourceManager.GetString("CodeIsRequiredError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description property is required.
+        /// </summary>
+        internal static string DescriptionIsRequiredError {
+            get {
+                return ResourceManager.GetString("DescriptionIsRequiredError", resourceCulture);
             }
         }
         
@@ -97,6 +124,15 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The maximum number of objects allowed is {0}.
+        /// </summary>
+        internal static string MaxNumberObjectsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxNumberObjectsAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The maximum number of vocabularies allowed is {0}.
         /// </summary>
         internal static string MaxNumberVocabularyAllowedError {
@@ -115,6 +151,15 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The maximum size of child object is {0}.
+        /// </summary>
+        internal static string MaxSizeOfChildObjectsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxSizeOfChildObjectsAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The maximum size of command arguments is {0}.
         /// </summary>
         internal static string MaxSizeOfCommandArgumentsError {
@@ -124,11 +169,56 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The maximum size of object complements is {0}.
+        /// </summary>
+        internal static string MaxSizeOfComplementsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxSizeOfComplementsAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum size of object health is {0}.
+        /// </summary>
+        internal static string MaxSizeOfObjectHealthError {
+            get {
+                return ResourceManager.GetString("MaxSizeOfObjectHealthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum size of object weight is {0}.
+        /// </summary>
+        internal static string MaxSizeOfObjectWeightError {
+            get {
+                return ResourceManager.GetString("MaxSizeOfObjectWeightError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum size of objects required complements is {0}.
+        /// </summary>
+        internal static string MaxSizeOfRequiredComplementsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxSizeOfRequiredComplementsAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The maximum size of synonyms is {0}.
         /// </summary>
         internal static string MaxSizeOfVocabularySynonymsError {
             get {
                 return ResourceManager.GetString("MaxSizeOfVocabularySynonymsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name property is required.
+        /// </summary>
+        internal static string NameIsRequiredError {
+            get {
+                return ResourceManager.GetString("NameIsRequiredError", resourceCulture);
             }
         }
         
