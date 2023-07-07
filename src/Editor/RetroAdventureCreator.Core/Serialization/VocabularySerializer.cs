@@ -36,10 +36,8 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
 
     private record struct Data(string Synonyms);
 
-    public VocabularySerializerResultModel Serialize(IEnumerable<VocabularyModel> @objects)
-    {
-        var vocabularies = @objects ?? throw new ArgumentNullException(nameof(@objects));
-
+    public VocabularySerializerResultModel Serialize(IEnumerable<VocabularyModel> vocabularies)
+    {        
         EnsureHelpers.EnsureMaxLength(vocabularies, Constants.MaxLengthVocabularyAllowed,
             string.Format(Properties.Resources.MaxLengthVocabularyAllowedError, Constants.MaxLengthVocabularyAllowed));
 

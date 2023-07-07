@@ -61,7 +61,8 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             new VocabularyModel { Code = "TemploVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "TEMPL" }},
             new VocabularyModel { Code = "BloqueVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "BLOQU", "PIEDR" }},
             new VocabularyModel { Code = "AbreVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "ABRE"  } },
-            new VocabularyModel { Code = "EntraVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "ENTRA" } },
+            new VocabularyModel { Code = "EntradaVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "ENTRA" } },
+            new VocabularyModel { Code = "EntraVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "ENTRA" } },
             new VocabularyModel { Code = "ExaminaVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "EX" } },
             new VocabularyModel { Code = "MueveVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "MUEVE" } },
             new VocabularyModel { Code = "EmpujaVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "EMPUJ" } },
@@ -106,7 +107,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             {
                 Code = "AbreEntradaInputCommand",
                 Verb = Vocabulary.Find("AbreVocabulary"),
-                Nouns = new List<VocabularyModel> { Vocabulary.Find("EntraVocabulary") },
+                Nouns = new List<VocabularyModel> { Vocabulary.Find("EntradaVocabulary") },
             },
             new InputCommandModel
             {

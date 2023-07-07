@@ -14,8 +14,6 @@ using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Core.Serialization;
 
-internal record ObjectsSerializerArguments(IEnumerable<ObjectModel> Objects, SerializerResultKeyModel VocabularyNounsSerialized, SerializerResultKeyModel MessagesSerialized);
-
 /// <summary>
 /// Object model serializer
 /// </summary>
@@ -40,20 +38,20 @@ internal record ObjectsSerializerArguments(IEnumerable<ObjectModel> Objects, Ser
 /// Complements = 0-3 bytes
 /// 
 /// </remarks>
-internal class ObjectsSerializer : ISerializer<ObjectsSerializerArguments, SerializerResultKeyModel>
+internal class ObjectsSerializer : ISerializer<ObjectsSerializerArgumentsModel, SerializerResultKeyModel>
 {
     private record struct Header(byte NameIndex, byte DescriptionIndex, byte Weight, byte Health, byte Properties, byte ChildObjects, byte RequiredComplements, byte Complements, short DataAddress);
 
     private record struct Data(IEnumerable<byte>? ChildObjectsIndexes, IEnumerable<byte>? RequiredComplementsIndexes, IEnumerable<byte>? ComplementsIndexes);
 
-    public SerializerResultKeyModel Serialize(ObjectsSerializerArguments arguments)
+    public SerializerResultKeyModel Serialize(ObjectsSerializerArgumentsModel arguments)
     {
-        var objects = arguments.Objects ?? throw new ArgumentNullException(nameof(arguments.Objects));
-        var vocabularySerialized = arguments.VocabularyNounsSerialized ?? throw new InvalidOperationException(nameof(arguments.VocabularyNounsSerialized));
+        var objects = arguments.Objects ?? throw new InvalidOperationException(nameof(arguments.Objects));
+        var vocabularySerialized = arguments.VocabularySerialized.Nouns ?? throw new InvalidOperationException(nameof(arguments.VocabularySerialized.Nouns));
         var messagesSerialized = arguments.MessagesSerialized ?? throw new InvalidOperationException(nameof(arguments.MessagesSerialized));
 
-        EnsureHelpers.EnsureMaxLength(objects, Constants.MaxNumberObjectsAllowed,
-            string.Format(Properties.Resources.MaxLengthObjectsAllowedError, Constants.MaxNumberObjectsAllowed));
+        EnsureHelpers.EnsureMaxLength(objects, Constants.MaxLengthObjectsAllowed,
+            string.Format(Properties.Resources.MaxLengthObjectsAllowedError, Constants.MaxLengthObjectsAllowed));
 
         var componentKeys = objects.Select((item, index) => new GameComponentKeyModel(item.Code, index));
 

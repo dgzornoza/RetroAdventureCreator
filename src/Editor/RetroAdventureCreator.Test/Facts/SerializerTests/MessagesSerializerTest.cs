@@ -38,8 +38,8 @@ public class MessagesSerializerTest
     public void MessagesSerializer_Serialize_MaxMessages_throwsExcepion()
     {
         // Arrange
-        var messageError = string.Format(Core.Properties.Resources.MaxLengthMessagesAllowedError, Constants.MaxNumberMessagesAllowed);
-        var messages = Enumerable.Range(0, Constants.MaxNumberMessagesAllowed + 1).Select(item => new MessageModel());
+        var messageError = string.Format(Core.Properties.Resources.MaxLengthMessagesAllowedError, Constants.MaxLengthMessagesAllowed);
+        var messages = Enumerable.Range(0, Constants.MaxLengthMessagesAllowed + 1).Select(item => new MessageModel());
 
         // Act && Assert
         Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(messages)).Message == messageError);

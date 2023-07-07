@@ -132,6 +132,9 @@
   <data name="DuplicateCodeError" xml:space="preserve">
     <value>Code '{0}' is duplicated, code property should be unique in game parts.</value>
   </data>
+  <data name="InputCommandVerbIsRequired" xml:space="preserve">
+    <value>Input command verb is required</value>
+  </data>
   <data name="MaxLengthChildObjectsAllowedError" xml:space="preserve">
     <value>The maximum length of child object is {0}</value>
   </data>
@@ -143,6 +146,12 @@
   </data>
   <data name="MaxLengthComplementsAllowedError" xml:space="preserve">
     <value>The maximum length of object complements is {0}</value>
+  </data>
+  <data name="MaxLengthInputCommandsAllowedError" xml:space="preserve">
+    <value>The maximum length of input commands allowed is {0}</value>
+  </data>
+  <data name="MaxLengthInputCommandsNounsAllowedError" xml:space="preserve">
+    <value>The maximum length of input commands nouns allowed is {0}</value>
   </data>
   <data name="MaxLengthMessagesAllowedError" xml:space="preserve">
     <value>The maximum number of messages allowed is {0}</value>

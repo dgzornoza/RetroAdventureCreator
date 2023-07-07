@@ -34,12 +34,10 @@ internal class MessagesSerializer : ISerializer<IEnumerable<MessageModel>, Seria
 
     private record struct Data(string Text);
 
-    public SerializerResultKeyModel Serialize(IEnumerable<MessageModel> @object)
+    public SerializerResultKeyModel Serialize(IEnumerable<MessageModel> messages)
     {
-        var messages = @object ?? throw new ArgumentNullException(nameof(@object));
-
-        EnsureHelpers.EnsureMaxLength(messages, Constants.MaxNumberMessagesAllowed,
-            string.Format(Properties.Resources.MaxLengthMessagesAllowedError, Constants.MaxNumberMessagesAllowed));
+        EnsureHelpers.EnsureMaxLength(messages, Constants.MaxLengthMessagesAllowed,
+            string.Format(Properties.Resources.MaxLengthMessagesAllowedError, Constants.MaxLengthMessagesAllowed));
 
         var componentKeys = new List<GameComponentKeyModel>(messages.Count());
         var headerBytes = new List<byte>();

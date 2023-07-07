@@ -106,6 +106,15 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Input command verb is required.
+        /// </summary>
+        internal static string InputCommandVerbIsRequired {
+            get {
+                return ResourceManager.GetString("InputCommandVerbIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The maximum length of child object is {0}.
         /// </summary>
         internal static string MaxLengthChildObjectsAllowedError {
@@ -138,6 +147,24 @@ namespace RetroAdventureCreator.Core.Properties {
         internal static string MaxLengthComplementsAllowedError {
             get {
                 return ResourceManager.GetString("MaxLengthComplementsAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum length of input commands allowed is {0}.
+        /// </summary>
+        internal static string MaxLengthInputCommandsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxLengthInputCommandsAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum length of input commands nouns allowed is {0}.
+        /// </summary>
+        internal static string MaxLengthInputCommandsNounsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxLengthInputCommandsNounsAllowedError", resourceCulture);
             }
         }
         

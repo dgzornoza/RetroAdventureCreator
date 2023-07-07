@@ -14,12 +14,12 @@ namespace RetroAdventureCreator.Core.Infrastructure
         public const int MaxLengthVocabularySynonymsAllowed = byte.MaxValue;
 
         // Messages
-        public const int MaxNumberMessagesAllowed = byte.MaxValue;
+        public const int MaxLengthMessagesAllowed = byte.MaxValue;
         public const int MaxLengthMessageTextAllowed = byte.MaxValue;
         
 
         // Objects
-        public const int MaxNumberObjectsAllowed = 64;
+        public const int MaxLengthObjectsAllowed = 64;
         public const int MaxLengthObjectWeightAllowed = 32;
         public const int MaxLengthObjectHealthAllowed = 8;
         public const int MaxLengthChildObjectsAllowed = 15;
@@ -29,5 +29,9 @@ namespace RetroAdventureCreator.Core.Infrastructure
         // Commands
         public const int MaxLengthCommandsAllowed = byte.MaxValue;
         public const int MaxLengthCommandArgumentsAllowed = 3;
+
+        // Commands
+        public const int MaxLengthInputCommandsAllowed = byte.MaxValue;
+        public const int MaxLengthInputCommandsNounsAllowed = 3;
     }
 }

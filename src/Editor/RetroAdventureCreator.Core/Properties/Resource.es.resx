@@ -132,6 +132,9 @@
   <data name="DuplicateCodeError" xml:space="preserve">
     <value>El Codigo '{0}' esta duplicado, el Codigo debe ser unico en las partes del juego.</value>
   </data>
+  <data name="InputCommandVerbIsRequired" xml:space="preserve">
+    <value>El verbo es requerido en el comando de entrada</value>
+  </data>
   <data name="MaxLengthChildObjectsAllowedError" xml:space="preserve">
     <value>El tamaño máximo de los objetos hijos es de {0}</value>
   </data>
@@ -143,6 +146,12 @@
   </data>
   <data name="MaxLengthComplementsAllowedError" xml:space="preserve">
     <value>El tamaño máximo de los complementos de un objeto es de {0}</value>
+  </data>
+  <data name="MaxLengthInputCommandsAllowedError" xml:space="preserve">
+    <value>El número máximo de comandos de entrada permitido es de {0}</value>
+  </data>
+  <data name="MaxLengthInputCommandsNounsAllowedError" xml:space="preserve">
+    <value>El número máximo de nombres en los comandos de entrada permitido es de {0}</value>
   </data>
   <data name="MaxLengthMessagesAllowedError" xml:space="preserve">
     <value>El número máximo de mensajes permitido es de {0}</value>

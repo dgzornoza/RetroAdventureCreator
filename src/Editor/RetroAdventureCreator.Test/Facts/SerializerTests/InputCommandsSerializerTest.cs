@@ -9,25 +9,24 @@ using RetroAdventureCreator.Test.Infrastructure.Builders;
 
 namespace RetroAdventureCreator.Test.Facts.SerializerTests;
 
-public class ObjectsSerializerTest
+public class InputCommandsSerializerTest
 {
     [Fact]
-    public void ObjectsSerializer_Serialize_AsExpected()
+    public void InputCommandsSerializer_Serialize_AsExpected()
     {
         // Arrange
-        var headersLength = 7; // 7 bytes
+        var headersLength = 3; // 3 bytes
         var game = new GameInPawsTutorialBuilder().BuildGame();
         var vocabularySerializer = new VocabularySerializer().Serialize(game.Assets.Vocabulary);
-        var messageSerializer = new MessagesSerializer().Serialize(game.Assets.Messages);
 
-        var objects = game.Assets.Objects;
-        var headerLength = headersLength * objects.Count();
-        var expectedCount = objects.Count();
-        var expectedDataLength = objects.Sum(item => item.ChildObjects?.Count() + item.RequiredComplements?.Count() + item.Complements?.Count());
+        var inputCommands = game.Assets.InputCommands;
+        var headerLength = headersLength * inputCommands.Count();
+        var expectedCount = inputCommands.Count();
+        var expectedDataLength = inputCommands.Sum(item => item.Nouns?.Count());
 
         // Act
-        var objectsSerializerArguments = new ObjectsSerializerArgumentsModel(objects, vocabularySerializer, messageSerializer);
-        var actual = new ObjectsSerializer().Serialize(objectsSerializerArguments);
+        var inputCommandsSerializerArguments = new InputCommandsSerializerArgumentsModel(inputCommands, vocabularySerializer);
+        var actual = new InputCommandsSerializer().Serialize(inputCommandsSerializerArguments);
 
         // Assert
         Assert.NotNull(actual);
