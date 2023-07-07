@@ -13,12 +13,12 @@ public class MessagesSerializerTest
     public void MessagesSerializer_Serialize_AsExpected()
     {
         // Arrange
-        var headersSize = 3; // 3 bytes
+        var headersLength = 3; // 3 bytes
         var game = new GameInPawsTutorialBuilder().BuildGame();
 
         var messages = game.Assets.Messages;
-        var headerSize = headersSize * messages.Count();
-        var expectedDataSize = messages.Sum(item => item.Text.Length);
+        var headerLength = headersLength * messages.Count();
+        var expectedDataLength = messages.Sum(item => item.Text.Length);
         var expectedCount = messages.Count();
 
         // Act
@@ -30,14 +30,15 @@ public class MessagesSerializerTest
         Assert.NotNull(actual.GameComponentKeysModel);
         Assert.True(actual.GameComponentKeysModel.Count() == expectedCount);
         Assert.True(actual.GameComponentKeysModel.Select(item => item.Code).Distinct().Count() == expectedCount);
-        Assert.True(actual.Data.Length == expectedDataSize);
+        Assert.True(actual.Header.Length == headerLength);
+        Assert.True(actual.Data.Length == expectedDataLength);
     }
 
     [Fact]
     public void MessagesSerializer_Serialize_MaxMessages_throwsExcepion()
     {
         // Arrange
-        var messageError = string.Format(Core.Properties.Resources.MaxNumberMessagesAllowedError, Constants.MaxNumberMessagesAllowed);
+        var messageError = string.Format(Core.Properties.Resources.MaxLengthMessagesAllowedError, Constants.MaxNumberMessagesAllowed);
         var messages = Enumerable.Range(0, Constants.MaxNumberMessagesAllowed + 1).Select(item => new MessageModel());
 
         // Act && Assert
@@ -68,11 +69,11 @@ public class MessagesSerializerTest
     }
 
     [Fact]
-    public void MessagesSerializer_Serialize_MaxSizeText_throwsExcepion()
+    public void MessagesSerializer_Serialize_MaxLengthText_throwsExcepion()
     {
         // Arrange        
-        var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.MaxSizeMessageTextError, Constants.MaxSizeOfMessageTextAllowed);
-        var messages = Enumerable.Range(0, 2).Select(item => new MessageModel() { Code = "code1", Text = new string('1', Constants.MaxSizeOfMessageTextAllowed + 1) });
+        var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.MaxLengthMessageTextError, Constants.MaxLengthMessageTextAllowed);
+        var messages = Enumerable.Range(0, 2).Select(item => new MessageModel() { Code = "code1", Text = new string('1', Constants.MaxLengthMessageTextAllowed + 1) });
 
         // Act && Assert
         Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(messages)).Message == messageError);

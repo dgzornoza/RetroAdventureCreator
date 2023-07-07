@@ -40,10 +40,14 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
     {
         var vocabularies = @objects ?? throw new ArgumentNullException(nameof(@objects));
 
-        EnsureHelpers.EnsureMaxLength(vocabularies, Constants.MaxNumberVocabularyAllowed,
-            string.Format(Properties.Resources.MaxNumberVocabularyAllowedError, Constants.MaxNumberVocabularyAllowed));
+        EnsureHelpers.EnsureMaxLength(vocabularies, Constants.MaxLengthVocabularyAllowed,
+            string.Format(Properties.Resources.MaxLengthVocabularyAllowedError, Constants.MaxLengthVocabularyAllowed));
 
         var verbs = SerializeVocabularies(vocabularies.Where(item => item.WordType == WordType.Verb));
+
+        EnsureHelpers.EnsureMaxLength(verbs.GameComponentKeysModel.Count(), Constants.MaxLengthVocabularyVerbsAllowed,
+            string.Format(Properties.Resources.MaxLengthVocabularyVerbsAllowedError, Constants.MaxLengthVocabularyVerbsAllowed));
+
         var nouns = SerializeVocabularies(vocabularies.Where(item => item.WordType == WordType.Noun));
 
         return new VocabularySerializerResultModel(verbs, nouns);
@@ -63,8 +67,8 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
 
             EnsureHelpers.EnsureNotNullOrWhiteSpace(vocabulary.Code, Properties.Resources.CodeIsRequiredError);
             EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == vocabulary.Code, string.Format(Properties.Resources.DuplicateCodeError, vocabulary.Code));
-            EnsureHelpers.EnsureMaxLength(synonyms.Length, Constants.MaxSizeOfVocabularySynonymsAllowed,
-                string.Format(Properties.Resources.MaxSizeOfVocabularySynonymsError, Constants.MaxSizeOfVocabularySynonymsAllowed));
+            EnsureHelpers.EnsureMaxLength(synonyms.Length, Constants.MaxLengthVocabularySynonymsAllowed,
+                string.Format(Properties.Resources.MaxLengthVocabularySynonymsError, Constants.MaxLengthVocabularySynonymsAllowed));
 
             componentKeys.Add(new GameComponentKeyModel(vocabulary.Code, componentKeys.Count));
 

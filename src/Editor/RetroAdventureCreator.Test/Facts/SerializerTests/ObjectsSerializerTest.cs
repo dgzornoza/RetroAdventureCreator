@@ -14,16 +14,16 @@ public class ObjectsSerializerTest
     public void ObjectsSerializer_Serialize_AsExpected()
     {
         // Arrange
-        var headersSize = 7; // 7 bytes
+        var headersLength = 7; // 7 bytes
         var game = new GameInPawsTutorialBuilder().BuildGame();
         var vocabularySerializer = new VocabularySerializer().Serialize(game.Assets.Vocabulary);
         var messageSerializer = new MessagesSerializer().Serialize(game.Assets.Messages);
 
         var objects = game.Assets.Objects;
-        var headerSize = headersSize * objects.Count();
+        var headerLength = headersLength * objects.Count();
         var expectedCount = objects.Count();
         // 1 object = 8 bits
-        var expectedDataSize = objects.Sum(item => item.ChildObjects?.Count() + item.RequiredComplements?.Count() + item.Complements?.Count()) * 8;
+        var expectedDataLength = objects.Sum(item => item.ChildObjects?.Count() + item.RequiredComplements?.Count() + item.Complements?.Count()) * 8;
 
         // Act
         var objectsSerializerArguments = new ObjectsSerializerArguments(objects, vocabularySerializer.Nouns, messageSerializer);
@@ -35,6 +35,7 @@ public class ObjectsSerializerTest
         Assert.NotNull(actual.GameComponentKeysModel);
         Assert.True(actual.GameComponentKeysModel.Count() == expectedCount);
         Assert.True(actual.GameComponentKeysModel.Select(item => item.Code).Distinct().Count() == expectedCount);
-        Assert.True(actual.Data.Length == expectedDataSize);
+        Assert.True(actual.Header.Length == headerLength);
+        Assert.True(actual.Data.Length == expectedDataLength);
     }
 }

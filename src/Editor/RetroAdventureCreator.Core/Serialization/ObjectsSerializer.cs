@@ -42,7 +42,7 @@ internal record ObjectsSerializerArguments(IEnumerable<ObjectModel> Objects, Ser
 /// </remarks>
 internal class ObjectsSerializer : ISerializer<ObjectsSerializerArguments, SerializerResultKeyModel>
 {
-    private record struct Header(byte Name, byte Description, byte Weight, byte Health, byte Properties, byte ChildObjects, byte RequiredComplements, byte Complements, short DataAddress);
+    private record struct Header(byte NameIndex, byte DescriptionIndex, byte Weight, byte Health, byte Properties, byte ChildObjects, byte RequiredComplements, byte Complements, short DataAddress);
 
     private record struct Data(IEnumerable<byte>? ChildObjectsIndexes, IEnumerable<byte>? RequiredComplementsIndexes, IEnumerable<byte>? ComplementsIndexes);
 
@@ -53,7 +53,7 @@ internal class ObjectsSerializer : ISerializer<ObjectsSerializerArguments, Seria
         var messagesSerialized = arguments.MessagesSerialized ?? throw new InvalidOperationException(nameof(arguments.MessagesSerialized));
 
         EnsureHelpers.EnsureMaxLength(objects, Constants.MaxNumberObjectsAllowed,
-            string.Format(Properties.Resources.MaxNumberObjectsAllowedError, Constants.MaxNumberObjectsAllowed));
+            string.Format(Properties.Resources.MaxLengthObjectsAllowedError, Constants.MaxNumberObjectsAllowed));
 
         var componentKeys = objects.Select((item, index) => new GameComponentKeyModel(item.Code, index));
 
@@ -66,8 +66,8 @@ internal class ObjectsSerializer : ISerializer<ObjectsSerializerArguments, Seria
 
             var header = new Header()
             {
-                Name = (byte)vocabularySerialized.GameComponentKeysModel.Find(@object.Name.Code).HeaderIndex,
-                Description = (byte)messagesSerialized.GameComponentKeysModel.Find(@object.Description.Code).HeaderIndex,
+                NameIndex = (byte)vocabularySerialized.GameComponentKeysModel.Find(@object.Name.Code).HeaderIndex,
+                DescriptionIndex = (byte)messagesSerialized.GameComponentKeysModel.Find(@object.Description.Code).HeaderIndex,
                 Weight = (byte)@object.Weight,
                 Health = (byte)@object.Health,
                 Properties = (byte)@object.Properties,
@@ -98,27 +98,27 @@ internal class ObjectsSerializer : ISerializer<ObjectsSerializerArguments, Seria
         EnsureHelpers.EnsureNotNull(@object.Name, Properties.Resources.NameIsRequiredError);
         EnsureHelpers.EnsureNotNull(@object.Description, Properties.Resources.DescriptionIsRequiredError);
 
-        EnsureHelpers.EnsureMaxLength(@object.Weight, Constants.MaxSizeOfObjectWeightAllowed, 
-            string.Format(Properties.Resources.MaxSizeOfObjectWeightError, Constants.MaxSizeOfObjectWeightAllowed));
-        EnsureHelpers.EnsureMaxLength(@object.Health, Constants.MaxSizeOfObjectHealthAllowed,
-            string.Format(Properties.Resources.MaxSizeOfObjectHealthError, Constants.MaxSizeOfObjectHealthAllowed));
+        EnsureHelpers.EnsureMaxLength(@object.Weight, Constants.MaxLengthObjectWeightAllowed, 
+            string.Format(Properties.Resources.MaxLengthObjectWeightError, Constants.MaxLengthObjectWeightAllowed));
+        EnsureHelpers.EnsureMaxLength(@object.Health, Constants.MaxLengthObjectHealthAllowed,
+            string.Format(Properties.Resources.MaxLengthObjectHealthError, Constants.MaxLengthObjectHealthAllowed));
 
         if (@object.ChildObjects != null)
         {
-            EnsureHelpers.EnsureMaxLength(@object.ChildObjects, Constants.MaxSizeOfChildObjectsAllowed,
-                string.Format(Properties.Resources.MaxSizeOfChildObjectsAllowedError, Constants.MaxSizeOfChildObjectsAllowed));
+            EnsureHelpers.EnsureMaxLength(@object.ChildObjects, Constants.MaxLengthChildObjectsAllowed,
+                string.Format(Properties.Resources.MaxLengthChildObjectsAllowedError, Constants.MaxLengthChildObjectsAllowed));
         }
 
         if (@object.RequiredComplements != null)
         {
-            EnsureHelpers.EnsureMaxLength(@object.RequiredComplements, Constants.MaxSizeOfRequiredComplementsAllowed,
-                string.Format(Properties.Resources.MaxSizeOfRequiredComplementsAllowedError, Constants.MaxSizeOfRequiredComplementsAllowed));
+            EnsureHelpers.EnsureMaxLength(@object.RequiredComplements, Constants.MaxLengthRequiredComplementsAllowed,
+                string.Format(Properties.Resources.MaxLengthRequiredComplementsAllowedError, Constants.MaxLengthRequiredComplementsAllowed));
         }
 
         if (@object.Complements != null)
         {
-            EnsureHelpers.EnsureMaxLength(@object.Complements, Constants.MaxSizeOfComplementsAllowed,
-                string.Format(Properties.Resources.MaxSizeOfComplementsAllowedError, Constants.MaxSizeOfComplementsAllowed));
+            EnsureHelpers.EnsureMaxLength(@object.Complements, Constants.MaxLengthComplementsAllowed,
+                string.Format(Properties.Resources.MaxLengthComplementsAllowedError, Constants.MaxLengthComplementsAllowed));
         }
     }
 
@@ -127,8 +127,8 @@ internal class ObjectsSerializer : ISerializer<ObjectsSerializerArguments, Seria
     /// <returns></returns>
     private static byte[] CreateHeaderBytes(Header header) => new byte[]
     {
-        header.Name,
-        header.Description,
+        header.NameIndex,
+        header.DescriptionIndex,
         (byte)(header.Weight << 3 | header.Health),
         header.Properties,
         (byte)(header.ChildObjects << 4 | header.RequiredComplements << 2 | header.Complements),

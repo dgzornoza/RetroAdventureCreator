@@ -106,110 +106,119 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The maximum number of commands allowed is {0}.
+        ///   Looks up a localized string similar to The maximum length of child object is {0}.
         /// </summary>
-        internal static string MaxNumberCommandsAllowedError {
+        internal static string MaxLengthChildObjectsAllowedError {
             get {
-                return ResourceManager.GetString("MaxNumberCommandsAllowedError", resourceCulture);
+                return ResourceManager.GetString("MaxLengthChildObjectsAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum length of command arguments is {0}.
+        /// </summary>
+        internal static string MaxLengthCommandArgumentsError {
+            get {
+                return ResourceManager.GetString("MaxLengthCommandArgumentsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum length of commands allowed is {0}.
+        /// </summary>
+        internal static string MaxLengthCommandsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxLengthCommandsAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum length of object complements is {0}.
+        /// </summary>
+        internal static string MaxLengthComplementsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxLengthComplementsAllowedError", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The maximum number of messages allowed is {0}.
         /// </summary>
-        internal static string MaxNumberMessagesAllowedError {
+        internal static string MaxLengthMessagesAllowedError {
             get {
-                return ResourceManager.GetString("MaxNumberMessagesAllowedError", resourceCulture);
+                return ResourceManager.GetString("MaxLengthMessagesAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum length of text is {0}.
+        /// </summary>
+        internal static string MaxLengthMessageTextError {
+            get {
+                return ResourceManager.GetString("MaxLengthMessageTextError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum length of object health is {0}.
+        /// </summary>
+        internal static string MaxLengthObjectHealthError {
+            get {
+                return ResourceManager.GetString("MaxLengthObjectHealthError", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The maximum number of objects allowed is {0}.
         /// </summary>
-        internal static string MaxNumberObjectsAllowedError {
+        internal static string MaxLengthObjectsAllowedError {
             get {
-                return ResourceManager.GetString("MaxNumberObjectsAllowedError", resourceCulture);
+                return ResourceManager.GetString("MaxLengthObjectsAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum length of object weight is {0}.
+        /// </summary>
+        internal static string MaxLengthObjectWeightError {
+            get {
+                return ResourceManager.GetString("MaxLengthObjectWeightError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum length of objects required complements is {0}.
+        /// </summary>
+        internal static string MaxLengthRequiredComplementsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxLengthRequiredComplementsAllowedError", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The maximum number of vocabularies allowed is {0}.
         /// </summary>
-        internal static string MaxNumberVocabularyAllowedError {
+        internal static string MaxLengthVocabularyAllowedError {
             get {
-                return ResourceManager.GetString("MaxNumberVocabularyAllowedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The maximum size of text is {0}.
-        /// </summary>
-        internal static string MaxSizeMessageTextError {
-            get {
-                return ResourceManager.GetString("MaxSizeMessageTextError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The maximum size of child object is {0}.
-        /// </summary>
-        internal static string MaxSizeOfChildObjectsAllowedError {
-            get {
-                return ResourceManager.GetString("MaxSizeOfChildObjectsAllowedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The maximum size of command arguments is {0}.
-        /// </summary>
-        internal static string MaxSizeOfCommandArgumentsError {
-            get {
-                return ResourceManager.GetString("MaxSizeOfCommandArgumentsError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The maximum size of object complements is {0}.
-        /// </summary>
-        internal static string MaxSizeOfComplementsAllowedError {
-            get {
-                return ResourceManager.GetString("MaxSizeOfComplementsAllowedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The maximum size of object health is {0}.
-        /// </summary>
-        internal static string MaxSizeOfObjectHealthError {
-            get {
-                return ResourceManager.GetString("MaxSizeOfObjectHealthError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The maximum size of object weight is {0}.
-        /// </summary>
-        internal static string MaxSizeOfObjectWeightError {
-            get {
-                return ResourceManager.GetString("MaxSizeOfObjectWeightError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The maximum size of objects required complements is {0}.
-        /// </summary>
-        internal static string MaxSizeOfRequiredComplementsAllowedError {
-            get {
-                return ResourceManager.GetString("MaxSizeOfRequiredComplementsAllowedError", resourceCulture);
+                return ResourceManager.GetString("MaxLengthVocabularyAllowedError", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The maximum size of synonyms is {0}.
         /// </summary>
-        internal static string MaxSizeOfVocabularySynonymsError {
+        internal static string MaxLengthVocabularySynonymsError {
             get {
-                return ResourceManager.GetString("MaxSizeOfVocabularySynonymsError", resourceCulture);
+                return ResourceManager.GetString("MaxLengthVocabularySynonymsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum length of vocabulary verbs is {0}.
+        /// </summary>
+        internal static string MaxLengthVocabularyVerbsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxLengthVocabularyVerbsAllowedError", resourceCulture);
             }
         }
         
