@@ -11,5 +11,8 @@ namespace RetroAdventureCreator.Core.Extensions
     {
         public static T Find<T>(this IEnumerable<T> list, string code) where T : IUniqueKey
             => list.First(item => item.Code == code);
+
+        public static IEnumerable<T> SortByKey<T>(this IEnumerable<T> source) where T : IUniqueKey
+            => source.OrderBy(item => item.Code);
     }
 }

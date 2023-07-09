@@ -24,7 +24,7 @@ public class GameModel
     /// <summary>
     /// Game Flags
     /// </summary>
-    public IDictionary<string, bool> Flags { get; init; } = default!;
+    public IEnumerable<FlagModel> Flags { get; init; } = default!;
 
     /// <summary>
     /// Default Game Settings

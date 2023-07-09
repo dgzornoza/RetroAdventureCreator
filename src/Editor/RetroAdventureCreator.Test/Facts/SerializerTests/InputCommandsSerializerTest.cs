@@ -37,4 +37,18 @@ public class InputCommandsSerializerTest
         Assert.True(actual.Header.Length == headerLength);
         Assert.True(actual.Data.Length == expectedDataLength);
     }
+
+    [Fact]
+    public void InputCommandsSerializer_Serialize_WithNullInputCommands_ThrowsInvalidOperationException()
+    {
+        // Arrange
+        var game = new GameInPawsTutorialBuilder().BuildGame();
+        var vocabularySerializer = new VocabularySerializer().Serialize(game.Assets.Vocabulary);
+
+        // Act
+        var inputCommandsSerializerArguments = new InputCommandsSerializerArgumentsModel(null, vocabularySerializer);
+
+        // Assert
+        Assert.Throws<InvalidOperationException>(() => new InputCommandsSerializer().Serialize(inputCommandsSerializerArguments));
+    }
 }
