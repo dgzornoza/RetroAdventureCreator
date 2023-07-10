@@ -34,7 +34,7 @@ internal class InputCommandsSerializer : ISerializer<InputCommandsSerializerArgu
 
     private record struct Data(IEnumerable<byte>? NounsIndexes);
 
-    public SerializerResultKeyModel Serialize(InputCommandsSerializerArgumentsModel arguments)
+    public SerializerResultKeyModel Serialize(GameComponentsIndexes gameComponentsIndexes, InputCommandsSerializerArgumentsModel arguments)
     {
         var inputCommands = arguments.InputCommands ?? throw new InvalidOperationException(nameof(arguments.InputCommands));
         var vocabularySerialized = arguments.VocabularySerialized ?? throw new InvalidOperationException(nameof(arguments.VocabularySerialized));

@@ -22,9 +22,9 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Flags = 1 bit per flag
 /// 
 /// </remarks>
-internal class FlagsSerializer : ISerializer<FlagModel, SerializerResultKeyModel>
+internal class FlagsSerializer : ISerializer<IEnumerable<FlagModel>, SerializerResultKeyModel>
 {
-    public SerializerResultKeyModel Serialize(IEnumerable<FlagModel> flags)
+    public SerializerResultKeyModel Serialize(GameComponentsIndexes gameComponentsIndexes, IEnumerable<FlagModel> flags)
     {
         throw new NotImplementedException();
     }

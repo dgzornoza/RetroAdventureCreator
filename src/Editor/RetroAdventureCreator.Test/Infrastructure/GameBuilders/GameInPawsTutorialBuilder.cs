@@ -14,9 +14,9 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
     {
         protected override string MainSceneCode => "EntradaScene";
 
-        protected override IDictionary<string, bool> CreateFlags() => new Dictionary<string, bool>
+        protected override IEnumerable<FlagModel> CreateFlags() => new List<FlagModel>
         {
-            { "openEntry", false }
+            new FlagModel { Code = "openEntry", Value = false }
         };
 
         protected override PlayerModel CreatePlayer() => new()

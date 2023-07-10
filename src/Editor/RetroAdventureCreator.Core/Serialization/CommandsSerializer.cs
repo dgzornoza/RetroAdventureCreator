@@ -34,7 +34,7 @@ internal class CommandsSerializer : ISerializer<IEnumerable<CommandModel>, Seria
 
     private record struct Data(string Arguments);
 
-    public SerializerResultKeyModel Serialize(IEnumerable<CommandModel> @objects)
+    public SerializerResultKeyModel Serialize(GameComponentsIndexes gameComponentsIndexes, IEnumerable<CommandModel> @objects)
     {
         //var commands = @objects ?? throw new ArgumentNullException(nameof(@objects));
 

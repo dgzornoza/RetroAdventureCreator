@@ -1,8 +1,11 @@
 ﻿using RetroAdventureCreator.Core;
 using RetroAdventureCreator.Core.Infrastructure;
+using RetroAdventureCreator.Core.Models;
 using RetroAdventureCreator.Core.Serialization;
+using RetroAdventureCreator.Core.Services;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
+using RetroAdventureCreator.Test.Helpers;
 using RetroAdventureCreator.Test.Infrastructure.Builders;
 
 namespace RetroAdventureCreator.Test.Facts.SerializerTests;
@@ -14,7 +17,9 @@ public class VocabularySerializerTest
     {
         // Arrange
         var headersLength = 3; // 3 bytes
-        var game = new GameInPawsTutorialBuilder().BuildGame();
+        var builder = new GameInPawsTutorialBuilder();
+        var game = builder.BuildGame();
+        var indexes = builder.BuildGameComponentsIndexes();
 
         var vocabularyVerbs = game.Assets.Vocabulary.Where(item => item.WordType == WordType.Verb);
         var headerVerbsLength = headersLength * vocabularyVerbs.Count();
@@ -27,7 +32,7 @@ public class VocabularySerializerTest
         var expectedNounsCount = vocabularyNouns.Count();
 
         // Act
-        var actual = new VocabularySerializer().Serialize(game.Assets.Vocabulary);
+        var actual = new VocabularySerializer().Serialize(indexes!, game.Assets.Vocabulary);
 
         // Assert
         Assert.NotNull(actual);
@@ -51,55 +56,60 @@ public class VocabularySerializerTest
     public void VocabularySerializer_Serialize_MaxVocabularies_throwsExcepion()
     {
         // Arrange
+        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
         var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.MaxLengthVocabularyAllowedError, Constants.MaxLengthVocabularyAllowed);
         var vocabularies = Enumerable.Range(0, Constants.MaxLengthVocabularyAllowed + 1).Select(item => new VocabularyModel());
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(vocabularies)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(indexes, vocabularies)).Message == messageError);
     }
 
     [Fact]
     public void VocabularySerializer_Serialize_DuplicateCode_throwsExcepion()
     {
         // Arrange
+        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
         var code = "DuplicateCode";
         var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.DuplicateCodeError, code);
         var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { Code = code, Synonyms = Enumerable.Range(0, 1).Select(synonym => "Synonym") });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(vocabularies)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(indexes, vocabularies)).Message == messageError);
     }
 
     [Fact]
     public void VocabularySerializer_Serialize_MaxLengthSynonyms_throwsExcepion()
     {
         // Arrange        
+        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
         var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.MaxLengthVocabularySynonymsError, Constants.MaxLengthVocabularyAllowed);
         var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { Code = "code", Synonyms = Enumerable.Range(0, Constants.MaxLengthVocabularyAllowed + 1).Select(synonym => "Synonym") });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(vocabularies)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(indexes, vocabularies)).Message == messageError);
     }
 
     [Fact]
     public void VocabularySerializer_Serialize_EmptySynonyms_throwsExcepion()
     {
         // Arrange        
+        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
         var messageError = RetroAdventureCreator.Core.Properties.Resources.SysnonymsAreRequiredError;
         var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { Code = "code", Synonyms = Enumerable.Empty<string>() });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(vocabularies)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(indexes, vocabularies)).Message == messageError);
     }
 
     [Fact]
     public void VocabularySerializer_Serialize_CodeNull_throwsExcepion()
     {
         // Arrange        
+        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
         var messageError = RetroAdventureCreator.Core.Properties.Resources.CodeIsRequiredError;
         var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { Synonyms = Enumerable.Range(0, 1).Select(synonym => "Synonym") });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(vocabularies)).Message == messageError);
-    }
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularySerializer().Serialize(indexes, vocabularies)).Message == messageError);
+    }    
 }

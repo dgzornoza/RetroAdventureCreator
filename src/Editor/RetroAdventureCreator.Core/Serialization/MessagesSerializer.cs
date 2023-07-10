@@ -34,7 +34,7 @@ internal class MessagesSerializer : ISerializer<IEnumerable<MessageModel>, Seria
 
     private record struct Data(string Text);
 
-    public SerializerResultKeyModel Serialize(IEnumerable<MessageModel> messages)
+    public SerializerResultKeyModel Serialize(GameComponentsIndexes gameComponentsIndexes, IEnumerable<MessageModel> messages)
     {
         EnsureHelpers.EnsureMaxLength(messages, Constants.MaxLengthMessagesAllowed,
             string.Format(Properties.Resources.MaxLengthMessagesAllowedError, Constants.MaxLengthMessagesAllowed));

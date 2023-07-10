@@ -23,7 +23,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// </remarks>
 internal class AssetsSerializer : ISerializer<AssetsModel, SerializerResultModel>
 {
-    public SerializerResultModel Serialize(AssetsModel @object)
+    public SerializerResultModel Serialize(GameComponentsIndexes gameComponentsIndexes, AssetsModel @object)
     {
         throw new NotImplementedException();
     }

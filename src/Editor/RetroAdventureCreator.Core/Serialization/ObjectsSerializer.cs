@@ -44,7 +44,7 @@ internal class ObjectsSerializer : ISerializer<ObjectsSerializerArgumentsModel, 
 
     private record struct Data(IEnumerable<byte>? ChildObjectsIndexes, IEnumerable<byte>? RequiredComplementsIndexes, IEnumerable<byte>? ComplementsIndexes);
 
-    public SerializerResultKeyModel Serialize(ObjectsSerializerArgumentsModel arguments)
+    public SerializerResultKeyModel Serialize(GameComponentsIndexes gameComponentsIndexes, ObjectsSerializerArgumentsModel arguments)
     {
         var objects = arguments.Objects ?? throw new InvalidOperationException(nameof(arguments.Objects));
         var vocabularySerialized = arguments.VocabularySerialized.Nouns ?? throw new InvalidOperationException(nameof(arguments.VocabularySerialized.Nouns));

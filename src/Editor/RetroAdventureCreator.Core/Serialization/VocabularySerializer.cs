@@ -36,17 +36,17 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
 
     private record struct Data(string Synonyms);
 
-    public VocabularySerializerResultModel Serialize(IEnumerable<VocabularyModel> vocabularies)
+    public VocabularySerializerResultModel Serialize(GameComponentsIndexes gameComponentsIndexes, IEnumerable<VocabularyModel> vocabularies)
     {        
         EnsureHelpers.EnsureMaxLength(vocabularies, Constants.MaxLengthVocabularyAllowed,
             string.Format(Properties.Resources.MaxLengthVocabularyAllowedError, Constants.MaxLengthVocabularyAllowed));
 
-        var verbs = SerializeVocabularies(vocabularies.Where(item => item.WordType == WordType.Verb));
+        var verbs = SerializeVocabularies(vocabularies.Where(item => item.WordType == WordType.Verb).SortByKey());
 
         EnsureHelpers.EnsureMaxLength(verbs.GameComponentKeysModel.Count(), Constants.MaxLengthVocabularyVerbsAllowed,
             string.Format(Properties.Resources.MaxLengthVocabularyVerbsAllowedError, Constants.MaxLengthVocabularyVerbsAllowed));
 
-        var nouns = SerializeVocabularies(vocabularies.Where(item => item.WordType == WordType.Noun));
+        var nouns = SerializeVocabularies(vocabularies.Where(item => item.WordType == WordType.Noun).SortByKey());
 
         return new VocabularySerializerResultModel(verbs, nouns);
     }

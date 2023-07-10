@@ -16,8 +16,11 @@ public class InputCommandsSerializerTest
     {
         // Arrange
         var headersLength = 3; // 3 bytes
-        var game = new GameInPawsTutorialBuilder().BuildGame();
-        var vocabularySerializer = new VocabularySerializer().Serialize(game.Assets.Vocabulary);
+        var builder = new GameInPawsTutorialBuilder();
+        var game = builder.BuildGame();
+        var indexes = builder.BuildGameComponentsIndexes();
+
+        var vocabularySerializer = new VocabularySerializer().Serialize(indexes, game.Assets.Vocabulary);
 
         var inputCommands = game.Assets.InputCommands;
         var headerLength = headersLength * inputCommands.Count();
@@ -26,7 +29,7 @@ public class InputCommandsSerializerTest
 
         // Act
         var inputCommandsSerializerArguments = new InputCommandsSerializerArgumentsModel(inputCommands, vocabularySerializer);
-        var actual = new InputCommandsSerializer().Serialize(inputCommandsSerializerArguments);
+        var actual = new InputCommandsSerializer().Serialize(indexes, inputCommandsSerializerArguments);
 
         // Assert
         Assert.NotNull(actual);
@@ -42,13 +45,15 @@ public class InputCommandsSerializerTest
     public void InputCommandsSerializer_Serialize_WithNullInputCommands_ThrowsInvalidOperationException()
     {
         // Arrange
-        var game = new GameInPawsTutorialBuilder().BuildGame();
-        var vocabularySerializer = new VocabularySerializer().Serialize(game.Assets.Vocabulary);
+        var builder = new GameInPawsTutorialBuilder();
+        var game = builder.BuildGame();
+        var indexes = builder.BuildGameComponentsIndexes();
+        var vocabularySerializer = new VocabularySerializer().Serialize(indexes, game.Assets.Vocabulary);
 
         // Act
         var inputCommandsSerializerArguments = new InputCommandsSerializerArgumentsModel(null, vocabularySerializer);
 
         // Assert
-        Assert.Throws<InvalidOperationException>(() => new InputCommandsSerializer().Serialize(inputCommandsSerializerArguments));
+        Assert.Throws<InvalidOperationException>(() => new InputCommandsSerializer().Serialize(indexes, inputCommandsSerializerArguments));
     }
 }

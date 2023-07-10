@@ -3,37 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using RetroAdventureCreator.Core.Extensions;
 using RetroAdventureCreator.Core.Models;
+using RetroAdventureCreator.Core.Serialization;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Interfaces;
 using RetroAdventureCreator.Infrastructure.Game.Models;
 
-namespace RetroAdventureCreator.Core.Serialization;
+namespace RetroAdventureCreator.Core.Services;
 
-/// <summary>
-/// Game model serializer
-/// </summary>
-/// <remarks>
-/// Format Game serializer:
-/// ----------------------------------------------
-/// 
-/// Header:
-/// 
-/// Data:
-/// 
-/// </remarks>
-internal class GameSerializer : ISerializer<GameModel, SerializerResultModel>
+
+internal class GameSerializerService
 {
-    public SerializerResultModel Serialize(GameModel gameModel)
+    public byte[] Serialize(GameModel gameModel)
     {
         var indexes = this.GenerateGameComponentsIndexes(gameModel);
 
         return null;
     }
 
-    private GameComponentsIndexes GenerateGameComponentsIndexes(GameModel gameModel) => new(        
+    private GameComponentsIndexes GenerateGameComponentsIndexes(GameModel gameModel) => new(
         Commands: GenerateComponentKeys(gameModel.Assets.Commands.SortByKey()),
         CommandsGroups: GenerateComponentKeys(gameModel.Assets.CommandsGroups.SortByKey()),
         Dispatchers: GenerateComponentKeys(gameModel.Assets.Dispatchers.SortByKey()),

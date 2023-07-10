@@ -20,7 +20,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// </remarks>
 internal class SettingsSerializer : ISerializer<SettingsModel, SerializerResultModel>
 {
-    public SerializerResultModel Serialize(SettingsModel settings)
+    public SerializerResultModel Serialize(GameComponentsIndexes gameComponentsIndexes, SettingsModel settings)
     {
         var headerBytes = CreateHeaderBytes(settings);
 

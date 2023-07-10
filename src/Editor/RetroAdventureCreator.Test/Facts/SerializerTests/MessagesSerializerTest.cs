@@ -14,7 +14,9 @@ public class MessagesSerializerTest
     {
         // Arrange
         var headersLength = 3; // 3 bytes
-        var game = new GameInPawsTutorialBuilder().BuildGame();
+        var builder = new GameInPawsTutorialBuilder();
+        var game = builder.BuildGame();
+        var indexes = builder.BuildGameComponentsIndexes();
 
         var messages = game.Assets.Messages;
         var headerLength = headersLength * messages.Count();
@@ -22,7 +24,7 @@ public class MessagesSerializerTest
         var expectedCount = messages.Count();
 
         // Act
-        var actual = new MessagesSerializer().Serialize(messages);
+        var actual = new MessagesSerializer().Serialize(indexes, messages);
 
         // Assert
         Assert.NotNull(actual);
@@ -38,55 +40,60 @@ public class MessagesSerializerTest
     public void MessagesSerializer_Serialize_MaxMessages_throwsExcepion()
     {
         // Arrange
+        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
         var messageError = string.Format(Core.Properties.Resources.MaxLengthMessagesAllowedError, Constants.MaxLengthMessagesAllowed);
         var messages = Enumerable.Range(0, Constants.MaxLengthMessagesAllowed + 1).Select(item => new MessageModel());
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(messages)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(indexes, messages)).Message == messageError);
     }
 
     [Fact]
     public void MessagesSerializer_Serialize_DuplicateCode_throwsExcepion()
     {
         // Arrange
+        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
         var code = "DuplicateCode";
         var messageError = string.Format(Core.Properties.Resources.DuplicateCodeError, code);
         var messages = Enumerable.Range(0, 2).Select(item => new MessageModel() { Code = code, Text = "MessageText" });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(messages)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(indexes, messages)).Message == messageError);
     }
 
     [Fact]
     public void MessagesSerializer_Serialize_NullText_throwsExcepion()
     {
         // Arrange
+        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
         var messageError = Core.Properties.Resources.TextIsRequiredError;
         var messages = Enumerable.Range(0, 1).Select(item => new MessageModel() { Code = "code1" });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(messages)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(indexes, messages)).Message == messageError);
     }
 
     [Fact]
     public void MessagesSerializer_Serialize_MaxLengthText_throwsExcepion()
     {
         // Arrange        
+        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
         var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.MaxLengthMessageTextError, Constants.MaxLengthMessageTextAllowed);
         var messages = Enumerable.Range(0, 2).Select(item => new MessageModel() { Code = "code1", Text = new string('1', Constants.MaxLengthMessageTextAllowed + 1) });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(messages)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(indexes, messages)).Message == messageError);
     }
 
     [Fact]
     public void MessagesSerializer_Serialize_CodeNull_throwsExcepion()
     {
         // Arrange        
+        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
         var messageError = Core.Properties.Resources.CodeIsRequiredError;
         var messages = Enumerable.Range(0, 2).Select(item => new MessageModel() { });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(messages)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(indexes, messages)).Message == messageError);
     }
 }

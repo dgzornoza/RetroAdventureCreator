@@ -16,9 +16,12 @@ public class ObjectsSerializerTest
     {
         // Arrange
         var headersLength = 7; // 7 bytes
-        var game = new GameInPawsTutorialBuilder().BuildGame();
-        var vocabularySerializer = new VocabularySerializer().Serialize(game.Assets.Vocabulary);
-        var messageSerializer = new MessagesSerializer().Serialize(game.Assets.Messages);
+        var builder = new GameInPawsTutorialBuilder();
+        var game = builder.BuildGame();
+        var indexes = builder.BuildGameComponentsIndexes();
+
+        var vocabularySerializer = new VocabularySerializer().Serialize(indexes, game.Assets.Vocabulary);
+        var messageSerializer = new MessagesSerializer().Serialize(indexes, game.Assets.Messages);
 
         var objects = game.Assets.Objects;
         var headerLength = headersLength * objects.Count();
@@ -27,7 +30,7 @@ public class ObjectsSerializerTest
 
         // Act
         var objectsSerializerArguments = new ObjectsSerializerArgumentsModel(objects, vocabularySerializer, messageSerializer);
-        var actual = new ObjectsSerializer().Serialize(objectsSerializerArguments);
+        var actual = new ObjectsSerializer().Serialize(indexes, objectsSerializerArguments);
 
         // Assert
         Assert.NotNull(actual);

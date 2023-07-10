@@ -11,7 +11,9 @@ public class SettingsSerializerTest
     public void SettingsSerializer_Serialize_AsExpected()
     {
         // Arrange
-        var game = new GameInPawsTutorialBuilder().BuildGame();
+        var builder = new GameInPawsTutorialBuilder();
+        var game = builder.BuildGame();
+        var indexes = builder.BuildGameComponentsIndexes();
         // header = 2 bytes
         var expectedHeaderBytes = new byte[]
         {
@@ -20,7 +22,7 @@ public class SettingsSerializerTest
         };
 
         // Act
-        var actual = new SettingsSerializer().Serialize(game.Settings);
+        var actual = new SettingsSerializer().Serialize(indexes, game.Settings);
 
         // Assert
         Assert.NotNull(actual);

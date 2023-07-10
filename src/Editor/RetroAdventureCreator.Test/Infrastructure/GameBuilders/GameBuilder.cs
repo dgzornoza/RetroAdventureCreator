@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RetroAdventureCreator.Core.Models;
+using RetroAdventureCreator.Core.Services;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
+using RetroAdventureCreator.Test.Helpers;
 
 namespace RetroAdventureCreator.Test.Infrastructure.Builders;
 
@@ -44,8 +47,10 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders;
 /// </remarks>
 abstract class GameBuilder
 {
+    private GameModel game;
+
     protected PlayerModel Player { get; private set; }
-    protected IDictionary<string, bool> Flags { get; private set; }
+    protected IEnumerable<FlagModel> Flags { get; private set; }
     protected SettingsModel Settings { get; private set; }
     protected AssetsModel Assets { get; private set; }
 
@@ -79,7 +84,7 @@ abstract class GameBuilder
 
     public virtual GameModel BuildGame()
     {
-        return new GameModel
+        game ??= new GameModel
         {
             Assets = Assets,
             Flags = Flags,
@@ -87,6 +92,14 @@ abstract class GameBuilder
             Settings = Settings,
             MainSceneCode = MainSceneCode
         };
+
+        return game;
+    }
+
+    public virtual GameComponentsIndexes BuildGameComponentsIndexes()
+    {
+        var game = BuildGame();
+        return new GameSerializerService().InvokeMethod("GenerateGameComponentsIndexes", game) as GameComponentsIndexes ?? throw new InvalidOperationException();
     }
 
     protected AssetsModel BuildAssets() => new()
@@ -103,7 +116,7 @@ abstract class GameBuilder
 
     protected abstract string MainSceneCode { get; }
 
-    protected abstract IDictionary<string, bool> CreateFlags();
+    protected abstract IEnumerable<FlagModel> CreateFlags();
 
     protected abstract PlayerModel CreatePlayer();
 
