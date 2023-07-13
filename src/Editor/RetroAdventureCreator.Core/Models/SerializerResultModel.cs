@@ -8,6 +8,4 @@ namespace RetroAdventureCreator.Core.Models;
 
 internal record SerializerResultModel(byte[] Header, byte[] Data);
 
-internal record SerializerResultKeyModel(IEnumerable<GameComponentKeyModel> GameComponentKeysModel, byte[] Header, byte[] Data) : SerializerResultModel(Header, Data);
-
 

@@ -171,8 +171,8 @@
   <data name="MaxLengthRequiredComplementsAllowedError" xml:space="preserve">
     <value>The maximum length of objects required complements is {0}</value>
   </data>
-  <data name="MaxLengthVocabularyAllowedError" xml:space="preserve">
-    <value>The maximum number of vocabularies allowed is {0}</value>
+  <data name="MaxLengthVocabularyNounsAllowedError" xml:space="preserve">
+    <value>The maximum number of vocabularies nouns allowed is {0}</value>
   </data>
   <data name="MaxLengthVocabularySynonymsError" xml:space="preserve">
     <value>The maximum size of synonyms is {0}</value>

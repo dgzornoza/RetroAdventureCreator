@@ -6,6 +6,7 @@ using System.Reflection.PortableExecutable;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using RetroAdventureCreator.Core.Extensions;
 using RetroAdventureCreator.Core.Helpers;
 using RetroAdventureCreator.Core.Infrastructure;
@@ -30,31 +31,18 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Synonyms = 0-255 bytes
 /// 
 /// </remarks>
-internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, VocabularySerializerResultModel>
+internal abstract class VocabularySerializer : Serializer<IEnumerable<VocabularyModel>>
 {
-    private record struct Header(byte SynonymsLenght, short DataAddress);
+    protected record struct Header(byte SynonymsLenght, short DataAddress);
 
-    private record struct Data(string Synonyms);
+    protected record struct Data(string Synonyms);
 
-    public VocabularySerializerResultModel Serialize(GameComponentsIndexes gameComponentsIndexes, IEnumerable<VocabularyModel> vocabularies)
-    {        
-        EnsureHelpers.EnsureMaxLength(vocabularies, Constants.MaxLengthVocabularyAllowed,
-            string.Format(Properties.Resources.MaxLengthVocabularyAllowedError, Constants.MaxLengthVocabularyAllowed));
-
-        var verbs = SerializeVocabularies(vocabularies.Where(item => item.WordType == WordType.Verb).SortByKey());
-
-        EnsureHelpers.EnsureMaxLength(verbs.GameComponentKeysModel.Count(), Constants.MaxLengthVocabularyVerbsAllowed,
-            string.Format(Properties.Resources.MaxLengthVocabularyVerbsAllowedError, Constants.MaxLengthVocabularyVerbsAllowed));
-
-        var nouns = SerializeVocabularies(vocabularies.Where(item => item.WordType == WordType.Noun).SortByKey());
-
-        return new VocabularySerializerResultModel(verbs, nouns);
+    public VocabularySerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    {
     }
 
-    private SerializerResultKeyModel SerializeVocabularies(IEnumerable<VocabularyModel> vocabularies)
+    protected SerializerResultModel SerializeVocabularies(IEnumerable<VocabularyModel> vocabularies)
     {
-        var componentKeys = new List<GameComponentKeyModel>(vocabularies.Count());
-
         var headerBytes = new List<byte>();
         var dataBytes = new List<byte>();
 
@@ -64,11 +52,8 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
             var synonyms = string.Join('|', vocabulary.Synonyms);
 
             EnsureHelpers.EnsureNotNullOrWhiteSpace(vocabulary.Code, Properties.Resources.CodeIsRequiredError);
-            EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == vocabulary.Code, string.Format(Properties.Resources.DuplicateCodeError, vocabulary.Code));
             EnsureHelpers.EnsureMaxLength(synonyms.Length, Constants.MaxLengthVocabularySynonymsAllowed,
                 string.Format(Properties.Resources.MaxLengthVocabularySynonymsError, Constants.MaxLengthVocabularySynonymsAllowed));
-
-            componentKeys.Add(new GameComponentKeyModel(vocabulary.Code, componentKeys.Count));
 
             var header = new Header((byte)synonyms.Length, (short)dataBytes.Count);
             headerBytes.AddRange(CreateHeaderBytes(header));
@@ -77,16 +62,48 @@ internal class VocabularySerializer : ISerializer<IEnumerable<VocabularyModel>, 
             dataBytes.AddRange(CreateDataBytes(data));
         }
 
-        return new SerializerResultKeyModel(componentKeys, headerBytes.ToArray(), dataBytes.ToArray());
+        return new SerializerResultModel(headerBytes.ToArray(), dataBytes.ToArray());
     }
 
 
-    private static byte[] CreateHeaderBytes(Header header) => new byte[]
+    protected static byte[] CreateHeaderBytes(Header header) => new byte[]
     {
         header.SynonymsLenght,
         header.DataAddress.GetByte(2),
         header.DataAddress.GetByte(1),
     };
 
-    private static byte[] CreateDataBytes(Data data) => Encoding.ASCII.GetBytes(data.Synonyms);
+    protected static byte[] CreateDataBytes(Data data) => Encoding.ASCII.GetBytes(data.Synonyms);
+}
+
+internal class VocabularyNounsSerializer : VocabularySerializer
+{
+    public VocabularyNounsSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    {
+    }
+
+    public override SerializerResultModel Serialize(IEnumerable<VocabularyModel> vocabularies)
+    {
+        EnsureHelpers.EnsureMaxLength(gameComponentsIndexes.VocabularyNouns, Constants.MaxLengthVocabularyNounsAllowed,
+            string.Format(Properties.Resources.MaxLengthVocabularyNounsAllowedError, Constants.MaxLengthVocabularyNounsAllowed));
+
+        var verbs = SerializeVocabularies(vocabularies.Where(item => item.WordType == WordType.Noun).SortByKey());
+        return verbs;
+    }
+}
+
+internal class VocabularyVerbsSerializer : VocabularySerializer
+{
+    public VocabularyVerbsSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    {
+    }
+
+    public override SerializerResultModel Serialize(IEnumerable<VocabularyModel> vocabularies)
+    {
+        EnsureHelpers.EnsureMaxLength(gameComponentsIndexes.VocabularyVerbs, Constants.MaxLengthVocabularyVerbsAllowed,
+            string.Format(Properties.Resources.MaxLengthVocabularyVerbsAllowedError, Constants.MaxLengthVocabularyVerbsAllowed));
+
+        var nouns = SerializeVocabularies(vocabularies.Where(item => item.WordType == WordType.Verb).SortByKey());
+        return nouns;
+    }
 }

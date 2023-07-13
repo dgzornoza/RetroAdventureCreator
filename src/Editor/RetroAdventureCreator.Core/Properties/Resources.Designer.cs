@@ -223,11 +223,11 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The maximum number of vocabularies allowed is {0}.
+        ///   Looks up a localized string similar to The maximum number of vocabularies nouns allowed is {0}.
         /// </summary>
-        internal static string MaxLengthVocabularyAllowedError {
+        internal static string MaxLengthVocabularyNounsAllowedError {
             get {
-                return ResourceManager.GetString("MaxLengthVocabularyAllowedError", resourceCulture);
+                return ResourceManager.GetString("MaxLengthVocabularyNounsAllowedError", resourceCulture);
             }
         }
         

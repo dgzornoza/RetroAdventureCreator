@@ -24,9 +24,13 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Commands = 0-56
 /// 
 /// </remarks>
-internal class CommandGroupSerializer : ISerializer<CommandGroupModel, SerializerResultModel>
+internal class CommandGroupSerializer : Serializer<CommandGroupModel>
 {
-    public SerializerResultModel Serialize(GameComponentsIndexes gameComponentsIndexes, CommandGroupModel @object)
+    public CommandGroupSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    {
+    }
+
+    public override SerializerResultModel Serialize(CommandGroupModel @object)
     {
         throw new NotImplementedException();
     }

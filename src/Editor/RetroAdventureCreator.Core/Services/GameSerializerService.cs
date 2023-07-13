@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RetroAdventureCreator.Core.Extensions;
+using RetroAdventureCreator.Core.Helpers;
 using RetroAdventureCreator.Core.Models;
 using RetroAdventureCreator.Core.Serialization;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
@@ -18,6 +19,7 @@ internal class GameSerializerService
     public byte[] Serialize(GameModel gameModel)
     {
         var indexes = this.GenerateGameComponentsIndexes(gameModel);
+        EnsureUniqueCodes(indexes);
 
         return null;
     }
@@ -37,4 +39,20 @@ internal class GameSerializerService
 
     private IEnumerable<GameComponentKeyModel> GenerateComponentKeys(IEnumerable<IUniqueKey> objects) =>
         objects.Select((item, index) => new GameComponentKeyModel(item.Code, index));
+
+    private void EnsureUniqueCodes(GameComponentsIndexes gameComponentsIndexes)
+    {
+        var properties = typeof(GameComponentsIndexes).GetProperties(); 
+                                                                        
+        foreach (var property in properties)
+        {
+            var values = property.GetValue(gameComponentsIndexes) as IEnumerable<GameComponentKeyModel>;
+
+            foreach (var value in values!)
+            {
+                EnsureHelpers.EnsureNotFound(values, item => item.Code == value.Code, string.Format(Properties.Resources.DuplicateCodeError, value.Code));
+            }
+        }
+    }
+
 }

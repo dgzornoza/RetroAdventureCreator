@@ -18,9 +18,13 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// BorderColor = 4 bits
 /// 
 /// </remarks>
-internal class SettingsSerializer : ISerializer<SettingsModel, SerializerResultModel>
+internal class SettingsSerializer : Serializer<SettingsModel>
 {
-    public SerializerResultModel Serialize(GameComponentsIndexes gameComponentsIndexes, SettingsModel settings)
+    public SettingsSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    {
+    }
+
+    public override SerializerResultModel Serialize(SettingsModel settings)
     {
         var headerBytes = CreateHeaderBytes(settings);
 

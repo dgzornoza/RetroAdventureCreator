@@ -9,7 +9,7 @@ using RetroAdventureCreator.Infrastructure.Game.Models;
 namespace RetroAdventureCreator.Core.Serialization;
 
 
-internal interface ISerializer<in T, out TResult> where T : class where TResult : class
+internal interface ISerializer<in T> where T : class
 {
-    TResult Serialize(GameComponentsIndexes gameComponentsIndexes, T @object);
+    SerializerResultModel Serialize(T @object);
 }

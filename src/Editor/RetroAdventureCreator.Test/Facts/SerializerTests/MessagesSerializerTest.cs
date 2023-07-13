@@ -21,17 +21,12 @@ public class MessagesSerializerTest
         var messages = game.Assets.Messages;
         var headerLength = headersLength * messages.Count();
         var expectedDataLength = messages.Sum(item => item.Text.Length);
-        var expectedCount = messages.Count();
 
         // Act
-        var actual = new MessagesSerializer().Serialize(indexes, messages);
+        var actual = new MessagesSerializer(indexes).Serialize(messages);
 
         // Assert
         Assert.NotNull(actual);
-
-        Assert.NotNull(actual.GameComponentKeysModel);
-        Assert.True(actual.GameComponentKeysModel.Count() == expectedCount);
-        Assert.True(actual.GameComponentKeysModel.Select(item => item.Code).Distinct().Count() == expectedCount);
         Assert.True(actual.Header.Length == headerLength);
         Assert.True(actual.Data.Length == expectedDataLength);
     }
@@ -45,7 +40,7 @@ public class MessagesSerializerTest
         var messages = Enumerable.Range(0, Constants.MaxLengthMessagesAllowed + 1).Select(item => new MessageModel());
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(indexes, messages)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(indexes).Serialize(messages)).Message == messageError);
     }
 
     [Fact]
@@ -58,7 +53,7 @@ public class MessagesSerializerTest
         var messages = Enumerable.Range(0, 2).Select(item => new MessageModel() { Code = code, Text = "MessageText" });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(indexes, messages)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(indexes).Serialize(messages)).Message == messageError);
     }
 
     [Fact]
@@ -70,7 +65,7 @@ public class MessagesSerializerTest
         var messages = Enumerable.Range(0, 1).Select(item => new MessageModel() { Code = "code1" });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(indexes, messages)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(indexes).Serialize(messages)).Message == messageError);
     }
 
     [Fact]
@@ -82,7 +77,7 @@ public class MessagesSerializerTest
         var messages = Enumerable.Range(0, 2).Select(item => new MessageModel() { Code = "code1", Text = new string('1', Constants.MaxLengthMessageTextAllowed + 1) });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(indexes, messages)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(indexes).Serialize(messages)).Message == messageError);
     }
 
     [Fact]
@@ -94,6 +89,6 @@ public class MessagesSerializerTest
         var messages = Enumerable.Range(0, 2).Select(item => new MessageModel() { });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer().Serialize(indexes, messages)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(indexes).Serialize(messages)).Message == messageError);
     }
 }

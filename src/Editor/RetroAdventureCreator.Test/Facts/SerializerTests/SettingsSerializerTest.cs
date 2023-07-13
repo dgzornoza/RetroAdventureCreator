@@ -22,7 +22,7 @@ public class SettingsSerializerTest
         };
 
         // Act
-        var actual = new SettingsSerializer().Serialize(indexes, game.Settings);
+        var actual = new SettingsSerializer(indexes).Serialize(game.Settings);
 
         // Assert
         Assert.NotNull(actual);

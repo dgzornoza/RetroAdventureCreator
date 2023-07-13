@@ -38,34 +38,32 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Complements = 0-3 bytes
 /// 
 /// </remarks>
-internal class ObjectsSerializer : ISerializer<ObjectsSerializerArgumentsModel, SerializerResultKeyModel>
+internal class ObjectsSerializer : Serializer<IEnumerable<ObjectModel>>
 {
     private record struct Header(byte NameIndex, byte DescriptionIndex, byte Weight, byte Health, byte Properties, byte ChildObjects, byte RequiredComplements, byte Complements, short DataAddress);
 
     private record struct Data(IEnumerable<byte>? ChildObjectsIndexes, IEnumerable<byte>? RequiredComplementsIndexes, IEnumerable<byte>? ComplementsIndexes);
 
-    public SerializerResultKeyModel Serialize(GameComponentsIndexes gameComponentsIndexes, ObjectsSerializerArgumentsModel arguments)
+    public ObjectsSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
     {
-        var objects = arguments.Objects ?? throw new InvalidOperationException(nameof(arguments.Objects));
-        var vocabularySerialized = arguments.VocabularySerialized.Nouns ?? throw new InvalidOperationException(nameof(arguments.VocabularySerialized.Nouns));
-        var messagesSerialized = arguments.MessagesSerialized ?? throw new InvalidOperationException(nameof(arguments.MessagesSerialized));
+    }
 
+    public override SerializerResultModel Serialize(IEnumerable<ObjectModel> objects)
+    {
         EnsureHelpers.EnsureMaxLength(objects, Constants.MaxLengthObjectsAllowed,
             string.Format(Properties.Resources.MaxLengthObjectsAllowedError, Constants.MaxLengthObjectsAllowed));
-
-        var componentKeys = objects.Select((item, index) => new GameComponentKeyModel(item.Code, index));
 
         var headerBytes = new List<byte>();
         var dataBytes = new List<byte>();
 
         foreach (var @object in objects)
         {
-            EnsureObjectProperties(@object, componentKeys);
+            EnsureObjectProperties(@object);
 
             var header = new Header()
             {
-                NameIndex = (byte)vocabularySerialized.GameComponentKeysModel.Find(@object.Name.Code).HeaderIndex,
-                DescriptionIndex = (byte)messagesSerialized.GameComponentKeysModel.Find(@object.Description.Code).HeaderIndex,
+                NameIndex = (byte)gameComponentsIndexes.VocabularyNouns.Find(@object.Name.Code).HeaderIndex,
+                DescriptionIndex = (byte)gameComponentsIndexes.Messages.Find(@object.Description.Code).HeaderIndex,
                 Weight = (byte)@object.Weight,
                 Health = (byte)@object.Health,
                 Properties = (byte)@object.Properties,
@@ -77,21 +75,20 @@ internal class ObjectsSerializer : ISerializer<ObjectsSerializerArgumentsModel, 
 
             headerBytes.AddRange(CreateHeaderBytes(header));
 
-            var childObjectIndexes = @object.ChildObjects?.Select(item => (byte)componentKeys.Find(item.Code).HeaderIndex);
-            var requiredComplementsIndexes = @object.RequiredComplements?.Select(item => (byte)componentKeys.Find(item.Code).HeaderIndex);
-            var complementsIndexes = @object.Complements?.Select(item => (byte)componentKeys.Find(item.Code).HeaderIndex);
+            var childObjectIndexes = @object.ChildObjects?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).HeaderIndex);
+            var requiredComplementsIndexes = @object.RequiredComplements?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).HeaderIndex);
+            var complementsIndexes = @object.Complements?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).HeaderIndex);
 
             var data = new Data(childObjectIndexes, requiredComplementsIndexes, complementsIndexes);
             dataBytes.AddRange(CreateDataBytes(data));
         }
 
-        return new SerializerResultKeyModel(componentKeys, headerBytes.ToArray(), dataBytes.ToArray());
+        return new SerializerResultModel(headerBytes.ToArray(), dataBytes.ToArray());
     }
 
-    private static void EnsureObjectProperties(ObjectModel @object, IEnumerable<GameComponentKeyModel> componentKeys)
+    private static void EnsureObjectProperties(ObjectModel @object)
     {
         EnsureHelpers.EnsureNotNullOrWhiteSpace(@object.Code, Properties.Resources.CodeIsRequiredError);
-        EnsureHelpers.EnsureSingle(componentKeys, item => item.Code == @object.Code, string.Format(Properties.Resources.DuplicateCodeError, @object.Code));
 
         EnsureHelpers.EnsureNotNull(@object.Name, Properties.Resources.NameIsRequiredError);
         EnsureHelpers.EnsureNotNull(@object.Description, Properties.Resources.DescriptionIsRequiredError);
@@ -152,4 +149,5 @@ internal class ObjectsSerializer : ISerializer<ObjectsSerializerArgumentsModel, 
         
         return result.ToArray();
     }
+
 }

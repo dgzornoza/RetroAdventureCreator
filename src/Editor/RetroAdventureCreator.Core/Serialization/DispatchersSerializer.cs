@@ -26,9 +26,13 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Commands = 0-63 bytes
 /// 
 /// </remarks>
-internal class DispatchersSerializer : ISerializer<DispatcherModel, SerializerResultKeyModel>
+internal class DispatchersSerializer : Serializer<DispatcherModel>
 {
-    public SerializerResultKeyModel Serialize(GameComponentsIndexes gameComponentsIndexes, DispatcherModel @object)
+    public DispatchersSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    {
+    }
+
+    public override SerializerResultModel Serialize(DispatcherModel @object)
     {
         throw new NotImplementedException();
     }

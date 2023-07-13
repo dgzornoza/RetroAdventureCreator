@@ -20,24 +20,15 @@ public class ObjectsSerializerTest
         var game = builder.BuildGame();
         var indexes = builder.BuildGameComponentsIndexes();
 
-        var vocabularySerializer = new VocabularySerializer().Serialize(indexes, game.Assets.Vocabulary);
-        var messageSerializer = new MessagesSerializer().Serialize(indexes, game.Assets.Messages);
-
         var objects = game.Assets.Objects;
         var headerLength = headersLength * objects.Count();
-        var expectedCount = objects.Count();
         var expectedDataLength = objects.Sum(item => item.ChildObjects?.Count() + item.RequiredComplements?.Count() + item.Complements?.Count());
 
         // Act
-        var objectsSerializerArguments = new ObjectsSerializerArgumentsModel(objects, vocabularySerializer, messageSerializer);
-        var actual = new ObjectsSerializer().Serialize(indexes, objectsSerializerArguments);
+        var actual = new ObjectsSerializer(indexes).Serialize(objects);
 
         // Assert
         Assert.NotNull(actual);
-
-        Assert.NotNull(actual.GameComponentKeysModel);
-        Assert.True(actual.GameComponentKeysModel.Count() == expectedCount);
-        Assert.True(actual.GameComponentKeysModel.Select(item => item.Code).Distinct().Count() == expectedCount);
         Assert.True(actual.Header.Length == headerLength);
         Assert.True(actual.Data.Length == expectedDataLength);
     }

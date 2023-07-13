@@ -28,28 +28,27 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Nouns = 0-3 bytes
 /// 
 /// </remarks>
-internal class InputCommandsSerializer : ISerializer<InputCommandsSerializerArgumentsModel, SerializerResultKeyModel>
+internal class InputCommandsSerializer : Serializer<IEnumerable<InputCommandModel>>
 {
     private record struct Header(byte VerbIndex, byte Nouns, short DataAddress);
 
     private record struct Data(IEnumerable<byte>? NounsIndexes);
 
-    public SerializerResultKeyModel Serialize(GameComponentsIndexes gameComponentsIndexes, InputCommandsSerializerArgumentsModel arguments)
+    public InputCommandsSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
     {
-        var inputCommands = arguments.InputCommands ?? throw new InvalidOperationException(nameof(arguments.InputCommands));
-        var vocabularySerialized = arguments.VocabularySerialized ?? throw new InvalidOperationException(nameof(arguments.VocabularySerialized));
+    }
 
+    public override SerializerResultModel Serialize(IEnumerable<InputCommandModel> inputCommands)
+    {
         EnsureHelpers.EnsureMaxLength(inputCommands, Constants.MaxLengthInputCommandsAllowed,
             string.Format(Properties.Resources.MaxLengthInputCommandsAllowedError, Constants.MaxLengthInputCommandsAllowed));
 
-        var componentKeys = new List<GameComponentKeyModel>(inputCommands.Count());
         var headerBytes = new List<byte>();
         var dataBytes = new List<byte>();
 
         foreach (var inputCommand in inputCommands)
         {
             EnsureHelpers.EnsureNotNullOrWhiteSpace(inputCommand.Code, Properties.Resources.CodeIsRequiredError);
-            EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == inputCommand.Code, string.Format(Properties.Resources.DuplicateCodeError, inputCommand.Code));
             EnsureHelpers.EnsureNotNull(inputCommand.Verb, Properties.Resources.InputCommandVerbIsRequired);
             if (inputCommand.Nouns != null)
             {
@@ -57,22 +56,20 @@ internal class InputCommandsSerializer : ISerializer<InputCommandsSerializerArgu
                     string.Format(Properties.Resources.MaxLengthInputCommandsNounsAllowedError, Constants.MaxLengthInputCommandsNounsAllowed));
             }
 
-            componentKeys.Add(new GameComponentKeyModel(inputCommand.Code, componentKeys.Count));
-
             var header = new Header
             {
-                VerbIndex = (byte)vocabularySerialized.Verbs.GameComponentKeysModel.Find(inputCommand.Verb.Code).HeaderIndex,
+                VerbIndex = (byte)gameComponentsIndexes.VocabularyVerbs.Find(inputCommand.Verb.Code).HeaderIndex,
                 Nouns = (byte)(inputCommand.Nouns?.Count() ?? 0),
                 DataAddress = (short)dataBytes.Count,
             };
             headerBytes.AddRange(CreateHeaderBytes(header));
 
-            var nounsIndexes = inputCommand.Nouns?.Select(item => (byte)vocabularySerialized.Nouns.GameComponentKeysModel.Find(item.Code).HeaderIndex);
+            var nounsIndexes = inputCommand.Nouns?.Select(item => (byte)gameComponentsIndexes.VocabularyNouns.Find(item.Code).HeaderIndex);
             var data = new Data(nounsIndexes);
             dataBytes.AddRange(CreateDataBytes(data));
         }
 
-        return new SerializerResultKeyModel(componentKeys, headerBytes.ToArray(), dataBytes.ToArray());
+        return new SerializerResultModel(headerBytes.ToArray(), dataBytes.ToArray());
     }
 
     private static byte[] CreateHeaderBytes(Header header) => new byte[]
