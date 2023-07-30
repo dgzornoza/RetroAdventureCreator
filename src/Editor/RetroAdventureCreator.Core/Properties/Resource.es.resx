@@ -147,6 +147,9 @@
   <data name="MaxLengthComplementsAllowedError" xml:space="preserve">
     <value>El tamaño máximo de los complementos de un objeto es de {0}</value>
   </data>
+  <data name="MaxLengthFlagsAllowedError" xml:space="preserve">
+    <value>El número máximo de flags permitido es de {0}</value>
+  </data>
   <data name="MaxLengthInputCommandsAllowedError" xml:space="preserve">
     <value>El número máximo de comandos de entrada permitido es de {0}</value>
   </data>
@@ -167,6 +170,12 @@
   </data>
   <data name="MaxLengthObjectWeightError" xml:space="preserve">
     <value>El tamaño máximo para el peso del objecto es de {0}</value>
+  </data>
+  <data name="MaxLengthPlayerHealthAllowedError" xml:space="preserve">
+    <value>El tamaño máximo para la vida del jugador es de {0}</value>
+  </data>
+  <data name="MaxLengthPlayerObjectsAllowedError" xml:space="preserve">
+    <value>El número máximo de objetos de jugador permitido es de {0}</value>
   </data>
   <data name="MaxLengthRequiredComplementsAllowedError" xml:space="preserve">
     <value>El tamaño máximo de los complementos requeridos de un objeto es de {0}</value>

@@ -47,7 +47,7 @@ internal class CommandsSerializer : Serializer<IEnumerable<CommandModel>>
 
         //var componentKeys = new List<GameComponentKeyModel>(commands.Count());
         //var result = new List<byte>();
-        //foreach (var command in commands)
+        //foreach (var command in commands.SortByKey())
         //{
         //    var arguments = string.Join("", command.Arguments ?? Enumerable.Empty<string>());
 

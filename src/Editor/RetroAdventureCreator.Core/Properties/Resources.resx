@@ -147,6 +147,9 @@
   <data name="MaxLengthComplementsAllowedError" xml:space="preserve">
     <value>The maximum length of object complements is {0}</value>
   </data>
+  <data name="MaxLengthFlagsAllowedError" xml:space="preserve">
+    <value>The maximum length of flags allowed is {0}</value>
+  </data>
   <data name="MaxLengthInputCommandsAllowedError" xml:space="preserve">
     <value>The maximum length of input commands allowed is {0}</value>
   </data>
@@ -167,6 +170,12 @@
   </data>
   <data name="MaxLengthObjectWeightError" xml:space="preserve">
     <value>The maximum length of object weight is {0}</value>
+  </data>
+  <data name="MaxLengthPlayerHealthAllowedError" xml:space="preserve">
+    <value>The maximum length of player health is {0}</value>
+  </data>
+  <data name="MaxLengthPlayerObjectsAllowedError" xml:space="preserve">
+    <value>The maximum number of player objects allowed is {0}</value>
   </data>
   <data name="MaxLengthRequiredComplementsAllowedError" xml:space="preserve">
     <value>The maximum length of objects required complements is {0}</value>

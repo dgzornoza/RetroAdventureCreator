@@ -44,19 +44,6 @@ public class MessagesSerializerTest
     }
 
     [Fact]
-    public void MessagesSerializer_Serialize_DuplicateCode_throwsExcepion()
-    {
-        // Arrange
-        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
-        var code = "DuplicateCode";
-        var messageError = string.Format(Core.Properties.Resources.DuplicateCodeError, code);
-        var messages = Enumerable.Range(0, 2).Select(item => new MessageModel() { Code = code, Text = "MessageText" });
-
-        // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(indexes).Serialize(messages)).Message == messageError);
-    }
-
-    [Fact]
     public void MessagesSerializer_Serialize_NullText_throwsExcepion()
     {
         // Arrange

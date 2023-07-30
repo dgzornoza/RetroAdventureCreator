@@ -43,19 +43,15 @@ internal class MessagesSerializer : Serializer<IEnumerable<MessageModel>>
         EnsureHelpers.EnsureMaxLength(messages, Constants.MaxLengthMessagesAllowed,
             string.Format(Properties.Resources.MaxLengthMessagesAllowedError, Constants.MaxLengthMessagesAllowed));
 
-        var componentKeys = new List<GameComponentKeyModel>(messages.Count());
         var headerBytes = new List<byte>();
         var dataBytes = new List<byte>();
 
-        foreach (var message in messages)
+        foreach (var message in messages.SortByKey())
         {
             EnsureHelpers.EnsureNotNullOrWhiteSpace(message.Code, Properties.Resources.CodeIsRequiredError);
-            EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == message.Code, string.Format(Properties.Resources.DuplicateCodeError, message.Code));
             EnsureHelpers.EnsureNotNullOrWhiteSpace(message.Text, Properties.Resources.TextIsRequiredError);
             EnsureHelpers.EnsureMaxLength(message.Text.Length, Constants.MaxLengthMessageTextAllowed,
                 string.Format(Properties.Resources.MaxLengthMessageTextError, Constants.MaxLengthMessageTextAllowed));
-
-            componentKeys.Add(new GameComponentKeyModel(message.Code, componentKeys.Count));
 
             var header = new Header((byte)message.Text.Length, (short)dataBytes.Count);
             headerBytes.AddRange(CreateHeaderBytes(header));

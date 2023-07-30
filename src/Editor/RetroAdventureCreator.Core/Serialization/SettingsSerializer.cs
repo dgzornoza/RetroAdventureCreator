@@ -17,6 +17,8 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// BackgroundColor = 4 bits
 /// BorderColor = 4 bits
 /// 
+/// Data: --
+/// 
 /// </remarks>
 internal class SettingsSerializer : Serializer<SettingsModel>
 {

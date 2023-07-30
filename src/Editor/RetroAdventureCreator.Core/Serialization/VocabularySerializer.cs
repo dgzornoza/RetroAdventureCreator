@@ -37,7 +37,7 @@ internal abstract class VocabularySerializer : Serializer<IEnumerable<Vocabulary
 
     protected record struct Data(string Synonyms);
 
-    public VocabularySerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    protected VocabularySerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
     {
     }
 

@@ -23,6 +23,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Header: (3 bytes)
 /// Verb = 6 bits (id verb vocabulary)
 /// Nouns = 2 bits (3 ids vocabulary)
+/// DataAdress = 2 bytes
 /// 
 /// Data:
 /// Nouns = 0-3 bytes
@@ -46,7 +47,7 @@ internal class InputCommandsSerializer : Serializer<IEnumerable<InputCommandMode
         var headerBytes = new List<byte>();
         var dataBytes = new List<byte>();
 
-        foreach (var inputCommand in inputCommands)
+        foreach (var inputCommand in inputCommands.SortByKey())
         {
             EnsureHelpers.EnsureNotNullOrWhiteSpace(inputCommand.Code, Properties.Resources.CodeIsRequiredError);
             EnsureHelpers.EnsureNotNull(inputCommand.Verb, Properties.Resources.InputCommandVerbIsRequired);

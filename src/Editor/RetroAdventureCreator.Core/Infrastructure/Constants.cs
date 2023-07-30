@@ -41,5 +41,9 @@ namespace RetroAdventureCreator.Core.Infrastructure
 
         // Scenes
         public const int MaxLengthScenesAllowed = byte.MaxValue;
+
+        // Player
+        public const int MaxLengthPlayerObjectsAllowed = 31;
+        public const int MaxLengthPlayerHealthAllowed = 7;
     }
 }

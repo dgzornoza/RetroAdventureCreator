@@ -24,8 +24,8 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Header: (7 bytes)
 /// Name = 8 bits (id vocabulary)
 /// Description Size = 8 bits (id message)
-/// Weight = 5 bits (32)
-/// Health = 3 bits (8)
+/// Weight = 5 bits (31)
+/// Health = 3 bits (7)
 /// Properties = 8 bits (flag 8 properties)
 /// ChildObjects = 4 bits (15 ids objects in data)
 /// RequiredComplements = 2 bits (3 ids objects in data)
@@ -56,7 +56,7 @@ internal class ObjectsSerializer : Serializer<IEnumerable<ObjectModel>>
         var headerBytes = new List<byte>();
         var dataBytes = new List<byte>();
 
-        foreach (var @object in objects)
+        foreach (var @object in objects.SortByKey())
         {
             EnsureObjectProperties(@object);
 

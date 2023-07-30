@@ -151,6 +151,15 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The maximum length of flags allowed is {0}.
+        /// </summary>
+        internal static string MaxLengthFlagsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxLengthFlagsAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The maximum length of input commands allowed is {0}.
         /// </summary>
         internal static string MaxLengthInputCommandsAllowedError {
@@ -210,6 +219,24 @@ namespace RetroAdventureCreator.Core.Properties {
         internal static string MaxLengthObjectWeightError {
             get {
                 return ResourceManager.GetString("MaxLengthObjectWeightError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum length of player health is {0}.
+        /// </summary>
+        internal static string MaxLengthPlayerHealthAllowedError {
+            get {
+                return ResourceManager.GetString("MaxLengthPlayerHealthAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum number of player objects allowed is {0}.
+        /// </summary>
+        internal static string MaxLengthPlayerObjectsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxLengthPlayerObjectsAllowedError", resourceCulture);
             }
         }
         
