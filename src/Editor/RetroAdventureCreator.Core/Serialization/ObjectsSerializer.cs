@@ -38,17 +38,18 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Complements = 0-3 bytes
 /// 
 /// </remarks>
-internal class ObjectsSerializer : Serializer<IEnumerable<ObjectModel>>
+internal class ObjectsSerializer : ISerializer<IEnumerable<ObjectModel>>
 {
     private record struct Header(byte NameIndex, byte DescriptionIndex, byte Weight, byte Health, byte Properties, byte ChildObjects, byte RequiredComplements, byte Complements, short DataAddress);
 
     private record struct Data(IEnumerable<byte>? ChildObjectsIndexes, IEnumerable<byte>? RequiredComplementsIndexes, IEnumerable<byte>? ComplementsIndexes);
 
-    public ObjectsSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    public IEnumerable<GameComponentKeyModel> GenerateGameComponentKeys(IEnumerable<ObjectModel> @object)
     {
+        throw new NotImplementedException();
     }
 
-    public override SerializerResultModel Serialize(IEnumerable<ObjectModel> objects)
+    public SerializerResultModel Serialize(GameComponentsIndexes gameComponentsIndexes, IEnumerable<ObjectModel> objects)
     {
         EnsureHelpers.EnsureMaxLength(objects, Constants.MaxLengthObjectsAllowed,
             string.Format(Properties.Resources.MaxLengthObjectsAllowedError, Constants.MaxLengthObjectsAllowed));
@@ -62,8 +63,8 @@ internal class ObjectsSerializer : Serializer<IEnumerable<ObjectModel>>
 
             var header = new Header()
             {
-                NameIndex = (byte)gameComponentsIndexes.VocabularyNouns.Find(@object.Name.Code).HeaderIndex,
-                DescriptionIndex = (byte)gameComponentsIndexes.Messages.Find(@object.Description.Code).HeaderIndex,
+                NameIndex = (byte)gameComponentsIndexes.VocabularyNouns.Find(@object.Name.Code).RelativePointer,
+                DescriptionIndex = (byte)gameComponentsIndexes.Messages.Find(@object.Description.Code).RelativePointer,
                 Weight = (byte)@object.Weight,
                 Health = (byte)@object.Health,
                 Properties = (byte)@object.Properties,

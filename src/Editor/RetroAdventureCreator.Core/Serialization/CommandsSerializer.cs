@@ -20,9 +20,9 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Header:
-/// 
 /// Token = 6 bits (64)
 /// Arguments = 2 bits (3 ids 2 bytes, absolute address)
+/// DataAdress = 2 bytes
 /// 
 /// Data:
 /// Arguments = 0-6 bytes

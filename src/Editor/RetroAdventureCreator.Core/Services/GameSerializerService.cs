@@ -38,7 +38,7 @@ internal class GameSerializerService
     );
 
     private IEnumerable<GameComponentKeyModel> GenerateComponentKeys(IEnumerable<IUniqueKey> objects) =>
-        objects.Select((item, index) => new GameComponentKeyModel(item.Code, index));
+        objects.Select((item, index) => new GameComponentKeyModel(item.Code, index + 1));
 
     private void EnsureUniqueCodes(GameComponentsIndexes gameComponentsIndexes)
     {

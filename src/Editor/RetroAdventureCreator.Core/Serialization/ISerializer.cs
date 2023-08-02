@@ -8,8 +8,9 @@ using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Core.Serialization;
 
-
 internal interface ISerializer<in T> where T : class
 {
-    SerializerResultModel Serialize(T @object);
+    IEnumerable<GameComponentKeyModel> GenerateGameComponentKeys(T @object);
+
+    SerializerResultModel Serialize(GameComponentsIndexes gameComponentsIndexes, T @object);
 }

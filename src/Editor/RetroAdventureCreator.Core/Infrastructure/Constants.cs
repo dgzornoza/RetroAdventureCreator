@@ -9,13 +9,13 @@ namespace RetroAdventureCreator.Core.Infrastructure
     public static class Constants
     {
         // Vocabulary
-        public const int MaxLengthVocabularyNounsAllowed = byte.MaxValue;
+        public const int MaxLengthVocabularyNounsAllowed = byte.MaxValue - 1;
         public const int MaxLengthVocabularyVerbsAllowed = 63;
-        public const int MaxLengthVocabularySynonymsAllowed = byte.MaxValue;
+        public const int MaxLengthVocabularySynonymsAllowed = byte.MaxValue - 1;
 
         // Messages
-        public const int MaxLengthMessagesAllowed = byte.MaxValue;
-        public const int MaxLengthMessageTextAllowed = byte.MaxValue;        
+        public const int MaxLengthMessagesAllowed = byte.MaxValue - 1;
+        public const int MaxLengthMessageTextAllowed = byte.MaxValue - 1;        
 
         // Objects
         public const int MaxLengthObjectsAllowed = 63;
@@ -26,21 +26,21 @@ namespace RetroAdventureCreator.Core.Infrastructure
         public const int MaxLengthComplementsAllowed = 3;
 
         // Commands
-        public const int MaxLengthCommandsAllowed = byte.MaxValue;
+        public const int MaxLengthCommandsAllowed = byte.MaxValue - 1;
         public const int MaxLengthCommandArgumentsAllowed = 3;
 
         // Input Commands
-        public const int MaxLengthInputCommandsAllowed = byte.MaxValue;
+        public const int MaxLengthInputCommandsAllowed = byte.MaxValue - 1;
         public const int MaxLengthInputCommandsNounsAllowed = 3;
 
         // Flags
-        public const int MaxLengthFlagsAllowed = byte.MaxValue;
+        public const int MaxLengthFlagsAllowed = byte.MaxValue - 1;
 
         // Dispatcher
-        public const int MaxLengthDispatchersAllowed = byte.MaxValue;
+        public const int MaxLengthDispatchersAllowed = byte.MaxValue - 1;
 
         // Scenes
-        public const int MaxLengthScenesAllowed = byte.MaxValue;
+        public const int MaxLengthScenesAllowed = byte.MaxValue - 1;
 
         // Player
         public const int MaxLengthPlayerObjectsAllowed = 31;

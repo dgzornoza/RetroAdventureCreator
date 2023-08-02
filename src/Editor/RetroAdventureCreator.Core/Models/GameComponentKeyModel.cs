@@ -7,4 +7,4 @@ using RetroAdventureCreator.Infrastructure.Game.Interfaces;
 
 namespace RetroAdventureCreator.Core.Models;
 
-internal record GameComponentKeyModel(string Code, int HeaderIndex) : IUniqueKey;
+internal record GameComponentKeyModel(string Code, int RelativePointer) : IUniqueKey;

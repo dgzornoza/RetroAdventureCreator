@@ -29,7 +29,7 @@ public class DispatcherModel : IUniqueKey
     public IEnumerable<InputCommandModel>? InputCommands { get; init; }
 
     /// <summary>
-    /// Commands to execute.
+    /// Commands to execute. Can be a command or group of commands.
     /// will be executed in cascade as long as one does not return false.
     /// </summary>
     public IEnumerable<ICommandModel> Commands { get; init; } = default!;

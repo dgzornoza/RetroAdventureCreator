@@ -17,11 +17,12 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Header commandGroup:
-/// LogicalOperator = 1 bit
-/// Commands = 3 bits (7 ids 8 bits)
+/// LogicalOperator = 2 bit
+/// Commands = 5 bits (31 ids 8 bits)
+/// DataAdress = 2 bytes
 /// 
 /// Data:
-/// Commands = 0-56
+/// Commands = 0-31
 /// 
 /// </remarks>
 internal class CommandGroupSerializer : Serializer<CommandGroupModel>

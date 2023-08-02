@@ -17,13 +17,14 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Header:
-/// Id = 8 bits (256)
-/// Trigger = 6 bits (64)
-/// InputCommand = 6 bits (64 ids input command)
-/// Commands = 3 bits (8)
+/// Trigger = 4 bits (16)
+/// InputCommands = 5 bits (31 ids input command)
+/// Commands = 5 bits (31 ids command)
+/// DataAdress = 2 bytes
 /// 
 /// Data:
-/// Commands = 0-63 bytes
+/// InputCommands = 0-31 bytes
+/// Commands = 0-31 bytes
 /// 
 /// </remarks>
 internal class DispatchersSerializer : Serializer<DispatcherModel>

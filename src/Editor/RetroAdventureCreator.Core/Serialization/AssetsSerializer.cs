@@ -15,10 +15,19 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Assets serializer:
 /// 
 /// Header:
-
+///
+/// Scenes
+/// Vocabulary
+/// Messages
+/// Objects
+/// InputCommands
+/// Commands
+/// CommandsGroups
+/// Dispatchers
+/// DataAdress = 2 bytes
 /// 
 /// Data:
-
+///
 /// 
 /// </remarks>
 internal class AssetsSerializer : Serializer<AssetsModel>
@@ -32,4 +41,3 @@ internal class AssetsSerializer : Serializer<AssetsModel>
         throw new NotImplementedException();
     }
 }
-

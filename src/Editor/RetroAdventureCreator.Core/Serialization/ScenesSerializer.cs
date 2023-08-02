@@ -15,10 +15,10 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Scene serializer:
 /// 
 /// Header:
-/// Id = 6 bits (64)
-/// Description Size = 9 bits (512)
+/// Description Size = 2 bits (3 ids messages in data)
 /// Dispatcher = 5 bits (32 ids dispatchers)
 /// Objects = 3 bits (8)
+/// DataAdress = 2 bytes
 /// 
 /// Data:
 /// Description = 0-512 bytes
@@ -37,4 +37,3 @@ internal class ScenesSerializer : Serializer<SceneModel>
         throw new NotImplementedException();
     }
 }
-

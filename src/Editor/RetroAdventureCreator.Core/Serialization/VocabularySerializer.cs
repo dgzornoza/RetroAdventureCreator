@@ -31,15 +31,11 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Synonyms = 0-255 bytes
 /// 
 /// </remarks>
-internal abstract class VocabularySerializer : Serializer<IEnumerable<VocabularyModel>>
+internal abstract class VocabularySerializer
 {
     protected record struct Header(byte SynonymsLenght, short DataAddress);
 
     protected record struct Data(string Synonyms);
-
-    protected VocabularySerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
-    {
-    }
 
     protected SerializerResultModel SerializeVocabularies(IEnumerable<VocabularyModel> vocabularies)
     {
@@ -76,13 +72,14 @@ internal abstract class VocabularySerializer : Serializer<IEnumerable<Vocabulary
     protected static byte[] CreateDataBytes(Data data) => Encoding.ASCII.GetBytes(data.Synonyms);
 }
 
-internal class VocabularyNounsSerializer : VocabularySerializer
+internal class VocabularyNounsSerializer : VocabularySerializer, ISerializer<IEnumerable<VocabularyModel>>
 {
-    public VocabularyNounsSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    public IEnumerable<GameComponentKeyModel> GenerateGameComponentKeys(IEnumerable<VocabularyModel> @object)
     {
+        throw new NotImplementedException();
     }
 
-    public override SerializerResultModel Serialize(IEnumerable<VocabularyModel> vocabularies)
+    public SerializerResultModel Serialize(GameComponentsIndexes gameComponentsIndexes, IEnumerable<VocabularyModel> vocabularies)
     {
         EnsureHelpers.EnsureMaxLength(gameComponentsIndexes.VocabularyNouns, Constants.MaxLengthVocabularyNounsAllowed,
             string.Format(Properties.Resources.MaxLengthVocabularyNounsAllowedError, Constants.MaxLengthVocabularyNounsAllowed));
@@ -92,13 +89,14 @@ internal class VocabularyNounsSerializer : VocabularySerializer
     }
 }
 
-internal class VocabularyVerbsSerializer : VocabularySerializer
+internal class VocabularyVerbsSerializer : VocabularySerializer, ISerializer<IEnumerable<VocabularyModel>>
 {
-    public VocabularyVerbsSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    public IEnumerable<GameComponentKeyModel> GenerateGameComponentKeys(IEnumerable<VocabularyModel> @object)
     {
+        throw new NotImplementedException();
     }
 
-    public override SerializerResultModel Serialize(IEnumerable<VocabularyModel> vocabularies)
+    public SerializerResultModel Serialize(GameComponentsIndexes gameComponentsIndexes, IEnumerable<VocabularyModel> vocabularies)
     {
         EnsureHelpers.EnsureMaxLength(gameComponentsIndexes.VocabularyVerbs, Constants.MaxLengthVocabularyVerbsAllowed,
             string.Format(Properties.Resources.MaxLengthVocabularyVerbsAllowedError, Constants.MaxLengthVocabularyVerbsAllowed));

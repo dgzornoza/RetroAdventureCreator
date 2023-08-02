@@ -9,7 +9,7 @@ namespace RetroAdventureCreator.Infrastructure.Game.Models;
 public class AssetsModel
 {
     /// <summary>
-    /// Ccenes
+    /// Scenes
     /// </summary>
     public IEnumerable<SceneModel> Scenes { get; init; } = default!;
 
