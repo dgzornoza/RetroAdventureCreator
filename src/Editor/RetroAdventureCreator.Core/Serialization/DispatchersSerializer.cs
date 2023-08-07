@@ -16,24 +16,20 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Dispatcher serializer:
 /// ----------------------------------------------
 /// 
-/// Header:
-/// Trigger = 4 bits (16)
-/// InputCommands = 5 bits (31 ids input command)
-/// Commands = 5 bits (31 ids command)
-/// DataAdress = 2 bytes
-/// 
 /// Data:
-/// InputCommands = 0-31 bytes
-/// Commands = 0-31 bytes
+/// Trigger = 4 bits (16)
+/// InputCommands = InputCommand id bytes (end with 0x00)
+/// Commands = Command id bytes (end with 0x00)
 /// 
 /// </remarks>
-internal class DispatchersSerializer : Serializer<DispatcherModel>
+internal class DispatchersSerializer : ISerializer<IEnumerable<DispatcherModel>>
 {
-    public DispatchersSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    public IEnumerable<GameComponentPointerModel> GenerateGameComponentKeys(IEnumerable<DispatcherModel> dispatchers)
     {
+        throw new NotImplementedException();
     }
 
-    public override SerializerResultModel Serialize(DispatcherModel @object)
+    public SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes, IEnumerable<DispatcherModel> dispatchers)
     {
         throw new NotImplementedException();
     }

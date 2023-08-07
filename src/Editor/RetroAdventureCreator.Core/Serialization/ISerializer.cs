@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using RetroAdventureCreator.Core.Models;
@@ -8,9 +9,11 @@ using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Core.Serialization;
 
-internal interface ISerializer<in T> where T : class
+internal interface ISerializer<out T> where T : class
 {
-    IEnumerable<GameComponentKeyModel> GenerateGameComponentKeys(T @object);
+    T GameComponent {  get; }
 
-    SerializerResultModel Serialize(GameComponentsIndexes gameComponentsIndexes, T @object);
+    IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers();
+
+    SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes);
 }

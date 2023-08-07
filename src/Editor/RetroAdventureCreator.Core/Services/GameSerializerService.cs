@@ -24,7 +24,7 @@ internal class GameSerializerService
         return null;
     }
 
-    private GameComponentsIndexes GenerateGameComponentsIndexes(GameModel gameModel) => new(
+    private GameComponentsPointers GenerateGameComponentsIndexes(GameModel gameModel) => new(
         Commands: GenerateComponentKeys(gameModel.Assets.Commands.SortByKey()),
         CommandsGroups: GenerateComponentKeys(gameModel.Assets.CommandsGroups.SortByKey()),
         Dispatchers: GenerateComponentKeys(gameModel.Assets.Dispatchers.SortByKey()),
@@ -37,16 +37,16 @@ internal class GameSerializerService
         VocabularyVerbs: GenerateComponentKeys(gameModel.Assets.Vocabulary.SortByKey().Where(item => item.WordType == WordType.Verb))
     );
 
-    private IEnumerable<GameComponentKeyModel> GenerateComponentKeys(IEnumerable<IUniqueKey> objects) =>
-        objects.Select((item, index) => new GameComponentKeyModel(item.Code, index + 1));
+    private IEnumerable<GameComponentPointerModel> GenerateComponentKeys(IEnumerable<IUniqueKey> objects) =>
+        objects.Select((item, index) => new GameComponentPointerModel(item.Code, index + 1));
 
-    private void EnsureUniqueCodes(GameComponentsIndexes gameComponentsIndexes)
+    private void EnsureUniqueCodes(GameComponentsPointers gameComponentsIndexes)
     {
-        var properties = typeof(GameComponentsIndexes).GetProperties(); 
+        var properties = typeof(GameComponentsPointers).GetProperties(); 
                                                                         
         foreach (var property in properties)
         {
-            var values = property.GetValue(gameComponentsIndexes) as IEnumerable<GameComponentKeyModel>;
+            var values = property.GetValue(gameComponentsIndexes) as IEnumerable<GameComponentPointerModel>;
 
             foreach (var value in values!)
             {

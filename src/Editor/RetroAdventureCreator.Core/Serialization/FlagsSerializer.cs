@@ -21,25 +21,23 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Flags serializer:
 /// ----------------------------------------------
 /// 
-/// Header: --
-/// FlagsSize = 8 bits (256)
-/// DataAdress = 2 bytes
-/// 
 /// Data: --
+/// FlagsSize = 8 bits (256)
 /// Flags = 1 bit per flag
 /// 
 /// </remarks>
-internal class FlagsSerializer : Serializer<IEnumerable<FlagModel>>
+internal class FlagsSerializer : ISerializer<IEnumerable<FlagModel>>
 {
     private record struct Header(int FlagsLength, short DataAddress);
 
     private record struct Data(IEnumerable<FlagModel> Flags, int TotalBytes);
 
-    public FlagsSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    public IEnumerable<GameComponentPointerModel> GenerateGameComponentKeys(IEnumerable<FlagModel> flags)
     {
+        throw new NotImplementedException();
     }
 
-    public override SerializerResultModel Serialize(IEnumerable<FlagModel> flags)
+    public SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes, IEnumerable<FlagModel> flags)
     {
         EnsureHelpers.EnsureMaxLength(flags, Constants.MaxLengthFlagsAllowed,
             string.Format(Properties.Resources.MaxLengthFlagsAllowedError, Constants.MaxLengthFlagsAllowed));

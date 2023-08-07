@@ -286,6 +286,15 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can not use the character &apos;0x00&apos; in any text, it is a reserved character..
+        /// </summary>
+        internal static string StringEndCharDuplicatedError {
+            get {
+                return ResourceManager.GetString("StringEndCharDuplicatedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Synonyms property is required.
         /// </summary>
         internal static string SysnonymsAreRequiredError {

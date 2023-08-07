@@ -47,4 +47,9 @@ public class AssetsModel
     /// Dispatcher commands
     /// </summary>
     public IEnumerable<DispatcherModel> Dispatchers { get; init; } = default!;
+
+    /// <summary>
+    /// Game Flags
+    /// </summary>
+    public IEnumerable<FlagModel> Flags { get; init; } = default!;
 }

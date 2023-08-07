@@ -20,26 +20,23 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format InputCommand serializer:
 /// ----------------------------------------------
 /// 
-/// Header: (3 bytes)
-/// Verb = 6 bits (id verb vocabulary)
-/// Nouns = 2 bits (3 ids vocabulary)
-/// DataAdress = 2 bytes
-/// 
 /// Data:
-/// Nouns = 0-3 bytes
+/// Verb = 6 bits (id verb vocabulary)
+/// Nouns = vocabulary id bytes (end with 0x00)
 /// 
 /// </remarks>
-internal class InputCommandsSerializer : Serializer<IEnumerable<InputCommandModel>>
+internal class InputCommandsSerializer : ISerializer<IEnumerable<InputCommandModel>>
 {
     private record struct Header(byte VerbIndex, byte Nouns, short DataAddress);
 
     private record struct Data(IEnumerable<byte>? NounsIndexes);
 
-    public InputCommandsSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    public IEnumerable<GameComponentPointerModel> GenerateGameComponentKeys(IEnumerable<InputCommandModel> inputCommands)
     {
+        throw new NotImplementedException();
     }
 
-    public override SerializerResultModel Serialize(IEnumerable<InputCommandModel> inputCommands)
+    public SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes, IEnumerable<InputCommandModel> inputCommands)
     {
         EnsureHelpers.EnsureMaxLength(inputCommands, Constants.MaxLengthInputCommandsAllowed,
             string.Format(Properties.Resources.MaxLengthInputCommandsAllowedError, Constants.MaxLengthInputCommandsAllowed));
@@ -59,13 +56,13 @@ internal class InputCommandsSerializer : Serializer<IEnumerable<InputCommandMode
 
             var header = new Header
             {
-                VerbIndex = (byte)gameComponentsIndexes.VocabularyVerbs.Find(inputCommand.Verb.Code).HeaderIndex,
+                VerbIndex = (byte)gameComponentsIndexes.VocabularyVerbs.Find(inputCommand.Verb.Code).RelativePointer,
                 Nouns = (byte)(inputCommand.Nouns?.Count() ?? 0),
                 DataAddress = (short)dataBytes.Count,
             };
             headerBytes.AddRange(CreateHeaderBytes(header));
 
-            var nounsIndexes = inputCommand.Nouns?.Select(item => (byte)gameComponentsIndexes.VocabularyNouns.Find(item.Code).HeaderIndex);
+            var nounsIndexes = inputCommand.Nouns?.Select(item => (byte)gameComponentsIndexes.VocabularyNouns.Find(item.Code).RelativePointer);
             var data = new Data(nounsIndexes);
             dataBytes.AddRange(CreateDataBytes(data));
         }

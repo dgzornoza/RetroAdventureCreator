@@ -14,7 +14,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// <remarks>
 /// Format Assets serializer:
 /// 
-/// Header:
+/// Data:
 ///
 /// Scenes
 /// Vocabulary
@@ -24,19 +24,16 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Commands
 /// CommandsGroups
 /// Dispatchers
-/// DataAdress = 2 bytes
-/// 
-/// Data:
-///
 /// 
 /// </remarks>
-internal class AssetsSerializer : Serializer<AssetsModel>
+internal class AssetsSerializer : ISerializer<AssetsModel>
 {
-    public AssetsSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    public IEnumerable<GameComponentPointerModel> GenerateGameComponentKeys(AssetsModel assets)
     {
+        throw new NotImplementedException();
     }
 
-    public override SerializerResultModel Serialize(AssetsModel @object)
+    public SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes, AssetsModel @object)
     {
         throw new NotImplementedException();
     }

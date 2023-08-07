@@ -16,22 +16,19 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format CommandGroup serializer:
 /// ----------------------------------------------
 /// 
-/// Header commandGroup:
-/// LogicalOperator = 2 bit
-/// Commands = 5 bits (31 ids 8 bits)
-/// DataAdress = 2 bytes
-/// 
 /// Data:
-/// Commands = 0-31
+/// LogicalOperator = 2 bit
+/// Commands = Command id bytes (end with 0x00)
 /// 
 /// </remarks>
-internal class CommandGroupSerializer : Serializer<CommandGroupModel>
+internal class CommandGroupSerializer : ISerializer<IEnumerable<CommandGroupModel>>
 {
-    public CommandGroupSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    public IEnumerable<GameComponentPointerModel> GenerateGameComponentKeys(IEnumerable<CommandGroupModel> commandGroups)
     {
+        throw new NotImplementedException();
     }
 
-    public override SerializerResultModel Serialize(CommandGroupModel @object)
+    public SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes, IEnumerable<CommandGroupModel> commandGroups)
     {
         throw new NotImplementedException();
     }

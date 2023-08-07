@@ -192,6 +192,9 @@
   <data name="NameIsRequiredError" xml:space="preserve">
     <value>Name property is required</value>
   </data>
+  <data name="StringEndCharDuplicatedError" xml:space="preserve">
+    <value>You can not use the character '0x00' in any text, it is a reserved character.</value>
+  </data>
   <data name="SysnonymsAreRequiredError" xml:space="preserve">
     <value>Synonyms property is required</value>
   </data>

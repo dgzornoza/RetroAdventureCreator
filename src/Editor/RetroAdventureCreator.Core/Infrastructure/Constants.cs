@@ -10,8 +10,8 @@ namespace RetroAdventureCreator.Core.Infrastructure
     {
         // Vocabulary
         public const int MaxLengthVocabularyNounsAllowed = byte.MaxValue - 1;
-        public const int MaxLengthVocabularyVerbsAllowed = 63;
-        public const int MaxLengthVocabularySynonymsAllowed = byte.MaxValue - 1;
+        public const int MaxLengthVocabularyVerbsAllowed = byte.MaxValue - 1;
+        public const int MaxLengthVocabularySynonymsAllowed = 16;
 
         // Messages
         public const int MaxLengthMessagesAllowed = byte.MaxValue - 1;

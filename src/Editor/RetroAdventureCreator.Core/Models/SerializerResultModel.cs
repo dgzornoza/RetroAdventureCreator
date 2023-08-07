@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace RetroAdventureCreator.Core.Models;
 
-internal record SerializerResultModel(byte[] Header, byte[] Data);
+internal record SerializerResultModel(byte[] Data);
 
 

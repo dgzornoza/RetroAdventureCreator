@@ -22,11 +22,6 @@ public class GameModel
     public string MainSceneCode { get; init; } = default!;
 
     /// <summary>
-    /// Game Flags
-    /// </summary>
-    public IEnumerable<FlagModel> Flags { get; init; } = default!;
-
-    /// <summary>
     /// Default Game Settings
     /// </summary>
     public SettingsModel Settings { get; init; } = default!;

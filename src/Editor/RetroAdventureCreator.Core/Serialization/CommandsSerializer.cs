@@ -19,26 +19,25 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Command serializer:
 /// ----------------------------------------------
 /// 
-/// Header:
+/// Data:
 /// Token = 6 bits (64)
 /// Arguments = 2 bits (3 ids 2 bytes, absolute address)
-/// DataAdress = 2 bytes
-/// 
-/// Data:
 /// Arguments = 0-6 bytes
 /// 
+/// 
 /// </remarks>
-internal class CommandsSerializer : Serializer<IEnumerable<CommandModel>>
+internal class CommandsSerializer : ISerializer<IEnumerable<CommandModel>>
 {
     private record struct Header(byte Token, byte Arguments);
 
     private record struct Data(string Arguments);
 
-    public CommandsSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    public IEnumerable<GameComponentPointerModel> GenerateGameComponentKeys(IEnumerable<CommandModel> commands)
     {
+        throw new NotImplementedException();
     }
 
-    public override SerializerResultModel Serialize(IEnumerable<CommandModel> @objects)
+    public SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes, IEnumerable<CommandModel> commands)
     {
         //var commands = @objects ?? throw new ArgumentNullException(nameof(@objects));
 

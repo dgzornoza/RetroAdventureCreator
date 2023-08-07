@@ -23,85 +23,73 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Vocabulary serializer:
 /// ----------------------------------------------
 /// 
-/// Header: (3 bytes)
-/// Synonyms = 0-8 bits
-/// DataAdress = 2 bytes
-/// 
 /// Data:
-/// Synonyms = 0-255 bytes
+/// Synonyms = synonym bytes splitted by '|' (end with 0x00)
 /// 
 /// </remarks>
-internal abstract class VocabularySerializer
+internal abstract class VocabularySerializer : Serializer<IEnumerable<VocabularyModel>>
 {
-    protected record struct Header(byte SynonymsLenght, short DataAddress);
-
-    protected record struct Data(string Synonyms);
-
-    protected SerializerResultModel SerializeVocabularies(IEnumerable<VocabularyModel> vocabularies)
+    protected VocabularySerializer(IEnumerable<VocabularyModel> gameComponent) : base(gameComponent)
     {
-        var headerBytes = new List<byte>();
-        var dataBytes = new List<byte>();
+    }
 
-        foreach (var vocabulary in vocabularies)
+    public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers()
+    {
+        var result = new List<GameComponentPointerModel>();
+        var pointer = 0;
+
+        foreach (var vocabulary in GameComponent)
         {
-            EnsureHelpers.EnsureNotNullOrEmpty(vocabulary.Synonyms, Properties.Resources.SysnonymsAreRequiredError);
-            var synonyms = string.Join('|', vocabulary.Synonyms);
+            EnsureGameComponentProperties(vocabulary, result);
 
-            EnsureHelpers.EnsureNotNullOrWhiteSpace(vocabulary.Code, Properties.Resources.CodeIsRequiredError);
-            EnsureHelpers.EnsureMaxLength(synonyms.Length, Constants.MaxLengthVocabularySynonymsAllowed,
-                string.Format(Properties.Resources.MaxLengthVocabularySynonymsError, Constants.MaxLengthVocabularySynonymsAllowed));
+            result.Add(new GameComponentPointerModel(vocabulary.Code, pointer));
 
-            var header = new Header((byte)synonyms.Length, (short)dataBytes.Count);
-            headerBytes.AddRange(CreateHeaderBytes(header));
-
-            var data = new Data(synonyms);
-            dataBytes.AddRange(CreateDataBytes(data));
+            pointer += JoinSynonyms(vocabulary).Length;
         }
 
-        return new SerializerResultModel(headerBytes.ToArray(), dataBytes.ToArray());
+        return result;
     }
 
-
-    protected static byte[] CreateHeaderBytes(Header header) => new byte[]
+    public override SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes)
     {
-        header.SynonymsLenght,
-        header.DataAddress.GetByte(2),
-        header.DataAddress.GetByte(1),
-    };
+        var dataBytes = GameComponent.SelectMany(CreateDataBytes);
+        return new SerializerResultModel(dataBytes.ToArray());
+    }
 
-    protected static byte[] CreateDataBytes(Data data) => Encoding.ASCII.GetBytes(data.Synonyms);
+    protected byte[] CreateDataBytes(VocabularyModel vocabulary) => SerializerEncoding.GetBytes(JoinSynonyms(vocabulary));
+
+    private static void EnsureGameComponentProperties(VocabularyModel vocabulary, IEnumerable<GameComponentPointerModel> gameComponentPointers)
+    {
+        EnsureHelpers.EnsureNotFound(gameComponentPointers, item => item.Code == vocabulary.Code, string.Format(Properties.Resources.DuplicateCodeError, vocabulary.Code));
+        EnsureHelpers.EnsureNotNullOrWhiteSpace(vocabulary.Code, Properties.Resources.CodeIsRequiredError);
+
+        EnsureHelpers.EnsureNotNullOrEmpty(vocabulary.Synonyms, Properties.Resources.SysnonymsAreRequiredError);
+        EnsureHelpers.EnsureMaxLength(vocabulary.Synonyms.Count(), Constants.MaxLengthVocabularySynonymsAllowed,
+            string.Format(Properties.Resources.MaxLengthVocabularySynonymsError, Constants.MaxLengthVocabularySynonymsAllowed));
+
+        var synonymsChars = JoinSynonyms(vocabulary).TrimEnd(Convert.ToChar(EndToken));
+        EnsureHelpers.EnsureNotFound(synonymsChars, item => item == EndToken, Properties.Resources.StringEndCharDuplicatedError);
+    }
+
+    private static string JoinSynonyms(VocabularyModel vocabulary) => string.Join('|', vocabulary.Synonyms) + EndToken;
 }
 
-internal class VocabularyNounsSerializer : VocabularySerializer, ISerializer<IEnumerable<VocabularyModel>>
+internal class VocabularyNounsSerializer : VocabularySerializer
 {
-    public IEnumerable<GameComponentKeyModel> GenerateGameComponentKeys(IEnumerable<VocabularyModel> @object)
+    public VocabularyNounsSerializer(IEnumerable<VocabularyModel> gameComponent) :
+        base(gameComponent.Where(item => item.WordType == WordType.Noun))
     {
-        throw new NotImplementedException();
-    }
-
-    public SerializerResultModel Serialize(GameComponentsIndexes gameComponentsIndexes, IEnumerable<VocabularyModel> vocabularies)
-    {
-        EnsureHelpers.EnsureMaxLength(gameComponentsIndexes.VocabularyNouns, Constants.MaxLengthVocabularyNounsAllowed,
+        EnsureHelpers.EnsureMaxLength(GameComponent, Constants.MaxLengthVocabularyNounsAllowed,
             string.Format(Properties.Resources.MaxLengthVocabularyNounsAllowedError, Constants.MaxLengthVocabularyNounsAllowed));
-
-        var verbs = SerializeVocabularies(vocabularies.Where(item => item.WordType == WordType.Noun).SortByKey());
-        return verbs;
     }
 }
 
-internal class VocabularyVerbsSerializer : VocabularySerializer, ISerializer<IEnumerable<VocabularyModel>>
+internal class VocabularyVerbsSerializer : VocabularySerializer
 {
-    public IEnumerable<GameComponentKeyModel> GenerateGameComponentKeys(IEnumerable<VocabularyModel> @object)
+    public VocabularyVerbsSerializer(IEnumerable<VocabularyModel> gameComponent) :
+        base(gameComponent.Where(item => item.WordType == WordType.Verb))
     {
-        throw new NotImplementedException();
-    }
-
-    public SerializerResultModel Serialize(GameComponentsIndexes gameComponentsIndexes, IEnumerable<VocabularyModel> vocabularies)
-    {
-        EnsureHelpers.EnsureMaxLength(gameComponentsIndexes.VocabularyVerbs, Constants.MaxLengthVocabularyVerbsAllowed,
+        EnsureHelpers.EnsureMaxLength(GameComponent, Constants.MaxLengthVocabularyVerbsAllowed,
             string.Format(Properties.Resources.MaxLengthVocabularyVerbsAllowedError, Constants.MaxLengthVocabularyVerbsAllowed));
-
-        var nouns = SerializeVocabularies(vocabularies.Where(item => item.WordType == WordType.Verb).SortByKey());
-        return nouns;
     }
 }

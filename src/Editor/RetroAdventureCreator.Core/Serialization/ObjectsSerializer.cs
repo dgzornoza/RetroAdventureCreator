@@ -21,21 +21,15 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Object serializer:
 /// ----------------------------------------------
 /// 
-/// Header: (7 bytes)
+/// Data:
 /// Name = 8 bits (id vocabulary)
 /// Description Size = 8 bits (id message)
 /// Weight = 5 bits (31)
 /// Health = 3 bits (7)
 /// Properties = 8 bits (flag 8 properties)
-/// ChildObjects = 4 bits (15 ids objects in data)
-/// RequiredComplements = 2 bits (3 ids objects in data)
-/// Complements = 2 bits (3 ids objects in data)
-/// DataAdress = 2 bytes
-/// 
-/// Data:
-/// ChildObjects = 0-15 bytes
-/// RequiredComplements = 0-3 bytes
-/// Complements = 0-3 bytes
+/// ChildObjects = object id bytes (end with 0x00)
+/// RequiredComplements = object id bytes (end with 0x00)
+/// Complements = object id bytes (end with 0x00)
 /// 
 /// </remarks>
 internal class ObjectsSerializer : ISerializer<IEnumerable<ObjectModel>>
@@ -44,12 +38,12 @@ internal class ObjectsSerializer : ISerializer<IEnumerable<ObjectModel>>
 
     private record struct Data(IEnumerable<byte>? ChildObjectsIndexes, IEnumerable<byte>? RequiredComplementsIndexes, IEnumerable<byte>? ComplementsIndexes);
 
-    public IEnumerable<GameComponentKeyModel> GenerateGameComponentKeys(IEnumerable<ObjectModel> @object)
+    public IEnumerable<GameComponentPointerModel> GenerateGameComponentKeys(IEnumerable<ObjectModel> @object)
     {
         throw new NotImplementedException();
     }
 
-    public SerializerResultModel Serialize(GameComponentsIndexes gameComponentsIndexes, IEnumerable<ObjectModel> objects)
+    public SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes, IEnumerable<ObjectModel> objects)
     {
         EnsureHelpers.EnsureMaxLength(objects, Constants.MaxLengthObjectsAllowed,
             string.Format(Properties.Resources.MaxLengthObjectsAllowedError, Constants.MaxLengthObjectsAllowed));
@@ -76,9 +70,9 @@ internal class ObjectsSerializer : ISerializer<IEnumerable<ObjectModel>>
 
             headerBytes.AddRange(CreateHeaderBytes(header));
 
-            var childObjectIndexes = @object.ChildObjects?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).HeaderIndex);
-            var requiredComplementsIndexes = @object.RequiredComplements?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).HeaderIndex);
-            var complementsIndexes = @object.Complements?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).HeaderIndex);
+            var childObjectIndexes = @object.ChildObjects?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).RelativePointer);
+            var requiredComplementsIndexes = @object.RequiredComplements?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).RelativePointer);
+            var complementsIndexes = @object.Complements?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).RelativePointer);
 
             var data = new Data(childObjectIndexes, requiredComplementsIndexes, complementsIndexes);
             dataBytes.AddRange(CreateDataBytes(data));

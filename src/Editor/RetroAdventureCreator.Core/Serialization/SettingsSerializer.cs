@@ -11,31 +11,31 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Settings serializer:
 /// ----------------------------------------------
 /// 
-/// Header: (2 bytes)
+/// Data: (2 bytes)
 /// Charset = 4 bits
 /// Color = 4 bits
 /// BackgroundColor = 4 bits
 /// BorderColor = 4 bits
 /// 
-/// Data: --
-/// 
 /// </remarks>
 internal class SettingsSerializer : Serializer<SettingsModel>
 {
-    public SettingsSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    public SettingsSerializer(SettingsModel gameComponent) : base(gameComponent)
     {
     }
 
-    public override SerializerResultModel Serialize(SettingsModel settings)
-    {
-        var headerBytes = CreateHeaderBytes(settings);
+    public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers() => Enumerable.Empty<GameComponentPointerModel>();
 
-        return new SerializerResultModel(headerBytes, Array.Empty<byte>());
+    public override SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes)
+    {
+        var dataBytes = CreateDataBytes();
+
+        return new SerializerResultModel(dataBytes);
     }
 
-    private static byte[] CreateHeaderBytes(SettingsModel settings) => new byte[]
+    private byte[] CreateDataBytes() => new byte[]
     {
-        (byte)(settings.Charset << 4 | (byte)settings.Color),
-        (byte)((byte)settings.BackgroundColor << 4 | (byte)settings.BorderColor),
+        (byte)(GameComponent.Charset << 4 | (byte)GameComponent.Color),
+        (byte)((byte)GameComponent.BackgroundColor << 4 | (byte)GameComponent.BorderColor),
     };
 }

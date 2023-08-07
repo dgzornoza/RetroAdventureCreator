@@ -47,7 +47,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders;
 /// </remarks>
 abstract class GameBuilder
 {
-    private GameModel game;
+    private GameModel? game;
 
     protected PlayerModel Player { get; private set; }
     protected IEnumerable<FlagModel> Flags { get; private set; }
@@ -96,10 +96,10 @@ abstract class GameBuilder
         return game;
     }
 
-    public virtual GameComponentsIndexes BuildGameComponentsIndexes()
+    public virtual GameComponentsPointers BuildGameComponentsIndexes()
     {
         var game = BuildGame();
-        return new GameSerializerService().InvokeMethod("GenerateGameComponentsIndexes", game) as GameComponentsIndexes ?? throw new InvalidOperationException();
+        return new GameSerializerService().InvokeMethod("GenerateGameComponentsIndexes", game) as GameComponentsPointers ?? throw new InvalidOperationException();
     }
 
     protected AssetsModel BuildAssets() => new()
@@ -115,13 +115,11 @@ abstract class GameBuilder
     };
 
     protected abstract string MainSceneCode { get; }
-
-    protected abstract IEnumerable<FlagModel> CreateFlags();
-
+    
     protected abstract PlayerModel CreatePlayer();
-
     protected abstract SettingsModel CreateSettings();
 
+    protected abstract IEnumerable<FlagModel> CreateFlags();
     protected abstract IEnumerable<MessageModel> CreateMessages();
     protected abstract IEnumerable<VocabularyModel> CreateVocabulary();
     protected abstract IEnumerable<ObjectModel> CreateObjects();

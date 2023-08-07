@@ -22,26 +22,23 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Player serializer:
 /// ----------------------------------------------
 /// 
-/// Header:
-/// Health: 3 bits (7)
-/// Objects: 5 bits (31 ids objects in data)
-/// DataAdress = 2 bytes
-/// 
 /// Data:
-/// Objects = 0-31 bytes
+/// Health: 3 bits (7)
+/// Objects: object id bytes (end with 0x00)
 ///  
 /// </remarks>
-internal class PlayerSerializer : Serializer<PlayerModel>
+internal class PlayerSerializer : ISerializer<PlayerModel>
 {
     private record struct Header(byte Health, byte Objects, short DataAddress);
 
     private record struct Data(IEnumerable<byte>? ObjectsIndexes);
 
-    public PlayerSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    public IEnumerable<GameComponentPointerModel> GenerateGameComponentKeys(PlayerModel player)
     {
+        throw new NotImplementedException();
     }
 
-    public override SerializerResultModel Serialize(PlayerModel player)
+    public SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes, PlayerModel player)
     {
         EnsureObjectProperties(player);
 
@@ -53,7 +50,7 @@ internal class PlayerSerializer : Serializer<PlayerModel>
         };
         var headerBytes = CreateHeaderBytes(header);
 
-        var playerObjectIndexes = player.Objects?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).HeaderIndex);
+        var playerObjectIndexes = player.Objects?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).RelativePointer);
 
         var data = new Data(playerObjectIndexes);
         var dataBytes = CreateDataBytes(data);
@@ -90,4 +87,5 @@ internal class PlayerSerializer : Serializer<PlayerModel>
 
         return result.ToArray();
     }
+
 }

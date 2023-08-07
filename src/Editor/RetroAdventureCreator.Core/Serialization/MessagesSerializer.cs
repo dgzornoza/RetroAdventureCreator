@@ -20,25 +20,22 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Message serializer:
 /// ----------------------------------------------
 /// 
-/// Header: (3 bytes)
-/// Text: 8 bits
-/// DataAdress = 2 bytes
-/// 
 /// Data:
-/// Text = 0-255 bytes
+/// Text: Mesage text bytes (end with 0x00)
 /// 
 /// </remarks>
-internal class MessagesSerializer : Serializer<IEnumerable<MessageModel>>
+internal class MessagesSerializer : ISerializer<IEnumerable<MessageModel>>
 {
     private record struct Header(byte TextLenght, short DataAddress);
 
     private record struct Data(string Text);
 
-    public MessagesSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    public IEnumerable<GameComponentPointerModel> GenerateGameComponentKeys(IEnumerable<MessageModel> messages)
     {
+        throw new NotImplementedException();
     }
 
-    public override SerializerResultModel Serialize(IEnumerable<MessageModel> messages)
+    public SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes, IEnumerable<MessageModel> messages)
     {
         EnsureHelpers.EnsureMaxLength(messages, Constants.MaxLengthMessagesAllowed,
             string.Format(Properties.Resources.MaxLengthMessagesAllowedError, Constants.MaxLengthMessagesAllowed));

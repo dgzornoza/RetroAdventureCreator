@@ -14,25 +14,24 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// <remarks>
 /// Format Scene serializer:
 /// 
-/// Header:
-/// Description Size = 2 bits (3 ids messages in data)
-/// Dispatcher = 5 bits (32 ids dispatchers)
-/// Objects = 3 bits (8)
-/// DataAdress = 2 bytes
-/// 
 /// Data:
-/// Description = 0-512 bytes
-/// Dispatcher = 0-256 bytes
-/// Objects = 0-40 bytes
+/// Description = message id bytes (end with 0x00)
+/// Dispatcher = dispatcher id bytes (end with 0x00)
+/// Objects = object id bytes (end with 0x00)
 /// 
 /// </remarks>
-internal class ScenesSerializer : Serializer<SceneModel>
+internal class ScenesSerializer : Serializer<IEnumerable<SceneModel>>
 {
-    public ScenesSerializer(GameComponentsIndexes gameComponentsIndexes) : base(gameComponentsIndexes)
+    public ScenesSerializer(IEnumerable<SceneModel> gameComponent) : base(gameComponent)
     {
     }
 
-    public override SerializerResultModel Serialize(SceneModel @object)
+    public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes)
     {
         throw new NotImplementedException();
     }
