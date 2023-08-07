@@ -62,13 +62,13 @@ internal class ObjectsSerializer : Serializer<IEnumerable<ObjectModel>>
         return result;
     }
 
-    public override SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
         var dataBytes = GameComponent.SortByKey().SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    private static byte[] CreateDataBytes(ObjectModel @object, GameComponentsPointers gameComponentsIndexes)
+    private static byte[] CreateDataBytes(ObjectModel @object, GameComponentsPointersModel gameComponentsIndexes)
     {
         var result = new List<byte>
         {

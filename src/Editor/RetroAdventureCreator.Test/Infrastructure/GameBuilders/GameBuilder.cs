@@ -26,34 +26,17 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders;
 ///     CommandGroupModel -> CommandModel
 ///     DispatcherModel -> InputCommandModel, CommandGroupModel
 ///     SceneModel -> MessageModel, DispatcherModel, ObjectModel
-///     AssetsModel -> VocabularyModel, MessageModel, CommandModel, CommandGroupModel, InputCommandModel, DispatcherModel, ObjectModel, SceneModel
 ///     PlayerModel -> ObjectModel
-///     GameModel -> PlayerModel, SettingsModel, AssetsModel
-///     
-///  Creation Order:
-///     VocabularyModel
-///     MessageModel
-///     CommandModel
-///     CommandGroupModel
-///     InputCommandModel
-///     DispatcherModel
-///     ObjectModel
-///     SceneModel
-///     AssetsModel
-///     PlayerModel
-///     SettingsModel
-///     GameModel
+///     GameModel -> PlayerModel, SettingsModel, VocabularyModel, MessageModel, CommandModel, CommandGroupModel, InputCommandModel, DispatcherModel, ObjectModel, SceneModel
 ///     
 /// </remarks>
 abstract class GameBuilder
 {
     private GameModel? game;
 
-    protected PlayerModel Player { get; private set; }
-    protected IEnumerable<FlagModel> Flags { get; private set; }
+    protected PlayerModel Player { get; private set; }    
     protected SettingsModel Settings { get; private set; }
-    protected AssetsModel Assets { get; private set; }
-
+    
     protected IEnumerable<VocabularyModel> Vocabulary { get; private set; }
     protected IEnumerable<MessageModel> Messages { get; private set; }
     protected IEnumerable<CommandModel> Commands { get; private set; }
@@ -62,10 +45,10 @@ abstract class GameBuilder
     protected IEnumerable<DispatcherModel> Dispatchers { get; private set; }
     protected IEnumerable<ObjectModel> Objects { get; private set; }
     protected IEnumerable<SceneModel> Scenes { get; private set; }
+    protected IEnumerable<FlagModel> Flags { get; private set; }
 
     protected GameBuilder()
     {
-        // Assets
         Vocabulary = CreateVocabulary();
         Messages = CreateMessages();
         Commands = CreateCommands();
@@ -74,10 +57,8 @@ abstract class GameBuilder
         Dispatchers = CreateDispatchers();
         Objects = CreateObjects();
         Scenes = CreateScenes();
-
-        // Game
-        Assets = BuildAssets();
         Flags = CreateFlags();
+
         Player = CreatePlayer();
         Settings = CreateSettings();
     }
@@ -86,40 +67,30 @@ abstract class GameBuilder
     {
         game ??= new GameModel
         {
-            Assets = Assets,
-            Flags = Flags,
+            MainSceneCode = MainSceneCode,  
+            
             Player = Player,
             Settings = Settings,
-            MainSceneCode = MainSceneCode
+            
+            Vocabulary = Vocabulary,
+            Messages = Messages,
+            Commands = Commands,
+            CommandsGroups = CommandsGroups,
+            InputCommands = InputCommands,
+            Dispatchers = Dispatchers,
+            Objects = Objects,
+            Scenes = Scenes,
+            Flags = Flags,
         };
 
         return game;
     }
 
-    public virtual GameComponentsPointers BuildGameComponentsIndexes()
-    {
-        var game = BuildGame();
-        return new GameSerializerService().InvokeMethod("GenerateGameComponentsIndexes", game) as GameComponentsPointers ?? throw new InvalidOperationException();
-    }
-
-    protected AssetsModel BuildAssets() => new()
-    {
-        Vocabulary = Vocabulary,
-        Messages = Messages,
-        Commands = Commands,
-        CommandsGroups = CommandsGroups,
-        InputCommands = InputCommands,
-        Dispatchers = Dispatchers,
-        Objects = Objects,
-        Scenes = Scenes,
-    };
-
     protected abstract string MainSceneCode { get; }
     
     protected abstract PlayerModel CreatePlayer();
     protected abstract SettingsModel CreateSettings();
-
-    protected abstract IEnumerable<FlagModel> CreateFlags();
+    
     protected abstract IEnumerable<MessageModel> CreateMessages();
     protected abstract IEnumerable<VocabularyModel> CreateVocabulary();
     protected abstract IEnumerable<ObjectModel> CreateObjects();
@@ -128,5 +99,6 @@ abstract class GameBuilder
     protected abstract IEnumerable<InputCommandModel> CreateInputCommands();
     protected abstract IEnumerable<DispatcherModel> CreateDispatchers();
     protected abstract IEnumerable<SceneModel> CreateScenes();
+    protected abstract IEnumerable<FlagModel> CreateFlags();
 }
 

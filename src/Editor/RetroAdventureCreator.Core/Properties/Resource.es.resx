@@ -126,6 +126,9 @@
   <data name="CodeIsRequiredError" xml:space="preserve">
     <value>La propiedad 'Code' es requerida</value>
   </data>
+  <data name="CommandsAreRequired" xml:space="preserve">
+    <value>La propiedad Comandos es requerida</value>
+  </data>
   <data name="DescriptionIsRequiredError" xml:space="preserve">
     <value>La propiedad 'Description' es requerida</value>
   </data>
@@ -135,6 +138,12 @@
   <data name="InputCommandVerbIsRequired" xml:space="preserve">
     <value>El verbo es requerido en el comando de entrada</value>
   </data>
+  <data name="MaxLengthAfterInputCommandDispatchersAllowedError" xml:space="preserve">
+    <value>El número máximo de dispatchers anteriores a comando permitido es de {0}</value>
+  </data>
+  <data name="MaxLengthBeforeInputCommandDispatchersAllowedError" xml:space="preserve">
+    <value>El número máximo de dispatchers posteriores a un comando permitido es de {0}</value>
+  </data>
   <data name="MaxLengthChildObjectsAllowedError" xml:space="preserve">
     <value>El tamaño máximo de los objetos hijos es de {0}</value>
   </data>
@@ -143,6 +152,9 @@
   </data>
   <data name="MaxLengthCommandsAllowedError" xml:space="preserve">
     <value>El número máximo de comandos permitido es de {0}</value>
+  </data>
+  <data name="MaxLengthCommandsGroupsAllowedError" xml:space="preserve">
+    <value>El número máximo de grupos de comandos permitido es de {0}</value>
   </data>
   <data name="MaxLengthFlagsAllowedError" xml:space="preserve">
     <value>El número máximo de flags permitido es de {0}</value>

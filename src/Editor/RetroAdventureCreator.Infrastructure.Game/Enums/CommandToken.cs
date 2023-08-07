@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RetroAdventureCreator.Infrastructure.Game.Enums;
 
-public enum CommandToken
+public enum CommandToken : byte
 {
     At,
     Message,

@@ -126,6 +126,9 @@
   <data name="CodeIsRequiredError" xml:space="preserve">
     <value>Code property is required</value>
   </data>
+  <data name="CommandsAreRequired" xml:space="preserve">
+    <value>Commands property are required</value>
+  </data>
   <data name="DescriptionIsRequiredError" xml:space="preserve">
     <value>Description property is required</value>
   </data>
@@ -135,6 +138,12 @@
   <data name="InputCommandVerbIsRequired" xml:space="preserve">
     <value>Input command verb is required</value>
   </data>
+  <data name="MaxLengthAfterInputCommandDispatchersAllowedError" xml:space="preserve">
+    <value>The maximum number of after input command dispatchers allowed is {0}</value>
+  </data>
+  <data name="MaxLengthBeforeInputCommandDispatchersAllowedError" xml:space="preserve">
+    <value>The maximum number of before input command dispatchers allowed is {0}</value>
+  </data>
   <data name="MaxLengthChildObjectsAllowedError" xml:space="preserve">
     <value>The maximum length of child object is {0}</value>
   </data>
@@ -143,6 +152,9 @@
   </data>
   <data name="MaxLengthCommandsAllowedError" xml:space="preserve">
     <value>The maximum length of commands allowed is {0}</value>
+  </data>
+  <data name="MaxLengthCommandsGroupsAllowedError" xml:space="preserve">
+    <value>The maximum length of commands groups allowed is {0}</value>
   </data>
   <data name="MaxLengthFlagsAllowedError" xml:space="preserve">
     <value>The maximum length of flags allowed is {0}</value>

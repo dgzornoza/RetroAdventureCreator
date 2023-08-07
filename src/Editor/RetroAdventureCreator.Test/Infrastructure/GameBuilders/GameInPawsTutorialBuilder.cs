@@ -14,11 +14,6 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
     {
         protected override string MainSceneCode => "EntradaScene";
 
-        protected override IEnumerable<FlagModel> CreateFlags() => new List<FlagModel>
-        {
-            new FlagModel { Code = "openEntry", Value = false }
-        };
-
         protected override PlayerModel CreatePlayer() => new()
         {
             Health = 7,
@@ -39,12 +34,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             new MessageModel
             {
                 Code = "EntradaSceneDescription1",
-                Text = "^^Tras meses de exploración en lo profundo de la selva, y después de haber sido perseguido, mordido, enfermado, pasado hambre y renunciado al todo, ",
-            },
-            new MessageModel
-            {
-                Code = "EntradaSceneDescription2",
-                Text = "ahora por fin has encontrado lo que buscabas, el Templo de Ok, donde según cuenta la leyenda se guarda el Gran Diamante del Rajá Al-Meredin, rechazado por su amada y condenado a ser encerrado eternamente en lo profundo de la selva.^^ Hasta hoy.",
+                Text = "^^Tras meses de exploración en lo profundo de la selva, y después de haber sido perseguido, mordido, enfermado, pasado hambre y renunciado al todo, ahora por fin has encontrado lo que buscabas, el Templo de Ok, donde según cuenta la leyenda se guarda el Gran Diamante del Rajá Al-Meredin, rechazado por su amada y condenado a ser encerrado eternamente en lo profundo de la selva.^^ Hasta hoy.",
             },
             new MessageModel
             {
@@ -283,14 +273,20 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             new SceneModel
             {
                 Code = MainSceneCode,
-                Description = Messages.Where(item => item.Code.StartsWith("EntradaSceneDescription")),
-                Dispatchers = Dispatchers.Where(item => item.Code.StartsWith(MainSceneCode))
+                Description = Messages.Find("EntradaSceneDescription"),
+                AfterInputCommandDispatchers = Dispatchers.Where(item => item.Code.StartsWith(MainSceneCode) && item.Trigger == Trigger.AfterInputCommand),
+                BeforeInputCommandDispatchers = Dispatchers.Where(item => item.Code.StartsWith(MainSceneCode) && item.Trigger == Trigger.BeforeInputCommand)
             },
             new SceneModel
             {
                 Code = "InteriorScene",
-                Description = Messages.Where(item => item.Code == "InteriorSceneDescription"),
+                Description = Messages.Find("InteriorSceneDescription"),
             }
+        };
+
+        protected override IEnumerable<FlagModel> CreateFlags() => new List<FlagModel>
+        {
+            new FlagModel { Code = "openEntry", Value = false }
         };
     }
 }

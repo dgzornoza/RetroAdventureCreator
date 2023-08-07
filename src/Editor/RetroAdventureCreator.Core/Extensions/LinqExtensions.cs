@@ -13,7 +13,7 @@ namespace RetroAdventureCreator.Core.Extensions
     {
         public static byte IndexOf<T>(this IEnumerable<T> list, string code) where T : IUniqueKey
         {
-            EnsureHelpers.EnsureMaxLength(list, Constants.MaxIdLength, string.Format(Properties.Resources.MaxLengthIdsError, Constants.MaxIdLength));
+            EnsureHelpers.EnsureMaxLength(list, Constants.MaxLengthIds, string.Format(Properties.Resources.MaxLengthIdsError, Constants.MaxLengthIds));
             return (byte)list.Select((item, index) => (item.Code, index)).First(item => item.Code == code).index;
         }
         

@@ -36,7 +36,7 @@ internal class FlagsSerializer : Serializer<IEnumerable<FlagModel>>
 
     public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers() => Enumerable.Empty<GameComponentPointerModel>();
 
-    public override SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
         var sortedFlags = GameComponent.SortByKey();
         var dataBytes = CreateDataBytes(sortedFlags);

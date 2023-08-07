@@ -50,7 +50,7 @@ internal abstract class VocabularySerializer : Serializer<IEnumerable<Vocabulary
         return result;
     }
 
-    public override SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
         var dataBytes = GameComponent.SelectMany(CreateDataBytes);
         return new SerializerResultModel(dataBytes.ToArray());

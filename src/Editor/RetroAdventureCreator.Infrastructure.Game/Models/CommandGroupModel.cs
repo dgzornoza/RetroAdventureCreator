@@ -28,3 +28,4 @@ public class CommandGroupModel : IUniqueKey, ICommandModel
     /// </summary>
     public IEnumerable<ICommandModel> Commands { get; init; } = default!;
 }
+

@@ -26,7 +26,7 @@ internal class SettingsSerializer : Serializer<SettingsModel>
 
     public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers() => Enumerable.Empty<GameComponentPointerModel>();
 
-    public override SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
         var dataBytes = CreateDataBytes();
 

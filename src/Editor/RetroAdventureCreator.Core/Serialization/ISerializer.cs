@@ -15,5 +15,5 @@ internal interface ISerializer<out T> where T : class
 
     IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers();
 
-    SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes);
+    SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes);
 }

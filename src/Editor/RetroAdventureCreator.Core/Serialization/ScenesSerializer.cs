@@ -20,7 +20,8 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// 
 /// Data:
 /// Description = message id byte
-/// Dispatcher = dispatcher id bytes (end with 0x00)
+/// AfterInputCommandDispatchers = dispatcher id bytes (end with 0x00)
+/// BeforeInputCommandDispatchers = dispatcher id bytes (end with 0x00)
 /// Objects = object id bytes (end with 0x00)
 /// 
 /// </remarks>
@@ -45,20 +46,21 @@ internal class ScenesSerializer : Serializer<IEnumerable<SceneModel>>
 
             pointer +=
                 1 + // description
-                (scene.Dispatchers?.Count() ?? 0) + 1 + // dispatcher + EndTokenByte 
+                (scene.AfterInputCommandDispatchers?.Count() ?? 0) + 1 + // AfterInputCommandDispatchers + EndTokenByte 
+                (scene.BeforeInputCommandDispatchers?.Count() ?? 0) + 1 + // BeforeInputCommandDispatchers + EndTokenByte 
                 (scene.Objects?.Count() ?? 0) + 1; // objects + EndTokenByte
         }
 
         return result;
     }
 
-    public override SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
         var dataBytes = GameComponent.SortByKey().SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    private static byte[] CreateDataBytes(SceneModel scene, GameComponentsPointers gameComponentsIndexes)
+    private static byte[] CreateDataBytes(SceneModel scene, GameComponentsPointersModel gameComponentsIndexes)
     {
         var result = new List<byte>
         {
@@ -66,10 +68,16 @@ internal class ScenesSerializer : Serializer<IEnumerable<SceneModel>>
             gameComponentsIndexes.Messages.IndexOf(scene.Description.Code),
         };
 
-        // dispatcher
-        if (scene.Dispatchers != null && scene.Dispatchers.Any())
+        // dispatchers
+        if (scene.AfterInputCommandDispatchers != null && scene.AfterInputCommandDispatchers.Any())
         {
-            result.AddRange(scene.Dispatchers.Select(item => gameComponentsIndexes.Dispatchers.IndexOf(item.Code)));            
+            result.AddRange(scene.AfterInputCommandDispatchers.Select(item => gameComponentsIndexes.AfterInputCommandDispatchers.IndexOf(item.Code)));            
+        }
+        result.Add(EndToken);
+        
+        if (scene.BeforeInputCommandDispatchers != null && scene.BeforeInputCommandDispatchers.Any())
+        {
+            result.AddRange(scene.BeforeInputCommandDispatchers.Select(item => gameComponentsIndexes.BeforeInputCommandDispatchers.IndexOf(item.Code)));
         }
         result.Add(EndToken);
 

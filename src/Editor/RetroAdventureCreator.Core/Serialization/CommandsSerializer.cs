@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using RetroAdventureCreator.Core.Extensions;
 using RetroAdventureCreator.Core.Helpers;
 using RetroAdventureCreator.Core.Infrastructure;
 using RetroAdventureCreator.Core.Models;
@@ -20,60 +22,60 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Data:
-/// Token = 6 bits (64)
-/// Arguments = 2 bits (3 ids 2 bytes, absolute address)
-/// Arguments = 0-6 bytes
-/// 
+/// 1 bit = 0 (Command)
+/// Token = 7 byte (128)
+/// Arguments = ids bytes (end with 0x00)
 /// 
 /// </remarks>
-internal class CommandsSerializer : ISerializer<IEnumerable<CommandModel>>
+internal class CommandsSerializer : Serializer<IEnumerable<CommandModel>>
 {
-    private record struct Header(byte Token, byte Arguments);
-
-    private record struct Data(string Arguments);
-
-    public IEnumerable<GameComponentPointerModel> GenerateGameComponentKeys(IEnumerable<CommandModel> commands)
+    public CommandsSerializer(IEnumerable<CommandModel> gameComponent) : base(gameComponent)
     {
-        throw new NotImplementedException();
+        EnsureHelpers.EnsureMaxLength(GameComponent, Constants.MaxLengthCommandsAllowed,
+            string.Format(Properties.Resources.MaxLengthCommandsAllowedError, Constants.MaxLengthCommandsAllowed));
     }
 
-    public SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes, IEnumerable<CommandModel> commands)
+    public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers()
     {
-        //var commands = @objects ?? throw new ArgumentNullException(nameof(@objects));
+        var result = new List<GameComponentPointerModel>();
+        var pointer = 0;
 
-        //EnsureHelpers.EnsureMaxLength(commands, Constants.MaxNumberCommandsAllowed,
-        //    string.Format(Properties.Resources.MaxNumberCommandsAllowedError, Constants.MaxNumberCommandsAllowed));
+        foreach (var command in GameComponent.SortByKey())
+        {
+            EnsureGameComponentProperties(command, result);
 
-        //var componentKeys = new List<GameComponentKeyModel>(commands.Count());
-        //var result = new List<byte>();
-        //foreach (var command in commands.SortByKey())
-        //{
-        //    var arguments = string.Join("", command.Arguments ?? Enumerable.Empty<string>());
+            result.Add(new GameComponentPointerModel(command.Code, pointer));
+            pointer +=
+                1 + // flag command + token
+                (command.Arguments?.Count() ?? 0) + 1; // Arguments + EndTokenByte
+        }
 
-        //    EnsureHelpers.EnsureNotNullOrWhiteSpace(command.Code, Properties.Resources.CodeIsRequiredError);
-        //    EnsureHelpers.EnsureNotFound(componentKeys, item => item.Code == command.Code, string.Format(Properties.Resources.DuplicateCodeError, command.Code));
-        //    EnsureHelpers.EnsureMaxLength(arguments.Length, Constants.MaxNumberCommandArgumentsAllowed,
-        //        string.Format(Properties.Resources.MaxSizeOfCommandArgumentsError, Constants.MaxNumberCommandsAllowed));
-
-        //    componentKeys.Add(new GameComponentKeyModel(command.Code, result.Count));
-
-        //    var header = new Header((byte)command.Token, (byte)(command.Arguments?.Count() ?? 0));
-        //    result.AddRange(CreateHeaderBytes(header));
-
-        //    var data = new Data(arguments);
-        //    result.AddRange(CreateDataBytes(data));
-        //}
-
-        //return new SerializerResultKeyModel(componentKeys, result.ToArray());
-
-        throw new NotImplementedException();
+        return result;
     }
 
-    private static byte[] CreateHeaderBytes(Header header) => new byte[]
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
-            (byte)(header.Token << 2 | header.Arguments),
-    };
+        var dataBytes = GameComponent.SortByKey().SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
+        return new SerializerResultModel(dataBytes.ToArray());
+    }
 
-    // TODO: falta implementar la creacion de direcciones desde los argumentos
-    private static byte[] CreateDataBytes(Data data) => Encoding.ASCII.GetBytes(data.Arguments);
+    private static byte[] CreateDataBytes(CommandModel command, GameComponentsPointersModel gameComponentsIndexes)
+    {
+        var result = new List<byte>
+        {
+            // health + experience points
+            (byte)(1 << 7 | (byte)command.Token),
+        };
+
+        // TODO: falta implementar argumentos dependiendo del comando
+        // ...
+
+        return result.ToArray();
+    }
+
+    private static void EnsureGameComponentProperties(CommandModel command, IEnumerable<GameComponentPointerModel> gameComponentPointers)
+    {
+        EnsureHelpers.EnsureNotFound(gameComponentPointers, item => item.Code == command.Code, string.Format(Properties.Resources.DuplicateCodeError, command.Code));
+        EnsureHelpers.EnsureNotNullOrWhiteSpace(command.Code, Properties.Resources.CodeIsRequiredError);
+    }
 }

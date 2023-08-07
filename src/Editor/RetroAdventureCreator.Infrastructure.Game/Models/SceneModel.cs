@@ -18,9 +18,14 @@ public class SceneModel : IUniqueKey
     public MessageModel Description { get; init; } = default!;
 
     /// <summary>
-    /// Scene dispatchers 
+    /// Scene after input command dispatchers 
     /// </summary>
-    public IEnumerable<DispatcherModel>? Dispatchers { get; init; }
+    public IEnumerable<DispatcherModel>? AfterInputCommandDispatchers { get; init; }
+
+    /// <summary>
+    /// Scene before input command dispatchers 
+    /// </summary>
+    public IEnumerable<DispatcherModel>? BeforeInputCommandDispatchers { get; init; }
 
     /// <summary>
     /// Objects in scene

@@ -23,6 +23,6 @@ internal abstract class Serializer<T> : ISerializer<T> where T: class
 
     public abstract IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers();
 
-    public abstract SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes);
+    public abstract SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes);
 
 }

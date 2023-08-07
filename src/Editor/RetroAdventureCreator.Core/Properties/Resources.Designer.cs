@@ -88,6 +88,15 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Commands property are required.
+        /// </summary>
+        internal static string CommandsAreRequired {
+            get {
+                return ResourceManager.GetString("CommandsAreRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description property is required.
         /// </summary>
         internal static string DescriptionIsRequiredError {
@@ -115,6 +124,24 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The maximum number of after input command dispatchers allowed is {0}.
+        /// </summary>
+        internal static string MaxLengthAfterInputCommandDispatchersAllowedError {
+            get {
+                return ResourceManager.GetString("MaxLengthAfterInputCommandDispatchersAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum number of before input command dispatchers allowed is {0}.
+        /// </summary>
+        internal static string MaxLengthBeforeInputCommandDispatchersAllowedError {
+            get {
+                return ResourceManager.GetString("MaxLengthBeforeInputCommandDispatchersAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The maximum length of child object is {0}.
         /// </summary>
         internal static string MaxLengthChildObjectsAllowedError {
@@ -138,6 +165,15 @@ namespace RetroAdventureCreator.Core.Properties {
         internal static string MaxLengthCommandsAllowedError {
             get {
                 return ResourceManager.GetString("MaxLengthCommandsAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum length of commands groups allowed is {0}.
+        /// </summary>
+        internal static string MaxLengthCommandsGroupsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxLengthCommandsGroupsAllowedError", resourceCulture);
             }
         }
         

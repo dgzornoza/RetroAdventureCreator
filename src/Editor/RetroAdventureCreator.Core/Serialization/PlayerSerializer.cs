@@ -39,13 +39,13 @@ internal class PlayerSerializer : Serializer<PlayerModel>
 
     public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers() => Enumerable.Empty<GameComponentPointerModel>();
 
-    public override SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
         var dataBytes = CreateDataBytes(GameComponent, gameComponentsIndexes);
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    private static byte[] CreateDataBytes(PlayerModel player, GameComponentsPointers gameComponentsIndexes)
+    private static byte[] CreateDataBytes(PlayerModel player, GameComponentsPointersModel gameComponentsIndexes)
     {
         var result = new List<byte>
         {

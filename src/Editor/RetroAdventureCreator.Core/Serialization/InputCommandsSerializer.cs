@@ -53,14 +53,13 @@ internal class InputCommandsSerializer : Serializer<IEnumerable<InputCommandMode
         return result;
     }
 
-
-    public override SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
         var dataBytes = GameComponent.SortByKey().SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    private static byte[] CreateDataBytes(InputCommandModel inputComand, GameComponentsPointers gameComponentsIndexes)
+    private static byte[] CreateDataBytes(InputCommandModel inputComand, GameComponentsPointersModel gameComponentsIndexes)
     {
         var result = new List<byte>
         {

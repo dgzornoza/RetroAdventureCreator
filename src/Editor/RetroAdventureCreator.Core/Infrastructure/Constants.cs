@@ -9,6 +9,7 @@ namespace RetroAdventureCreator.Core.Infrastructure
     public static class Constants
     {
         public const int MaxLengthIds = byte.MaxValue - 1;
+
         // Vocabulary
         public const int MaxLengthVocabularyNounsAllowed = MaxLengthIds;
         public const int MaxLengthVocabularyVerbsAllowed = MaxLengthIds;
@@ -27,6 +28,9 @@ namespace RetroAdventureCreator.Core.Infrastructure
         public const int MaxLengthCommandsAllowed = MaxLengthIds;
         public const int MaxLengthCommandArgumentsAllowed = 3;
 
+        // Commands
+        public const int MaxLengthCommandsGroupsAllowed = MaxLengthIds;
+
         // Input Commands
         public const int MaxLengthInputCommandsAllowed = MaxLengthIds;
         public const int MaxLengthInputCommandsNounsAllowed = 3;
@@ -35,7 +39,8 @@ namespace RetroAdventureCreator.Core.Infrastructure
         public const int MaxLengthFlagsAllowed = MaxLengthIds;
 
         // Dispatcher
-        public const int MaxLengthDispatchersAllowed = MaxLengthIds;
+        public const int MaxLengthAfterInputCommandDispatchersAllowed = MaxLengthIds;
+        public const int MaxLengthBeforeInputCommandDispatchersAllowed = MaxLengthIds;
 
         // Scenes
         public const int MaxLengthScenesAllowed = MaxLengthIds;
