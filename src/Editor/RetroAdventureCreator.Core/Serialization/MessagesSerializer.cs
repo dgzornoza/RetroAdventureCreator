@@ -24,48 +24,45 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Text: Mesage text bytes (end with 0x00)
 /// 
 /// </remarks>
-internal class MessagesSerializer : ISerializer<IEnumerable<MessageModel>>
+internal class MessagesSerializer : Serializer<IEnumerable<MessageModel>>
 {
-    private record struct Header(byte TextLenght, short DataAddress);
-
-    private record struct Data(string Text);
-
-    public IEnumerable<GameComponentPointerModel> GenerateGameComponentKeys(IEnumerable<MessageModel> messages)
+    public MessagesSerializer(IEnumerable<MessageModel> gameComponent) : base(gameComponent)
     {
-        throw new NotImplementedException();
+        EnsureHelpers.EnsureMaxLength(GameComponent, Constants.MaxLengthMessagesAllowed,
+            string.Format(Properties.Resources.MaxLengthMessagesAllowedError, Constants.MaxLengthMessagesAllowed));
     }
 
-    public SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes, IEnumerable<MessageModel> messages)
+    public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers()
     {
-        EnsureHelpers.EnsureMaxLength(messages, Constants.MaxLengthMessagesAllowed,
-            string.Format(Properties.Resources.MaxLengthMessagesAllowedError, Constants.MaxLengthMessagesAllowed));
+        var result = new List<GameComponentPointerModel>();
+        var pointer = 0;
 
-        var headerBytes = new List<byte>();
-        var dataBytes = new List<byte>();
-
-        foreach (var message in messages.SortByKey())
+        foreach (var message in GameComponent.SortByKey())
         {
-            EnsureHelpers.EnsureNotNullOrWhiteSpace(message.Code, Properties.Resources.CodeIsRequiredError);
-            EnsureHelpers.EnsureNotNullOrWhiteSpace(message.Text, Properties.Resources.TextIsRequiredError);
-            EnsureHelpers.EnsureMaxLength(message.Text.Length, Constants.MaxLengthMessageTextAllowed,
-                string.Format(Properties.Resources.MaxLengthMessageTextError, Constants.MaxLengthMessageTextAllowed));
+            EnsureGameComponentProperties(message, result);
 
-            var header = new Header((byte)message.Text.Length, (short)dataBytes.Count);
-            headerBytes.AddRange(CreateHeaderBytes(header));
+            result.Add(new GameComponentPointerModel(message.Code, pointer));
 
-            var data = new Data(message.Text);
-            dataBytes.AddRange(CreateDataBytes(data));
+            pointer += (message.Text + EndToken).Length;
         }
 
-        return new SerializerResultModel(headerBytes.ToArray(), dataBytes.ToArray());
+        return result;
     }
 
-    private static byte[] CreateHeaderBytes(Header header) => new byte[]
+    public override SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes)
     {
-        header.TextLenght,
-        header.DataAddress.GetByte(2),
-        header.DataAddress.GetByte(1),
-    };
+        var dataBytes = GameComponent.SortByKey().SelectMany(CreateDataBytes);
+        return new SerializerResultModel(dataBytes.ToArray());
+    }
 
-    private static byte[] CreateDataBytes(Data data) => Encoding.ASCII.GetBytes(data.Text);
+    private byte[] CreateDataBytes(MessageModel message) => SerializerEncoding.GetBytes(message.Text);
+
+    private static void EnsureGameComponentProperties(MessageModel message, IEnumerable<GameComponentPointerModel> gameComponentPointers)
+    {
+        EnsureHelpers.EnsureNotFound(gameComponentPointers, item => item.Code == message.Code, string.Format(Properties.Resources.DuplicateCodeError, message.Code));
+        EnsureHelpers.EnsureNotNullOrWhiteSpace(message.Code, Properties.Resources.CodeIsRequiredError);
+
+        EnsureHelpers.EnsureNotNullOrEmpty(message.Text, Properties.Resources.TextIsRequiredError);
+        EnsureHelpers.EnsureNotFound(message.Text, item => item == EndToken, Properties.Resources.StringEndCharDuplicatedError);
+    }
 }

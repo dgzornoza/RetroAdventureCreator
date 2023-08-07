@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using RetroAdventureCreator.Core.Infrastructure;
 using RetroAdventureCreator.Core.Models;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace RetroAdventureCreator.Core.Serialization;
 
@@ -23,72 +25,86 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// 
 /// Data:
 /// Name = 8 bits (id vocabulary)
-/// Description Size = 8 bits (id message)
+/// Description = 8 bits (id message)
 /// Weight = 5 bits (31)
 /// Health = 3 bits (7)
 /// Properties = 8 bits (flag 8 properties)
-/// ChildObjects = object id bytes (end with 0x00)
-/// RequiredComplements = object id bytes (end with 0x00)
-/// Complements = object id bytes (end with 0x00)
+/// ChildObjects = (Optional, only if properties has 'IsContainer') 8 object id bytes
 /// 
 /// </remarks>
-internal class ObjectsSerializer : ISerializer<IEnumerable<ObjectModel>>
+internal class ObjectsSerializer : Serializer<IEnumerable<ObjectModel>>
 {
-    private record struct Header(byte NameIndex, byte DescriptionIndex, byte Weight, byte Health, byte Properties, byte ChildObjects, byte RequiredComplements, byte Complements, short DataAddress);
-
-    private record struct Data(IEnumerable<byte>? ChildObjectsIndexes, IEnumerable<byte>? RequiredComplementsIndexes, IEnumerable<byte>? ComplementsIndexes);
-
-    public IEnumerable<GameComponentPointerModel> GenerateGameComponentKeys(IEnumerable<ObjectModel> @object)
+    public ObjectsSerializer(IEnumerable<ObjectModel> gameComponent) : base(gameComponent)
     {
-        throw new NotImplementedException();
+        EnsureHelpers.EnsureMaxLength(GameComponent, Constants.MaxLengthObjectsAllowed,
+            string.Format(Properties.Resources.MaxLengthObjectsAllowedError, Constants.MaxLengthObjectsAllowed));
     }
 
-    public SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes, IEnumerable<ObjectModel> objects)
+    public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers()
     {
-        EnsureHelpers.EnsureMaxLength(objects, Constants.MaxLengthObjectsAllowed,
-            string.Format(Properties.Resources.MaxLengthObjectsAllowedError, Constants.MaxLengthObjectsAllowed));
+        var result = new List<GameComponentPointerModel>();
+        var pointer = 0;
 
-        var headerBytes = new List<byte>();
-        var dataBytes = new List<byte>();
-
-        foreach (var @object in objects.SortByKey())
+        foreach (var @object in GameComponent.SortByKey())
         {
-            EnsureObjectProperties(@object);
+            EnsureGameComponentProperties(@object, result);
 
-            var header = new Header()
-            {
-                NameIndex = (byte)gameComponentsIndexes.VocabularyNouns.Find(@object.Name.Code).RelativePointer,
-                DescriptionIndex = (byte)gameComponentsIndexes.Messages.Find(@object.Description.Code).RelativePointer,
-                Weight = (byte)@object.Weight,
-                Health = (byte)@object.Health,
-                Properties = (byte)@object.Properties,
-                ChildObjects = (byte)(@object.ChildObjects?.Count() ?? 0),
-                RequiredComplements = (byte)(@object.RequiredComplements?.Count() ?? 0),
-                Complements = (byte)(@object.Complements?.Count() ?? 0),
-                DataAddress = (short)dataBytes.Count,
-            };
+            result.Add(new GameComponentPointerModel(@object.Code, pointer));
 
-            headerBytes.AddRange(CreateHeaderBytes(header));
-
-            var childObjectIndexes = @object.ChildObjects?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).RelativePointer);
-            var requiredComplementsIndexes = @object.RequiredComplements?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).RelativePointer);
-            var complementsIndexes = @object.Complements?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).RelativePointer);
-
-            var data = new Data(childObjectIndexes, requiredComplementsIndexes, complementsIndexes);
-            dataBytes.AddRange(CreateDataBytes(data));
+            pointer +=
+                1 + // Name
+                1 + // Description
+                1 + // (Weight, Health)
+                1 + // Properties
+                (@object.Properties.HasFlag(ObjectProperties.IsContainer) ? 8 : 0); // ChildObjects (optional)
         }
 
-        return new SerializerResultModel(headerBytes.ToArray(), dataBytes.ToArray());
+        return result;
     }
 
-    private static void EnsureObjectProperties(ObjectModel @object)
+    public override SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes)
     {
+        var dataBytes = GameComponent.SortByKey().SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
+        return new SerializerResultModel(dataBytes.ToArray());
+    }
+
+    private static byte[] CreateDataBytes(ObjectModel @object, GameComponentsPointers gameComponentsIndexes)
+    {
+        var result = new List<byte>
+        {
+            // description
+            gameComponentsIndexes.VocabularyNouns.IndexOf(@object.Name.Code),
+            gameComponentsIndexes.Messages.IndexOf(@object.Description.Code),
+            (byte)(@object.Weight << 3 | @object.Health),
+            (byte)@object.Properties,
+        };
+
+        // ChildObjects        
+        if (@object.Properties.HasFlag(ObjectProperties.IsContainer))
+        {
+            if (@object.ChildObjects != null && @object.ChildObjects.Any())
+            {
+                result.AddRange(@object.ChildObjects.Select(item => gameComponentsIndexes.Objects.IndexOf(item.Code)));
+            }
+            var objectsCount = @object.ChildObjects?.Count() ?? 0;
+            if (objectsCount < Constants.MaxLengthChildObjectsAllowed)
+            {
+                result.AddRange(Enumerable.Range(0, Constants.MaxLengthChildObjectsAllowed - objectsCount).Select(item => (byte)0x00));
+            }
+        }
+
+        return result.ToArray();
+    }
+
+    private static void EnsureGameComponentProperties(ObjectModel @object, IEnumerable<GameComponentPointerModel> gameComponentPointers)
+    {
+        EnsureHelpers.EnsureNotFound(gameComponentPointers, item => item.Code == @object.Code, string.Format(Properties.Resources.DuplicateCodeError, @object.Code));
         EnsureHelpers.EnsureNotNullOrWhiteSpace(@object.Code, Properties.Resources.CodeIsRequiredError);
 
         EnsureHelpers.EnsureNotNull(@object.Name, Properties.Resources.NameIsRequiredError);
         EnsureHelpers.EnsureNotNull(@object.Description, Properties.Resources.DescriptionIsRequiredError);
 
-        EnsureHelpers.EnsureMaxLength(@object.Weight, Constants.MaxLengthObjectWeightAllowed, 
+        EnsureHelpers.EnsureMaxLength(@object.Weight, Constants.MaxLengthObjectWeightAllowed,
             string.Format(Properties.Resources.MaxLengthObjectWeightError, Constants.MaxLengthObjectWeightAllowed));
         EnsureHelpers.EnsureMaxLength(@object.Health, Constants.MaxLengthObjectHealthAllowed,
             string.Format(Properties.Resources.MaxLengthObjectHealthError, Constants.MaxLengthObjectHealthAllowed));
@@ -98,51 +114,5 @@ internal class ObjectsSerializer : ISerializer<IEnumerable<ObjectModel>>
             EnsureHelpers.EnsureMaxLength(@object.ChildObjects, Constants.MaxLengthChildObjectsAllowed,
                 string.Format(Properties.Resources.MaxLengthChildObjectsAllowedError, Constants.MaxLengthChildObjectsAllowed));
         }
-
-        if (@object.RequiredComplements != null)
-        {
-            EnsureHelpers.EnsureMaxLength(@object.RequiredComplements, Constants.MaxLengthRequiredComplementsAllowed,
-                string.Format(Properties.Resources.MaxLengthRequiredComplementsAllowedError, Constants.MaxLengthRequiredComplementsAllowed));
-        }
-
-        if (@object.Complements != null)
-        {
-            EnsureHelpers.EnsureMaxLength(@object.Complements, Constants.MaxLengthComplementsAllowed,
-                string.Format(Properties.Resources.MaxLengthComplementsAllowedError, Constants.MaxLengthComplementsAllowed));
-        }
     }
-
-    /// </summary>
-    /// <param name="header"></param>
-    /// <returns></returns>
-    private static byte[] CreateHeaderBytes(Header header) => new byte[]
-    {
-        header.NameIndex,
-        header.DescriptionIndex,
-        (byte)(header.Weight << 3 | header.Health),
-        header.Properties,
-        (byte)(header.ChildObjects << 4 | header.RequiredComplements << 2 | header.Complements),
-        header.DataAddress.GetByte(2),
-        header.DataAddress.GetByte(1),
-    };
-
-    private static byte[] CreateDataBytes(Data data)
-    {
-        var result = new List<byte>();
-        if (data.ChildObjectsIndexes != null)
-        {
-            result.AddRange(data.ChildObjectsIndexes);
-        }
-        if (data.RequiredComplementsIndexes != null)
-        {
-            result.AddRange(data.RequiredComplementsIndexes);
-        }
-        if (data.ComplementsIndexes != null)
-        {
-            result.AddRange(data.ComplementsIndexes);
-        }
-        
-        return result.ToArray();
-    }
-
 }

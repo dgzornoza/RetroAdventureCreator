@@ -22,70 +22,63 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Player serializer:
 /// ----------------------------------------------
 /// 
-/// Data:
-/// Health: 3 bits (7)
-/// Objects: object id bytes (end with 0x00)
+/// Data (player data ban be modified in game for update properties):
+/// Health: 4 bits (15)
+/// ExperiencePoints: 4 bits (15)
+/// Objects: 8 object id bytes
 ///  
 /// </remarks>
-internal class PlayerSerializer : ISerializer<PlayerModel>
+internal class PlayerSerializer : Serializer<PlayerModel>
 {
-    private record struct Header(byte Health, byte Objects, short DataAddress);
+    public PlayerSerializer(PlayerModel gameComponent) : base(gameComponent)
+    {
+        EnsureGameComponentProperties();
+    }
 
     private record struct Data(IEnumerable<byte>? ObjectsIndexes);
 
-    public IEnumerable<GameComponentPointerModel> GenerateGameComponentKeys(PlayerModel player)
+    public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers() => Enumerable.Empty<GameComponentPointerModel>();
+
+    public override SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes)
     {
-        throw new NotImplementedException();
+        var dataBytes = CreateDataBytes(GameComponent, gameComponentsIndexes);
+        return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    public SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes, PlayerModel player)
+    private static byte[] CreateDataBytes(PlayerModel player, GameComponentsPointers gameComponentsIndexes)
     {
-        EnsureObjectProperties(player);
-
-        var header = new Header
+        var result = new List<byte>
         {
-            Health = (byte)player.Health,
-            Objects = (byte)(player.Objects?.Count() ?? 0),
-            DataAddress = 0,
+            // health + experience points
+            (byte)(player.Health << 4 | player.ExperiencePoints),
         };
-        var headerBytes = CreateHeaderBytes(header);
 
-        var playerObjectIndexes = player.Objects?.Select(item => (byte)gameComponentsIndexes.Objects.Find(item.Code).RelativePointer);
-
-        var data = new Data(playerObjectIndexes);
-        var dataBytes = CreateDataBytes(data);
-
-        return new SerializerResultModel(headerBytes, dataBytes);
-    }
-
-    private static void EnsureObjectProperties(PlayerModel player)
-    {
-        EnsureHelpers.EnsureMaxLength(player.Health, Constants.MaxLengthPlayerHealthAllowed,
-        string.Format(Properties.Resources.MaxLengthPlayerHealthAllowedError, Constants.MaxLengthPlayerHealthAllowed));
-
-        if (player.Objects != null)
+        // Objects        
+        if (player.Objects != null && player.Objects.Any())
         {
-            EnsureHelpers.EnsureMaxLength(player.Objects, Constants.MaxLengthPlayerObjectsAllowed,
-                string.Format(Properties.Resources.MaxLengthPlayerObjectsAllowedError, Constants.MaxLengthPlayerObjectsAllowed));
+            result.AddRange(player.Objects.Select(item => gameComponentsIndexes.Objects.IndexOf(item.Code)));
         }
-    }
-
-    private static byte[] CreateHeaderBytes(Header header) => new byte[]
-    {
-        (byte)(header.Health << 3 | header.Objects),
-        header.DataAddress.GetByte(2),
-        header.DataAddress.GetByte(1),
-    };
-
-    private static byte[] CreateDataBytes(Data data)
-    {
-        var result = new List<byte>();
-        if (data.ObjectsIndexes != null)
+        var objectsCount = player.Objects?.Count() ?? 0;
+        if (objectsCount < Constants.MaxLengthPlayerObjectsAllowed)
         {
-            result.AddRange(data.ObjectsIndexes);
+            result.AddRange(Enumerable.Range(0, Constants.MaxLengthPlayerObjectsAllowed - objectsCount).Select(item => (byte)0x00));
         }
 
         return result.ToArray();
     }
 
+    private void EnsureGameComponentProperties()
+    {
+        EnsureHelpers.EnsureMaxLength(GameComponent.Health, Constants.MaxLengthPlayerHealthAllowed,
+            string.Format(Properties.Resources.MaxLengthPlayerHealthAllowedError, Constants.MaxLengthPlayerHealthAllowed));
+
+        EnsureHelpers.EnsureMaxLength(GameComponent.ExperiencePoints, Constants.MaxLengthPlayerExperiencePointsAllowed,
+            string.Format(Properties.Resources.MaxLengthPlayerExperiencePointsAllowedError, Constants.MaxLengthPlayerExperiencePointsAllowed));
+
+        if (GameComponent.Objects != null)
+        {
+            EnsureHelpers.EnsureMaxLength(GameComponent.Objects, Constants.MaxLengthPlayerObjectsAllowed,
+                string.Format(Properties.Resources.MaxLengthPlayerObjectsAllowedError, Constants.MaxLengthPlayerObjectsAllowed));
+        }
+    }
 }

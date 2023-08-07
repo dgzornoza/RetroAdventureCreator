@@ -144,11 +144,11 @@
   <data name="MaxLengthCommandsAllowedError" xml:space="preserve">
     <value>El número máximo de comandos permitido es de {0}</value>
   </data>
-  <data name="MaxLengthComplementsAllowedError" xml:space="preserve">
-    <value>El tamaño máximo de los complementos de un objeto es de {0}</value>
-  </data>
   <data name="MaxLengthFlagsAllowedError" xml:space="preserve">
     <value>El número máximo de flags permitido es de {0}</value>
+  </data>
+  <data name="MaxLengthIdsError" xml:space="preserve">
+    <value>El tamaño máximo para los ids es de {0}</value>
   </data>
   <data name="MaxLengthInputCommandsAllowedError" xml:space="preserve">
     <value>El número máximo de comandos de entrada permitido es de {0}</value>
@@ -171,14 +171,17 @@
   <data name="MaxLengthObjectWeightError" xml:space="preserve">
     <value>El tamaño máximo para el peso del objecto es de {0}</value>
   </data>
+  <data name="MaxLengthPlayerExperiencePointsAllowedError" xml:space="preserve">
+    <value>El tamaño máximo para los puntos de experiencia del jugador es de {0}</value>
+  </data>
   <data name="MaxLengthPlayerHealthAllowedError" xml:space="preserve">
     <value>El tamaño máximo para la vida del jugador es de {0}</value>
   </data>
   <data name="MaxLengthPlayerObjectsAllowedError" xml:space="preserve">
     <value>El número máximo de objetos de jugador permitido es de {0}</value>
   </data>
-  <data name="MaxLengthRequiredComplementsAllowedError" xml:space="preserve">
-    <value>El tamaño máximo de los complementos requeridos de un objeto es de {0}</value>
+  <data name="MaxLengthScenesAllowedError" xml:space="preserve">
+    <value>El número máximo de escenas permitidas es de {0}</value>
   </data>
   <data name="MaxLengthVocabularyNounsAllowedError" xml:space="preserve">
     <value>El número máximo de nombres en vocabularios permitido es de {0}</value>
@@ -193,7 +196,7 @@
     <value>La propiedad 'Name' es requerida</value>
   </data>
   <data name="StringEndCharDuplicatedError" xml:space="preserve">
-    <value>No se puede usar el caracter '0x00' en ningun texto, es un caracter reservado.</value>
+    <value>No se puede establecer el caracter '0x00' en una cadena, es un caracter reservado.</value>
   </data>
   <data name="SysnonymsAreRequiredError" xml:space="preserve">
     <value>La propiedad 'Synonyms' es requerida</value>

@@ -17,4 +17,5 @@ public enum ObjectProperties : byte
     IsEnabled = 0x01 << 1,
     InUse = 0x01 << 2,
     Portable = 0x01 << 4,
+    IsContainer = 0x01 << 5,
 }

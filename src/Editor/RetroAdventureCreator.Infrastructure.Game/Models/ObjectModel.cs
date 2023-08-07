@@ -42,15 +42,4 @@ public class ObjectModel : IUniqueKey
     /// Child Objects
     /// </summary>
     public IEnumerable<ObjectModel>? ChildObjects { get; init; }
-
-    /// <summary>
-    /// Required Complements Objects for use object
-    /// </summary>
-    public IEnumerable<ObjectModel>? RequiredComplements { get; init; }
-
-    /// <summary>
-    /// Current Complements Objects
-    /// </summary>
-    public IEnumerable<ObjectModel>? Complements { get; init; }
-
 }

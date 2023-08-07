@@ -21,51 +21,46 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Flags serializer:
 /// ----------------------------------------------
 /// 
-/// Data: --
-/// FlagsSize = 8 bits (256)
+/// Data:
 /// Flags = 1 bit per flag
 /// 
 /// </remarks>
-internal class FlagsSerializer : ISerializer<IEnumerable<FlagModel>>
+internal class FlagsSerializer : Serializer<IEnumerable<FlagModel>>
 {
-    private record struct Header(int FlagsLength, short DataAddress);
-
-    private record struct Data(IEnumerable<FlagModel> Flags, int TotalBytes);
-
-    public IEnumerable<GameComponentPointerModel> GenerateGameComponentKeys(IEnumerable<FlagModel> flags)
+    public FlagsSerializer(IEnumerable<FlagModel> gameComponent) : base(gameComponent)
     {
-        throw new NotImplementedException();
+        EnsureGameComponentProperties();
     }
 
-    public SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes, IEnumerable<FlagModel> flags)
+    private byte TotalBytes => (byte)Math.Ceiling(GameComponent.Count() / 8M);
+
+    public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers() => Enumerable.Empty<GameComponentPointerModel>();
+
+    public override SerializerResultModel Serialize(GameComponentsPointers gameComponentsIndexes)
     {
-        EnsureHelpers.EnsureMaxLength(flags, Constants.MaxLengthFlagsAllowed,
-            string.Format(Properties.Resources.MaxLengthFlagsAllowedError, Constants.MaxLengthFlagsAllowed));
-
-        var sortedFlags = flags.SortByKey();
-
-        var totalBytes = (int)Math.Ceiling(sortedFlags.Count() / 8M);
-        var header = new Header(totalBytes, 0);
-        var headerBytes = CreateHeaderBytes(header);
-
-        var dataBytes = CreateDataBytes(new Data(sortedFlags, totalBytes));
-
-        return new SerializerResultModel(headerBytes.ToArray(), dataBytes.ToArray());
+        var sortedFlags = GameComponent.SortByKey();
+        var dataBytes = CreateDataBytes(sortedFlags);
+        return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    private static byte[] CreateHeaderBytes(Header header) => new byte[]
-    {
-            (byte)header.FlagsLength,
-            header.DataAddress.GetByte(2),
-            header.DataAddress.GetByte(1),
-    };
-
-    private static byte[] CreateDataBytes(Data data)
-    {
-        var bits = new BitArray(data.Flags.Select(item => item.Value).ToArray());
-        var result = new byte[data.TotalBytes];
+    private byte[] CreateDataBytes(IEnumerable<FlagModel> flags)
+    {        
+        var bits = new BitArray(flags.Select(item => item.Value).ToArray());
+        var result = new byte[TotalBytes];
         bits.CopyTo(result, 0);
 
         return result;
+    }    
+
+    private void EnsureGameComponentProperties()
+    {
+        EnsureHelpers.EnsureMaxLength(GameComponent, Constants.MaxLengthFlagsAllowed,
+            string.Format(Properties.Resources.MaxLengthFlagsAllowedError, Constants.MaxLengthFlagsAllowed));
+
+        foreach (var flag in GameComponent)
+        {
+            EnsureHelpers.EnsureSingle(GameComponent, item => item.Code == flag.Code, string.Format(Properties.Resources.DuplicateCodeError, flag.Code));
+            EnsureHelpers.EnsureNotNullOrWhiteSpace(flag.Code, Properties.Resources.CodeIsRequiredError);
+        }
     }
 }

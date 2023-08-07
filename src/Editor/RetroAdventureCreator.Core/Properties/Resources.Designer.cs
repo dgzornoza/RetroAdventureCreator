@@ -142,20 +142,20 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The maximum length of object complements is {0}.
-        /// </summary>
-        internal static string MaxLengthComplementsAllowedError {
-            get {
-                return ResourceManager.GetString("MaxLengthComplementsAllowedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The maximum length of flags allowed is {0}.
         /// </summary>
         internal static string MaxLengthFlagsAllowedError {
             get {
                 return ResourceManager.GetString("MaxLengthFlagsAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the maximum length of ids is {0}.
+        /// </summary>
+        internal static string MaxLengthIdsError {
+            get {
+                return ResourceManager.GetString("MaxLengthIdsError", resourceCulture);
             }
         }
         
@@ -223,6 +223,15 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The maximum length of player experience points is {0}.
+        /// </summary>
+        internal static string MaxLengthPlayerExperiencePointsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxLengthPlayerExperiencePointsAllowedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The maximum length of player health is {0}.
         /// </summary>
         internal static string MaxLengthPlayerHealthAllowedError {
@@ -241,11 +250,11 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The maximum length of objects required complements is {0}.
+        ///   Looks up a localized string similar to The maximum number of scenes allowed is {0}.
         /// </summary>
-        internal static string MaxLengthRequiredComplementsAllowedError {
+        internal static string MaxLengthScenesAllowedError {
             get {
-                return ResourceManager.GetString("MaxLengthRequiredComplementsAllowedError", resourceCulture);
+                return ResourceManager.GetString("MaxLengthScenesAllowedError", resourceCulture);
             }
         }
         
@@ -286,7 +295,7 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can not use the character &apos;0x00&apos; in any text, it is a reserved character..
+        ///   Looks up a localized string similar to Can not be set 0x00 char into string, is reserved byte.
         /// </summary>
         internal static string StringEndCharDuplicatedError {
             get {
