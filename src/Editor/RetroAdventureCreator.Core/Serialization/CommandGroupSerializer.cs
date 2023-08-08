@@ -67,7 +67,7 @@ internal class CommandGroupSerializer : Serializer<IEnumerable<CommandGroupModel
 
         // Commands        
         result.AddRange(GetCommandsIndexes(commandGroup, gameComponentsIndexes));
-        result.Add(EndToken);
+        result.Add(Constants.EndToken);
 
         return result.ToArray();
     }

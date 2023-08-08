@@ -72,7 +72,7 @@ internal class InputCommandsSerializer : Serializer<IEnumerable<InputCommandMode
         {
             result.AddRange(inputComand.Nouns.Select(item => gameComponentsIndexes.VocabularyNouns.IndexOf(item.Code)));
         }
-        result.Add(EndToken);
+        result.Add(Constants.EndToken);
 
         return result.ToArray();
     }

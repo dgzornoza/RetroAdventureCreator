@@ -8,6 +8,8 @@ namespace RetroAdventureCreator.Core.Infrastructure
 {
     public static class Constants
     {
+        public const byte EndToken = 0x00;
+
         public const int MaxLengthIds = byte.MaxValue - 1;
 
         // Vocabulary

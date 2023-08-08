@@ -73,20 +73,20 @@ internal class ScenesSerializer : Serializer<IEnumerable<SceneModel>>
         {
             result.AddRange(scene.AfterInputCommandDispatchers.Select(item => gameComponentsIndexes.AfterInputCommandDispatchers.IndexOf(item.Code)));            
         }
-        result.Add(EndToken);
+        result.Add(Constants.EndToken);
         
         if (scene.BeforeInputCommandDispatchers != null && scene.BeforeInputCommandDispatchers.Any())
         {
             result.AddRange(scene.BeforeInputCommandDispatchers.Select(item => gameComponentsIndexes.BeforeInputCommandDispatchers.IndexOf(item.Code)));
         }
-        result.Add(EndToken);
+        result.Add(Constants.EndToken);
 
         // objects
         if (scene.Objects != null && scene.Objects.Any())
         {
             result.AddRange(scene.Objects.Select(item => gameComponentsIndexes.Objects.IndexOf(item.Code)));            
         }
-        result.Add(EndToken);
+        result.Add(Constants.EndToken);
 
         return result.ToArray();
     }  

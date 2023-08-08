@@ -16,7 +16,6 @@
     <Compile Remove="Facts\SerializerTests\ObjectsSerializerTest.cs" />
     <Compile Remove="Facts\SerializerTests\PlayerSerializerTest.cs" />
     <Compile Remove="Facts\SerializerTests\SettingsSerializerTest.cs" />
-    <Compile Remove="Facts\SerializerTests\VocabularySerializerTest.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,10 +40,6 @@
     <None Update="Theories\SceneTests\Resources\SceneBigDescription.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Facts\SerializerTests\" />
   </ItemGroup>
 
 </Project>

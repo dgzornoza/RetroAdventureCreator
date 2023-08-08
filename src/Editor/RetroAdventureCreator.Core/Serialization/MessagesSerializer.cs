@@ -43,7 +43,7 @@ internal class MessagesSerializer : Serializer<IEnumerable<MessageModel>>
 
             result.Add(new GameComponentPointerModel(message.Code, pointer));
 
-            pointer += (message.Text + EndToken).Length;
+            pointer += (message.Text + Constants.EndToken).Length;
         }
 
         return result;
@@ -63,6 +63,6 @@ internal class MessagesSerializer : Serializer<IEnumerable<MessageModel>>
         EnsureHelpers.EnsureNotNullOrWhiteSpace(message.Code, Properties.Resources.CodeIsRequiredError);
 
         EnsureHelpers.EnsureNotNullOrEmpty(message.Text, Properties.Resources.TextIsRequiredError);
-        EnsureHelpers.EnsureNotFound(message.Text, item => item == EndToken, Properties.Resources.StringEndCharDuplicatedError);
+        EnsureHelpers.EnsureNotFound(message.Text, item => item == Constants.EndToken, Properties.Resources.StringEndCharDuplicatedError);
     }
 }

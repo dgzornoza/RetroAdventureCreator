@@ -67,11 +67,11 @@ internal abstract class VocabularySerializer : Serializer<IEnumerable<Vocabulary
         EnsureHelpers.EnsureMaxLength(vocabulary.Synonyms.Count(), Constants.MaxLengthVocabularySynonymsAllowed,
             string.Format(Properties.Resources.MaxLengthVocabularySynonymsError, Constants.MaxLengthVocabularySynonymsAllowed));
 
-        var synonymsChars = JoinSynonyms(vocabulary).TrimEnd(Convert.ToChar(EndToken));
-        EnsureHelpers.EnsureNotFound(synonymsChars, item => item == EndToken, Properties.Resources.StringEndCharDuplicatedError);
+        var synonymsChars = JoinSynonyms(vocabulary).TrimEnd(Convert.ToChar(Constants.EndToken));
+        EnsureHelpers.EnsureNotFound(synonymsChars, item => item == Constants.EndToken, Properties.Resources.StringEndCharDuplicatedError);
     }
 
-    private static string JoinSynonyms(VocabularyModel vocabulary) => string.Join('|', vocabulary.Synonyms) + EndToken;
+    private static string JoinSynonyms(VocabularyModel vocabulary) => string.Join('|', vocabulary.Synonyms) + Constants.EndToken;
 }
 
 internal class VocabularyNounsSerializer : VocabularySerializer

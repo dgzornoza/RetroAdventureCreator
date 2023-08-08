@@ -16,21 +16,19 @@ public class VocabularySerializerTest
     public void VocabularySerializer_SerializeNouns_AsExpected()
     {
         // Arrange
-        var headersLength = 3; // 3 bytes
         var builder = new GameInPawsTutorialBuilder();
         var game = builder.BuildGame();
-        var indexes = builder.BuildGameComponentsIndexes();
+        var serializerBuilder = new SerializerBuilder(game);
+        var serializer = serializerBuilder.GetSerializer<VocabularyNounsSerializer>();
 
-        var vocabularyNouns = game.Assets.Vocabulary.Where(item => item.WordType == WordType.Noun);
-        var headerNounsLength = headersLength * vocabularyNouns.Count();
-        var expectedNounsDataLength = vocabularyNouns.Where(item => item.Synonyms != null).Sum(item => string.Join('|', item.Synonyms!).Length);
+        var vocabularyNouns = game.Vocabulary.Where(item => item.WordType == WordType.Noun);
+        var expectedNounsDataLength = vocabularyNouns.Where(item => item.Synonyms != null).Sum(item => string.Join('|', item.Synonyms!).Length + Constants.EndToken);
 
         // Act
-        var actual = new VocabularyNounsSerializer(indexes).Serialize(game.Assets.Vocabulary);
+        var actual = serializer.Serialize(serializerBuilder.GameComponentsPointersModel);
 
         // Assert
         Assert.NotNull(actual);
-        Assert.True(actual.Header.Length == headerNounsLength);
         Assert.True(actual.Data.Length == expectedNounsDataLength);
     }
 
@@ -38,21 +36,19 @@ public class VocabularySerializerTest
     public void VocabularySerializer_SerializeVerbs_AsExpected()
     {
         // Arrange
-        var headersLength = 3; // 3 bytes
         var builder = new GameInPawsTutorialBuilder();
         var game = builder.BuildGame();
-        var indexes = builder.BuildGameComponentsIndexes();
+        var serializerBuilder = new SerializerBuilder(game);
+        var serializer = serializerBuilder.GetSerializer<VocabularyVerbsSerializer>();
 
-        var vocabularyVerbs = game.Assets.Vocabulary.Where(item => item.WordType == WordType.Verb);
-        var headerVerbsLength = headersLength * vocabularyVerbs.Count();
-        var expectedVerbsDataLength = vocabularyVerbs.Where(item => item.Synonyms != null).Sum(item => string.Join('|', item.Synonyms!).Length);
+        var vocabularyVerbs = game.Vocabulary.Where(item => item.WordType == WordType.Verb);
+        var expectedVerbsDataLength = vocabularyVerbs.Where(item => item.Synonyms != null).Sum(item => string.Join('|', item.Synonyms!).Length + Constants.EndToken);
 
         // Act
-        var actual = new VocabularyVerbsSerializer(indexes).Serialize(game.Assets.Vocabulary);
+        var actual = serializer.Serialize(serializerBuilder.GameComponentsPointersModel);
 
         // Assert
         Assert.NotNull(actual);
-        Assert.True(actual.Header.Length == headerVerbsLength);
         Assert.True(actual.Data.Length == expectedVerbsDataLength);
     }
 

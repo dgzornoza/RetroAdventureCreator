@@ -65,7 +65,7 @@ internal class DispatchersSerializer : Serializer<IEnumerable<DispatcherModel>>
         {
             result.AddRange(GetCommandsIndexes(dispatcher, gameComponentsIndexes));
         }
-        result.Add(EndToken);
+        result.Add(Constants.EndToken);
 
         // after input commands
         if (dispatcher.Trigger == Trigger.AfterInputCommand)
@@ -74,7 +74,7 @@ internal class DispatchersSerializer : Serializer<IEnumerable<DispatcherModel>>
             {
                 result.AddRange(dispatcher.InputCommands.Select(item => gameComponentsIndexes.InputCommands.IndexOf(item.Code)));
             }
-            result.Add(EndToken);
+            result.Add(Constants.EndToken);
         }
 
         return result.ToArray();
