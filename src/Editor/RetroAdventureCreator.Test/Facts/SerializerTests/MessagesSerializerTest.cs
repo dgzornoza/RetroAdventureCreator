@@ -1,4 +1,6 @@
-﻿using RetroAdventureCreator.Core;
+﻿using System.Text;
+using RetroAdventureCreator.Core;
+using RetroAdventureCreator.Core.Extensions;
 using RetroAdventureCreator.Core.Infrastructure;
 using RetroAdventureCreator.Core.Serialization;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
@@ -7,75 +9,61 @@ using RetroAdventureCreator.Test.Infrastructure.Builders;
 
 namespace RetroAdventureCreator.Test.Facts.SerializerTests;
 
-public class MessagesSerializerTest
+public class MessagesSerializerTest : SerializerBaseTest
 {
     [Fact]
     public void MessagesSerializer_Serialize_AsExpected()
     {
         // Arrange
-        var headersLength = 3; // 3 bytes
-        var builder = new GameInPawsTutorialBuilder();
-        var game = builder.BuildGame();
-        var indexes = builder.BuildGameComponentsIndexes();
+        CreateGame<GameInPawsTutorialBuilder>();
+        var serializerFactory = new SerializerFactory(game);
+        var serializer = serializerFactory.GetSerializer<MessagesSerializer>();
 
-        var messages = game.Assets.Messages;
-        var headerLength = headersLength * messages.Count();
-        var expectedDataLength = messages.Sum(item => item.Text.Length);
+        var expectedDataLength = game.Messages.SortByKey().Sum(item => item.Text.Length + Constants.EndTokenLength);
+        var expectedBytes = Encoding.ASCII.GetBytes(string.Join(EndTokenString, game.Messages.SortByKey().Select(item => item.Text)) + EndTokenString);
+        var expectedText = Encoding.ASCII.GetString(expectedBytes);
 
         // Act
-        var actual = new MessagesSerializer(indexes).Serialize(messages);
+        var actual = serializer.Serialize(serializerFactory.GameComponentsPointersModel);
 
         // Assert
         Assert.NotNull(actual);
-        Assert.True(actual.Header.Length == headerLength);
+        Assert.NotNull(actual.Data);
         Assert.True(actual.Data.Length == expectedDataLength);
+        Assert.Equal(expectedText, Encoding.ASCII.GetString(actual.Data));
     }
 
     [Fact]
-    public void MessagesSerializer_Serialize_MaxMessages_throwsExcepion()
+    public void MessagesSerializer_MaxMessages_throwsExcepion()
     {
         // Arrange
-        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
+        CreateGame<GameMaxLengthLimitsBuilder>();
         var messageError = string.Format(Core.Properties.Resources.MaxLengthMessagesAllowedError, Constants.MaxLengthMessagesAllowed);
-        var messages = Enumerable.Range(0, Constants.MaxLengthMessagesAllowed + 1).Select(item => new MessageModel());
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(indexes).Serialize(messages)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(game.Messages)).Message == messageError);
     }
 
     [Fact]
-    public void MessagesSerializer_Serialize_NullText_throwsExcepion()
+    public void MessagesSerializer_GenerateGameComponentPointers_NullText_throwsExcepion()
     {
         // Arrange
-        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
         var messageError = Core.Properties.Resources.TextIsRequiredError;
         var messages = Enumerable.Range(0, 1).Select(item => new MessageModel() { Code = "code1" });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(indexes).Serialize(messages)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(messages).GenerateGameComponentPointers()).Message == messageError);
     }
 
     [Fact]
-    public void MessagesSerializer_Serialize_MaxLengthText_throwsExcepion()
+    public void MessagesSerializer_GenerateGameComponentPointers_CodeNull_throwsExcepion()
     {
         // Arrange        
-        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
-        var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.MaxLengthMessageTextError, Constants.MaxLengthMessageTextAllowed);
-        var messages = Enumerable.Range(0, 2).Select(item => new MessageModel() { Code = "code1", Text = new string('1', Constants.MaxLengthMessageTextAllowed + 1) });
+        CreateGame<GameCodeNullBuilder>();
 
-        // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(indexes).Serialize(messages)).Message == messageError);
-    }
-
-    [Fact]
-    public void MessagesSerializer_Serialize_CodeNull_throwsExcepion()
-    {
-        // Arrange        
-        var indexes = new GameInPawsTutorialBuilder().BuildGameComponentsIndexes();
         var messageError = Core.Properties.Resources.CodeIsRequiredError;
-        var messages = Enumerable.Range(0, 2).Select(item => new MessageModel() { });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(indexes).Serialize(messages)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(game.Messages).GenerateGameComponentPointers()).Message == messageError);
     }
 }

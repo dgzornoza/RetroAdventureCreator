@@ -11,27 +11,26 @@ using RetroAdventureCreator.Test.Infrastructure.Builders;
 
 namespace RetroAdventureCreator.Test.Facts.SerializerTests;
 
-public class FlagsSerializerTest
+public class FlagsSerializerTest : SerializerBaseTest
 {
     [Fact]
     public void FlagsSerializerTest_Serialize_AsExpected()
     {
         // Arrange
-        var headerLength = 3; // 3 bytes
-        var builder = new GameInPawsTutorialBuilder();
-        var game = builder.BuildGame();
-        var indexes = builder.BuildGameComponentsIndexes();
+        CreateGame<GameInPawsTutorialBuilder>();
+        var serializerFactory = new SerializerFactory(game);
+        var serializer = serializerFactory.GetSerializer<FlagsSerializer>();
 
         var flags = game.Flags;
         var expectedDataLength = Math.Ceiling(flags.Count() / 8M);
         var expectedData = 0b00000000;
 
         // Act
-        var actual = new FlagsSerializer(indexes).Serialize(flags);
+        var actual = serializer.Serialize(serializerFactory.GameComponentsPointersModel);
 
         // Assert
         Assert.NotNull(actual);
-        Assert.True(actual.Header.Length == headerLength);
+        Assert.NotNull(actual.Data);
         Assert.True(actual.Data.Length == expectedDataLength);
         Assert.True(actual.Data[0] == expectedData);
     }
@@ -40,10 +39,9 @@ public class FlagsSerializerTest
     public void FlagsSerializerTest_SerializeRandomFlags_AsExpected()
     {
         // Arrange
-        var headerLength = 3; // 3 bytes
-        var builder = new GameInPawsTutorialBuilder();
-        var game = builder.BuildGame();
-        var indexes = builder.BuildGameComponentsIndexes();
+        CreateGame<GameInPawsTutorialBuilder>();
+        var serializerFactory = new SerializerFactory(game);
+        var serializer = serializerFactory.GetSerializer<FlagsSerializer>();
 
         var bits = CreateRandomBits();
         var flags = CreateFlags(bits);
@@ -51,11 +49,11 @@ public class FlagsSerializerTest
         var expectedData = ConvertToBytes(bits);
 
         // Act
-        var actual = new FlagsSerializer(indexes).Serialize(flags);
+        var actual = new FlagsSerializer(flags).Serialize(serializerFactory.GameComponentsPointersModel);
 
         // Assert
         Assert.NotNull(actual);
-        Assert.True(actual.Header.Length == headerLength);
+        Assert.NotNull(actual.Data);
         Assert.True(actual.Data.Length == expectedDataLength);        
         Assert.Equal(actual.Data, expectedData);
     }

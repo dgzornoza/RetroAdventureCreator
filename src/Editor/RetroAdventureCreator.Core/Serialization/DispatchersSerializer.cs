@@ -52,7 +52,7 @@ internal class DispatchersSerializer : Serializer<IEnumerable<DispatcherModel>>
 
     public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
-        var dataBytes = GameComponent.SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
+        var dataBytes = GameComponent.SortByKey().SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
         return new SerializerResultModel(dataBytes.ToArray());
     }
 

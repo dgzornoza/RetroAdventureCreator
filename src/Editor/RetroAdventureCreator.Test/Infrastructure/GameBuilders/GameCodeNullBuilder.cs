@@ -11,7 +11,7 @@ using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Test.Infrastructure.Builders
 {
-    internal class GameNullCodeBuilder : GameBuilder
+    internal class GameCodeNullBuilder : GameBuilder
     {
         private int elements = 5;
 
@@ -26,7 +26,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
         };
 
         protected override IEnumerable<MessageModel> CreateMessages() =>
-            Enumerable.Range(0, Constants.MaxLengthMessagesAllowed + 1).Select((item, index) => new MessageModel() { Code = $"Message{index}" });
+            Enumerable.Range(0, elements).Select((item, index) => new MessageModel() { });
 
         protected override IEnumerable<VocabularyModel> CreateVocabulary()
         {

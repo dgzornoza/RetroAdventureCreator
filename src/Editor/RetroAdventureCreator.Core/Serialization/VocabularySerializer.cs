@@ -52,7 +52,7 @@ internal abstract class VocabularySerializer : Serializer<IEnumerable<Vocabulary
 
     public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
-        var dataBytes = GameComponent.SelectMany(CreateDataBytes);
+        var dataBytes = GameComponent.SortByKey().SelectMany(CreateDataBytes);
         return new SerializerResultModel(dataBytes.ToArray());
     }
 

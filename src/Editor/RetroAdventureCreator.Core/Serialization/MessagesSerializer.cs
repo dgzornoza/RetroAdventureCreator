@@ -43,7 +43,7 @@ internal class MessagesSerializer : Serializer<IEnumerable<MessageModel>>
 
             result.Add(new GameComponentPointerModel(message.Code, pointer));
 
-            pointer += (message.Text + Constants.EndToken).Length;
+            pointer += (message.Text).Length + Constants.EndTokenLength;
         }
 
         return result;
@@ -55,7 +55,7 @@ internal class MessagesSerializer : Serializer<IEnumerable<MessageModel>>
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    private byte[] CreateDataBytes(MessageModel message) => SerializerEncoding.GetBytes(message.Text);
+    private byte[] CreateDataBytes(MessageModel message) => SerializerEncoding.GetBytes(message.Text).Concat(new byte[] { Constants.EndToken }).ToArray();
 
     private static void EnsureGameComponentProperties(MessageModel message, IEnumerable<GameComponentPointerModel> gameComponentPointers)
     {
