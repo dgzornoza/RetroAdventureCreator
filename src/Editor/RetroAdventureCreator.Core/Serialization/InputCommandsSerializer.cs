@@ -59,18 +59,18 @@ internal class InputCommandsSerializer : Serializer<IEnumerable<InputCommandMode
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    private static byte[] CreateDataBytes(InputCommandModel inputComand, GameComponentsPointersModel gameComponentsIndexes)
+    private static byte[] CreateDataBytes(InputCommandModel inputCommand, GameComponentsPointersModel gameComponentsIndexes)
     {
         var result = new List<byte>
         {
             // Verb
-            gameComponentsIndexes.VocabularyVerbs.IndexOf(inputComand.Verb.Code)
+            gameComponentsIndexes.VocabularyVerbs.IndexOf(inputCommand.Verb.Code)
         };
 
         // Nouns
-        if (inputComand.Nouns != null && inputComand.Nouns.Any())
+        if (inputCommand.Nouns != null && inputCommand.Nouns.Any())
         {
-            result.AddRange(inputComand.Nouns.Select(item => gameComponentsIndexes.VocabularyNouns.IndexOf(item.Code)));
+            result.AddRange(inputCommand.Nouns.Select(item => gameComponentsIndexes.VocabularyNouns.IndexOf(item.Code)));
         }
         result.Add(Constants.EndToken);
 

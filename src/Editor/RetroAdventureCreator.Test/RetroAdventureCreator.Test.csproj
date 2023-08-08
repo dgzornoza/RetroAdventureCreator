@@ -11,11 +11,7 @@
 
   <ItemGroup>
     <Compile Remove="Facts\SerializerTests\FlagsSerializerTest.cs" />
-    <Compile Remove="Facts\SerializerTests\InputCommandsSerializerTest.cs" />
     <Compile Remove="Facts\SerializerTests\MessagesSerializerTest.cs" />
-    <Compile Remove="Facts\SerializerTests\ObjectsSerializerTest.cs" />
-    <Compile Remove="Facts\SerializerTests\PlayerSerializerTest.cs" />
-    <Compile Remove="Facts\SerializerTests\SettingsSerializerTest.cs" />
   </ItemGroup>
 
   <ItemGroup>

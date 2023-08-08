@@ -3,33 +3,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RetroAdventureCreator.Core.Extensions;
+using RetroAdventureCreator.Core.Infrastructure;
 using RetroAdventureCreator.Core.Models;
 using RetroAdventureCreator.Core.Serialization;
+using RetroAdventureCreator.Infrastructure.Game.Enums;
+using RetroAdventureCreator.Infrastructure.Game.Models;
 using RetroAdventureCreator.Test.Infrastructure.Builders;
 
 namespace RetroAdventureCreator.Test.Facts.SerializerTests;
 
-public class InputCommandsSerializerTest
+public class InputCommandsSerializerTest : SerializerBaseTest
 {
     [Fact]
     public void InputCommandsSerializer_Serialize_AsExpected()
     {
         // Arrange
-        var headersLength = 3; // 3 bytes
-        var builder = new GameInPawsTutorialBuilder();
-        var game = builder.BuildGame();
-        var indexes = builder.BuildGameComponentsIndexes();
+        CreateGame<GameInPawsTutorialBuilder>();
+        var serializerFactory = new SerializerFactory(game);
+        var serializer = serializerFactory.GetSerializer<InputCommandsSerializer>();
 
-        var inputCommands = game.Assets.InputCommands;
-        var headerLength = headersLength * inputCommands.Count();
-        var expectedDataLength = inputCommands.Sum(item => item.Nouns?.Count());
+        var expectedDataBytes = GetInputCommandData(game.InputCommands, serializerFactory);
 
         // Act
-        var actual = new InputCommandsSerializer(indexes).Serialize(inputCommands);
+        var actual = serializer.Serialize(serializerFactory.GameComponentsPointersModel);
 
         // Assert
         Assert.NotNull(actual);
-        Assert.True(actual.Header.Length == headerLength);
-        Assert.True(actual.Data.Length == expectedDataLength);
+        Assert.NotNull(actual.Data);
+        Assert.True(actual.Data.Length == expectedDataBytes.Length);
+        Assert.Equal(expectedDataBytes, actual.Data);
     }
+
+    private byte[] GetInputCommandData(IEnumerable<InputCommandModel> inputCommands, SerializerFactory serializerFactory) =>
+        inputCommands.SortByKey().SelectMany(inputCommand =>
+        {
+            var result = new List<byte>
+            {
+                // Verb
+                serializerFactory.GameComponentsPointersModel.VocabularyVerbs.IndexOf(inputCommand.Verb.Code)
+            };
+
+            // Nouns
+            if (inputCommand.Nouns != null && inputCommand.Nouns.Any())
+            {
+                result.AddRange(inputCommand.Nouns.Select(item => serializerFactory.GameComponentsPointersModel.VocabularyNouns.IndexOf(item.Code)));
+            }
+            result.Add(Constants.EndToken);
+
+            return result.ToArray();
+
+        }).ToArray();
 }

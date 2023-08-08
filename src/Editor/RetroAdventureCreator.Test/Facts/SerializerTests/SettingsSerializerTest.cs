@@ -5,31 +5,29 @@ using RetroAdventureCreator.Test.Infrastructure.Builders;
 
 namespace RetroAdventureCreator.Test.Facts.SerializerTests;
 
-public class SettingsSerializerTest
+public class SettingsSerializerTest : SerializerBaseTest
 {
     [Fact]
     public void SettingsSerializer_Serialize_AsExpected()
     {
         // Arrange
-        var builder = new GameInPawsTutorialBuilder();
-        var game = builder.BuildGame();
-        var indexes = builder.BuildGameComponentsIndexes();
-        // header = 2 bytes
-        var expectedHeaderBytes = new byte[]
+        CreateGame<GameInPawsTutorialBuilder>();
+        var serializerFactory = new SerializerFactory(game);
+        var serializer = serializerFactory.GetSerializer<SettingsSerializer>();
+
+        var expectedDataBytes = new byte[]
         {
             (byte)(game.Settings.Charset << 4 | (byte)game.Settings.Color),
             (byte)((byte)game.Settings.BackgroundColor << 4 | (byte)game.Settings.BorderColor),
         };
 
         // Act
-        var actual = new SettingsSerializer(indexes).Serialize(game.Settings);
+        var actual = serializer.Serialize(serializerFactory.GameComponentsPointersModel);
 
         // Assert
         Assert.NotNull(actual);
-        Assert.NotNull(actual.Header);
         Assert.NotNull(actual.Data);
-        Assert.True(actual.Header.Length == expectedHeaderBytes.Length);
-        Assert.Equal(actual.Header, expectedHeaderBytes);
-        Assert.Empty(actual.Data);
+        Assert.True(actual.Data.Length == expectedDataBytes.Length);
+        Assert.Equal(expectedDataBytes, actual.Data);
     }
 }
