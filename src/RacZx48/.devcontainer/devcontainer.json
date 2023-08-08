@@ -1,0 +1,20 @@
+{
+	"name": "z88dk-dev-environment",
+	"image": "dgzornoza/z88dk-dev:latest",	
+	"runArgs": [
+		"--name=${localWorkspaceFolderBasename}"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-vscode.cpptools-extension-pack",
+				"maziac.dezog",
+				"maziac.asm-code-lens",
+				"maziac.hex-hover-converter",
+				"maziac.sna-fileviewer",
+				"maziac.z80-instruction-set",
+				"ms-vscode.makefile-tools"
+			]
+		}
+	}
+}
