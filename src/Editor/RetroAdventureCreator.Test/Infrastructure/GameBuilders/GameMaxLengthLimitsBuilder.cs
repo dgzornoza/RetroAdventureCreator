@@ -24,7 +24,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
         };
 
         protected override IEnumerable<MessageModel> CreateMessages() =>
-            Enumerable.Range(0, Constants.MaxLengthMessagesAllowed + 1).Select((item, index) => new MessageModel() { Code = $"Message{index}" }); 
+            Enumerable.Range(0, Constants.MaxLengthMessagesAllowed + 1).Select((item, index) => new MessageModel() { Code = $"Message{index}" });
 
         protected override IEnumerable<VocabularyModel> CreateVocabulary()
         {
@@ -47,8 +47,15 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
         protected override IEnumerable<InputCommandModel> CreateInputCommands() =>
             Enumerable.Range(0, Constants.MaxLengthInputCommandsAllowed + 1).Select((item, index) => new InputCommandModel() { Code = $"InpuCommmand{index}" });
 
-        protected override IEnumerable<DispatcherModel> CreateDispatchers() =>
-            Enumerable.Range(0, Constants.MaxLengthDispatchersAllowed + 1).Select((item, index) => new DispatcherModel() { Code = $"Dispatcher{index}" });
+        protected override IEnumerable<DispatcherModel> CreateDispatchers()
+        {
+            var afterDispatchers = Enumerable.Range(0, Constants.MaxLengthAfterInputCommandDispatchersAllowed + 1)
+                .Select((item, index) => new DispatcherModel() { Code = $"AfterDispatcher{index}", Trigger = Trigger.AfterInputCommand });
+            var beforeDipatchers = Enumerable.Range(0, Constants.MaxLengthBeforeInputCommandDispatchersAllowed + 1)
+                .Select((item, index) => new DispatcherModel() { Code = $"BeforeDispatcher{index}", Trigger = Trigger.BeforeInputCommand });
+
+            return afterDispatchers.Concat(beforeDipatchers);
+        }
 
         protected override IEnumerable<SceneModel> CreateScenes() =>
             Enumerable.Range(0, Constants.MaxLengthScenesAllowed + 1).Select((item, index) => new SceneModel() { Code = $"Scene{index}" });

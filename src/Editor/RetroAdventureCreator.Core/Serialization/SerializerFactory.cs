@@ -8,7 +8,7 @@ using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Core.Serialization;
 
-internal class SerializerBuilder
+internal class SerializerFactory
 {
     private readonly CommandGroupSerializer commandGroupSerializer;
     private readonly CommandsSerializer commandsSerializer;
@@ -25,7 +25,7 @@ internal class SerializerBuilder
     private readonly VocabularyVerbsSerializer vocabularyVerbsSerializer;
 
 
-    public SerializerBuilder(GameModel gameModel)
+    public SerializerFactory(GameModel gameModel)
     {
         commandGroupSerializer = new CommandGroupSerializer(gameModel.CommandsGroups);
         commandsSerializer = new CommandsSerializer(gameModel.Commands);

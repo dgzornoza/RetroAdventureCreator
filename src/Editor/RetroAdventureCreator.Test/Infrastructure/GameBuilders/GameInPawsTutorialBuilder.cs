@@ -33,7 +33,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             new MessageModel { Code = "globDescriptionMessage", Text = "Unos guantes" },
             new MessageModel
             {
-                Code = "EntradaSceneDescription1",
+                Code = "EntradaSceneDescription",
                 Text = "^^Tras meses de exploración en lo profundo de la selva, y después de haber sido perseguido, mordido, enfermado, pasado hambre y renunciado al todo, ahora por fin has encontrado lo que buscabas, el Templo de Ok, donde según cuenta la leyenda se guarda el Gran Diamante del Rajá Al-Meredin, rechazado por su amada y condenado a ser encerrado eternamente en lo profundo de la selva.^^ Hasta hoy.",
             },
             new MessageModel
@@ -203,7 +203,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             },
             new DispatcherModel
             {
-                Code = $"{MainSceneCode}-5",
+                Code = $"{MainSceneCode}-6",
                 Trigger = Trigger.AfterInputCommand,
                 InputCommands = new List<InputCommandModel>
                 {
@@ -220,7 +220,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             },
             new DispatcherModel
             {
-                Code = $"{MainSceneCode}-6",
+                Code = $"{MainSceneCode}-7",
                 Trigger = Trigger.AfterInputCommand,
                 InputCommands = new List<InputCommandModel>
                 {
@@ -238,7 +238,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             },
             new DispatcherModel
             {
-                Code = $"{MainSceneCode}-7",
+                Code = $"{MainSceneCode}-8",
                 Trigger = Trigger.AfterInputCommand,
                 InputCommands = new List<InputCommandModel>
                 {
@@ -254,7 +254,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             },
             new DispatcherModel
             {
-                Code = $"{MainSceneCode}-8",
+                Code = $"{MainSceneCode}-9",
                 Trigger = Trigger.AfterInputCommand,
                 InputCommands = new List<InputCommandModel>
                 {

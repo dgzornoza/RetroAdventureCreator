@@ -30,7 +30,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders;
 ///     GameModel -> PlayerModel, SettingsModel, VocabularyModel, MessageModel, CommandModel, CommandGroupModel, InputCommandModel, DispatcherModel, ObjectModel, SceneModel
 ///     
 /// </remarks>
-abstract class GameBuilder
+public abstract class GameBuilder
 {
     private GameModel? game;
 

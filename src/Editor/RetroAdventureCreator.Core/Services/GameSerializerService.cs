@@ -18,7 +18,7 @@ internal class GameSerializerService
 {
     public byte[] Serialize(GameModel gameModel)
     {
-        var serializerBuilder = new SerializerBuilder(gameModel);
+        var serializerBuilder = new SerializerFactory(gameModel);
 
         return null;
     }
