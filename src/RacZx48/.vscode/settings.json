@@ -19,6 +19,7 @@
         "spectrum.h": "c",
         "stdlib.h": "c",
         "screen.h": "c",
-        "graphics.h": "c"
+        "graphics.h": "c",
+        "charset1.c": "cpp"
     }
 }
