@@ -1,6 +1,6 @@
 {
 	"name": "z88dk-dev-environment",
-	"image": "dgzornoza/z88dk-dev:latest",	
+	"image": "dgzornoza/z88dk-dev:latest",
 	"runArgs": [
 		"--name=${localWorkspaceFolderBasename}"
 	],

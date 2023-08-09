@@ -12,5 +12,11 @@
     "C_Cpp.default.includePath": [
         "/opt/z88dk/include/_DEVELOPMENT/sdcc"
     ],
-    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools"
+    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
+    "files.associations": {
+        "zx.h": "c",
+        "z80.h": "c",
+        "spectrum.h": "c",
+        "stdlib.h": "c"
+    }
 }

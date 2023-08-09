@@ -2,7 +2,7 @@
 EXEC_OUTPUT=output
 
 # List all your source files here
-SOURCES = test1.c
+SOURCES = main.c screen.asm
 
 # Set CRT
 CRT=31
@@ -13,7 +13,7 @@ MKDIR = mkdir -p
 CC=zcc
 AS=zcc
 TARGET=+zx
-VERBOSITY=-v
+VERBOSITY=-vn
 OUT_DIR=build
 PRAGMA_FILE=zpragma.inc
 CREATE_SNA=-Cz"--sna"
