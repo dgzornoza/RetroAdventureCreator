@@ -17,6 +17,8 @@
         "zx.h": "c",
         "z80.h": "c",
         "spectrum.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "screen.h": "c",
+        "graphics.h": "c"
     }
 }

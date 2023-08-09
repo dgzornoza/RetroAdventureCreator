@@ -41,6 +41,10 @@ http://www.breakintoprogram.co.uk/hardware/computers/zx-spectrum/assembly-langua
 
 https://espamatica.com/acerca-de/
 
+https://wiki.speccy.org/cursos/ensamblador/indice
+
+https://wiki.speccy.org/indice
+
 ## Releases
 
 ### 2.2.0

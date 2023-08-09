@@ -1,13 +1,21 @@
 #include <arch/spectrum.h>
 #include <stdlib.h>
-#include "./screen.h"
+#include "libs/screen.h"
+#include "libs/graphics.h"
+#include "globals.h"
+#include "assets/charset1.c"
 
 int main()
 {
-    openScrChannel(2);
-    print("a");
-    openScrChannel(1);
-    print("b");
+    // Establecimiento de valores iniciales
+    FontCharset = charset1 - 256;
+    // FontX = 5;
+    FontAttributes = 8;
+    // FontY = 15;
+    FontCoordinates.X = 0;
+    FontCoordinates.Y = 15;
+
+    printChar8x8('A');
 
     return 0;
 }

@@ -2,7 +2,7 @@
 EXEC_OUTPUT=output
 
 # List all your source files here
-SOURCES = main.c screen.asm
+SOURCES = main.c globals.c libs/screen.asm libs/graphics.asm 
 
 # Set CRT
 CRT=31
@@ -25,7 +25,7 @@ C_OPT_FLAGS=-SO3 --max-allocs-per-node200000 --opt-code-size
 
 CFLAGS=$(TARGET) $(VERBOSITY) -c $(C_OPT_FLAGS) -compiler sdcc -clib=sdcc_iy -pragma-include:$(PRAGMA_FILE)
 LDFLAGS=$(TARGET) $(VERBOSITY) --list -m --c-code-in-asm -clib=sdcc_iy -pragma-include:$(PRAGMA_FILE) $(CREATE_SNA)
-ASFLAGS=$(TARGET) $(VERBOSITY) --list -m -s -c
+ASFLAGS=$(TARGET) $(VERBOSITY) --list -m -s -c --c-code-in-asm 
 
 EXEC=$(OUT_DIR)/$(EXEC_OUTPUT).tap
 MEM_FREE=./memory_report.sh
