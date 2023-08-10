@@ -15,9 +15,11 @@ _openScrChain:
     call ROM_OPEN_CHAIN
     ret
 
+
+; CONsTANTS --------------------------------------------------------------------------
+
 ; ----------------------------------------------------------------------------
 ; ROM Routine address for open chain screen
-;
 ; Input:
 ;----------------------------------------------
 ; A -> chain: 1 = command line screen, 2 = upper screen

@@ -8,6 +8,8 @@
         "**/Thumbs.db": true,
         "build": true,
         ".tmp": true,
+        "src/**/*[^main].c.lis": true,
+        "src/**/*.asm.lis": true,
     },
     "C_Cpp.default.includePath": [
         "/opt/z88dk/include/_DEVELOPMENT/sdcc"

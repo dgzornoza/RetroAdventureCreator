@@ -6,6 +6,7 @@ PUBLIC _printChar8x8    ; export C decl "extern void printChar8x8(char character
 EXTERN _FontCharset     ; access global C variable "FontCharset" (uint8_t *FontCharset;) 
 EXTERN _FontCoordinates  ;access global C variable "_FontCoordinates" struct Coordinates { uint8_t X; uint8_t Y; }; (struct Coordinates FontCoordinates;)
 EXTERN _FontAttributes  ; access global C variable "FontAttributes" (uint8_t FontAttributes;)
+EXTERN _FontStyle       ; access global C variable "FontStyle" (uint8_t FontStyle;)
 
 ;-------------------------------------------------------------
 ; printChar8x8:
@@ -55,7 +56,7 @@ _printChar8x8:
     
 drawchar8_loop:
     ld a, (de)              ; get char data
-    ld (hl), a              ; set calue in screen memory
+    ld (hl), a              ; set value in screen memory
     inc de                  ; increment pointer in char
     inc h                   ; increment pointer in screen (scanline += 1)
     djnz drawchar8_loop
@@ -82,3 +83,12 @@ drawchar8_loop:
     ld (de), a              ; write attribute in memory
     ret
 
+; CONsTANTS --------------------------------------------------------------------------
+
+FONT_NORMAL      EQU   0
+FONT_BOLD        EQU   1
+FONT_UNDERSC     EQU   2
+FONT_ITALIC      EQU   3
+
+LOWRES_SCR_WIDTH    EQU   32
+LOWRES_SCR_HEIGHT   EQU   24
