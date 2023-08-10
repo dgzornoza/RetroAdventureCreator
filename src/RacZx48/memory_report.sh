@@ -6,17 +6,18 @@ echo ""
 echo "---------- REPORT -------------"
 
 CODE_SIZE=$(perl -ne '/^__code_compiler_size\s+=\s+\$(\w+)/ && print hex($1)' < $1)
-
 printf "\nCompiled code size is         %5d  " $CODE_SIZE
 printf "(0x%04X) bytes\n" $CODE_SIZE
 
-DATA_SIZE=$(perl -ne '/^__data_compiler_size\s+=\s+\$(\w+)/ && print hex($1)' < $1)
+USER_CODE_SIZE=$(perl -ne '/^__code_user_size\s+=\s+\$(\w+)/ && print hex($1)' < $1)
+printf "User code size is             %5d  " $USER_CODE_SIZE
+printf "(0x%04X) bytes\n" $USER_CODE_SIZE
 
+DATA_SIZE=$(perl -ne '/^__data_compiler_size\s+=\s+\$(\w+)/ && print hex($1)' < $1)
 printf "Compiled data size is         %5d  " $DATA_SIZE
 printf "(0x%04X) bytes\n" $DATA_SIZE
 
 RODATA_USER_SIZE=$(perl -ne '/^__rodata_user_size\s+=\s+\$(\w+)/ && print hex($1)' < $1)
-
 printf "Read only user data size is   %5d  " $RODATA_USER_SIZE
 printf "(0x%04X) bytes\n" $RODATA_USER_SIZE
 
