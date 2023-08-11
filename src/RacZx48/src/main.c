@@ -24,7 +24,21 @@ int main()
     FontCoordinates.X = 0;
     FontCoordinates.Y = 15;
 
-    printChar8x8('X');
+    // printChar8x8('X');
+
+    char *c = "prueba de cadena super larga larga sdñflaksj dfñals fjasñld fasñdflaks fdasdf\0";
+    while (*c)
+    {
+        printChar8x8(*c++);
+        if (++FontCoordinates.X > 31)
+        {
+            if (FontCoordinates.Y != 23)
+            {
+                FontCoordinates.Y++;
+            }
+            FontCoordinates.X = 0;
+        }
+    }
 
     return 0;
 }

@@ -1,7 +1,7 @@
 SECTION code_user
 
 PUBLIC _printChar8x8    ; export C decl "extern void printChar8x8(char character) __z88dk_fastcall;"
-
+PUBLIC _PrintString_8x8
 
 EXTERN _FontCharset     ; access global C variable "FontCharset" (uint8_t *FontCharset;) 
 EXTERN _FontCoordinates  ;access global C variable "_FontCoordinates" struct Coordinates { uint8_t X; uint8_t Y; }; (struct Coordinates FontCoordinates;)
@@ -168,6 +168,40 @@ print_attribute:
 
 
 
+
+
+_PrintString_8x8:
+ 
+   ;;; Bucle de impresion de caracter
+pstring8_loop:
+   LD A, (HL)                ; Leemos un caracter de la cadena
+   OR A
+   RET Z                     ; Si es 0 (fin de cadena) volver
+   INC HL                    ; Siguiente caracter en la cadena
+   PUSH HL                   ; Salvaguardamos HL
+   CALL _printChar8x8        ; Imprimimos el caracter
+   POP HL                    ; Recuperamos HL
+ 
+   ;;; Ajustamos coordenadas X e Y
+   LD A, (_FontCoordinates+1)            ; Incrementamos la X
+   INC A                     ; pero comprobamos si borde derecho
+   CP 31                     ; X > 31?
+   JR C, pstring8_noedgex    ; No, se puede guardar el valor
+ 
+   LD A, (_FontCoordinates)            ; Cogemos coordenada Y
+   CP 23                     ; Si ya es 23, no incrementar
+   JR NC, pstring8_noedgey   ; Si es 23, saltar
+ 
+   INC A                     ; No es 23, cambiar Y
+   LD (_FontCoordinates), A
+ 
+pstring8_noedgey:
+   LD (_FontCoordinates), A            ; Guardamos la coordenada Y
+   XOR A                     ; Y ademas hacemos A = X = 0
+ 
+pstring8_noedgex:
+   LD (_FontCoordinates+1), A            ; Almacenamos el valor de X
+   JR pstring8_loop
 
    
 ; CONsTANTS --------------------------------------------------------------------------
