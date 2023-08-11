@@ -169,12 +169,35 @@ print_attribute:
 
 
 
+   
 ; CONsTANTS --------------------------------------------------------------------------
 
+
+
+;;; FONT styles, should be equals to FontStyleEnum in graphics.h
 FONT_NORMAL      EQU   0
 FONT_BOLD        EQU   1
-FONT_UNDERSCORE     EQU   2
+FONT_UNDERSCORE  EQU   2
 FONT_ITALIC      EQU   3
+
+;;; FONT Control Codes, should be equals to FontControlCodeEnum in graphics.h
+FONT_EOS            EQU 0      ; End of String
+FONT_SET_STYLE      EQU 1
+FONT_SET_X          EQU 2
+FONT_SET_Y          EQU 3
+FONT_SET_INK        EQU 4
+FONT_SET_PAPER      EQU 5
+FONT_SET_ATTRIB     EQU 6
+FONT_SET_BRIGHT     EQU 7
+FONT_SET_FLASH      EQU 8
+FONT_XXXXXX         EQU 9       ; Libre para ampliaciones
+FONT_LF             EQU 10
+FONT_CRLF           EQU 11
+FONT_BLANK          EQU 12
+FONT_CR             EQU 13
+FONT_BACKSPACE      EQU 14
+FONT_TAB            EQU 15
+FONT_INC_X          EQU 16      ; De la 17 a la 31 libres
 
 ; LOWRES_SCR_WIDTH    EQU   32
 ; LOWRES_SCR_HEIGHT   EQU   24
