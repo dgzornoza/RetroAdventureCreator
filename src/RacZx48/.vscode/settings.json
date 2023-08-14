@@ -8,7 +8,7 @@
         "**/Thumbs.db": true,
         "build": true,
         ".tmp": true,
-        "src/**/*[^main].c.lis": true,
+        //"src/**/*[^main].c.lis": true,
         "src/**/*.asm.lis": true,
     },
     "C_Cpp.default.includePath": [

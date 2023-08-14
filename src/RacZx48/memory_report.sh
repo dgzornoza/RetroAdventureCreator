@@ -6,19 +6,23 @@ echo ""
 echo "---------- REPORT -------------"
 
 CODE_SIZE=$(perl -ne '/^__code_compiler_size\s+=\s+\$(\w+)/ && print hex($1)' < $1)
-printf "\nCompiled code size is         %5d  " $CODE_SIZE
+printf "\nCompiled code size is           %5d  " $CODE_SIZE
 printf "(0x%04X) bytes\n" $CODE_SIZE
 
 USER_CODE_SIZE=$(perl -ne '/^__code_user_size\s+=\s+\$(\w+)/ && print hex($1)' < $1)
-printf "User code size is             %5d  " $USER_CODE_SIZE
+printf "User code size is               %5d  " $USER_CODE_SIZE
 printf "(0x%04X) bytes\n" $USER_CODE_SIZE
 
+REAONLY_DATA_SIZE=$(perl -ne '/^__rodata_compiler_size\s+=\s+\$(\w+)/ && print hex($1)' < $1)
+printf "Readonly compiled data size is  %5d  " $REAONLY_DATA_SIZE
+printf "(0x%04X) bytes\n" $REAONLY_DATA_SIZE
+
 DATA_SIZE=$(perl -ne '/^__data_compiler_size\s+=\s+\$(\w+)/ && print hex($1)' < $1)
-printf "Compiled data size is         %5d  " $DATA_SIZE
+printf "Compiled data size is           %5d  " $DATA_SIZE
 printf "(0x%04X) bytes\n" $DATA_SIZE
 
 RODATA_USER_SIZE=$(perl -ne '/^__rodata_user_size\s+=\s+\$(\w+)/ && print hex($1)' < $1)
-printf "Read only user data size is   %5d  " $RODATA_USER_SIZE
+printf "Read only user data size is     %5d  " $RODATA_USER_SIZE
 printf "(0x%04X) bytes\n" $RODATA_USER_SIZE
 
 
@@ -29,12 +33,12 @@ STACK_SIZE=$(perl -ne '/^TAR__crt_stack_size\s+=\s+\$(\w+)/ && print hex($1)' < 
 TOP_STACK=$(expr $REG_SP - $STACK_SIZE)
 FREE_MEM=$(expr $TOP_STACK - $BSS_END)
 
-printf "Stack comes down to           %5d  " $TOP_STACK
+printf "Stack comes down to             %5d  " $TOP_STACK
 printf "(0x%04X)\n" $TOP_STACK
 
-printf "Heap starts at                %5d  " $BSS_END
+printf "Heap starts at                  %5d  " $BSS_END
 printf "(0x%04X)\n" $BSS_END
 
-echo "                              ====="
-printf "Free memory                   %5d " $FREE_MEM
+echo "                                ====="
+printf "Free memory                     %5d " $FREE_MEM
 printf "(0x%04X) bytes\n\n" $FREE_MEM

@@ -1,10 +1,10 @@
 SECTION code_user
 
 PUBLIC _printChar8x8    ; export C decl "extern void printChar8x8(char character) __z88dk_fastcall;"
-PUBLIC _PrintString_8x8
+PUBLIC _printString8x8
 
 EXTERN _FontCharset     ; access global C variable "FontCharset" (uint8_t *FontCharset;) 
-EXTERN _FontCoordinates  ;access global C variable "_FontCoordinates" struct Coordinates { uint8_t X; uint8_t Y; }; (struct Coordinates FontCoordinates;)
+EXTERN _FontCoordinates  ;access global C variable "FontCoordinates" struct Coordinates { uint8_t X; uint8_t Y; }; (struct Coordinates FontCoordinates;)
 EXTERN _FontAttributes  ; access global C variable "FontAttributes" (uint8_t FontAttributes;)
 EXTERN _FontStyle       ; access global C variable "FontStyle" (uint8_t FontStyle;)
 EXTERN _FontStyleEnum
@@ -23,7 +23,7 @@ EXTERN _FontStyleEnum
 ;-------------------------------------------------------------
 _printChar8x8:
  
-   ld a, l                     ; set to A function parameter in HL (TODO: dgzornoza intentar eliminar modificando el registro)
+   ;ld a, l                     ; set to A function parameter in HL (TODO: dgzornoza intentar eliminar modificando el registro)
 
    ld bc, (_FontCoordinates)   ; B = Y,  C = X
    ex af, af'                  ; store char in A'
@@ -168,12 +168,22 @@ print_attribute:
 
 
 
+;-------------------------------------------------------------
+; _printString8x8:
+; print string with format in screen
+;
+; Input
+; -----------------------------------------------------
+; FontCharset       = Charset memory address.
+; FontCoordinates   = X,Y Coordinate in low-res (0-31, 0-23) (struct with X,Y)
+; FontAttributes    = Print attribute to use
+; FontStyle         = Font style to use (0-N).
+; Registro HL       = ASCII char to print
+;-------------------------------------------------------------
+_printString8x8:
 
-
-_PrintString_8x8:
- 
    ;;; Bucle de impresion de caracter
-pstring8_loop:
+string_loop:
    LD A, (HL)                ; Leemos un caracter de la cadena
    OR A
    RET Z                     ; Si es 0 (fin de cadena) volver
@@ -183,25 +193,27 @@ pstring8_loop:
    POP HL                    ; Recuperamos HL
  
    ;;; Ajustamos coordenadas X e Y
-   LD A, (_FontCoordinates+1)            ; Incrementamos la X
+   LD A, (_FontCoordinates)            ; Incrementamos la X
    INC A                     ; pero comprobamos si borde derecho
    CP 31                     ; X > 31?
-   JR C, pstring8_noedgex    ; No, se puede guardar el valor
+   JR C, noedge_x    ; No, se puede guardar el valor
  
-   LD A, (_FontCoordinates)            ; Cogemos coordenada Y
+   LD A, (_FontCoordinates + 1)            ; Cogemos coordenada Y
    CP 23                     ; Si ya es 23, no incrementar
-   JR NC, pstring8_noedgey   ; Si es 23, saltar
+   JR NC, noedge_y   ; Si es 23, saltar
  
    INC A                     ; No es 23, cambiar Y
-   LD (_FontCoordinates), A
+   LD (_FontCoordinates + 1), A
  
-pstring8_noedgey:
-   LD (_FontCoordinates), A            ; Guardamos la coordenada Y
-   XOR A                     ; Y ademas hacemos A = X = 0
+noedge_y:
+   LD (_FontCoordinates + 1), A        ; Guardamos la coordenada Y
+   XOR A                               ; Y ademas hacemos A = X = 0
  
-pstring8_noedgex:
-   LD (_FontCoordinates+1), A            ; Almacenamos el valor de X
-   JR pstring8_loop
+noedge_x:
+   LD (_FontCoordinates), A            ; Almacenamos el valor de X
+   JR string_loop
+
+   
 
    
 ; CONsTANTS --------------------------------------------------------------------------
@@ -214,24 +226,6 @@ FONT_BOLD        EQU   1
 FONT_UNDERSCORE  EQU   2
 FONT_ITALIC      EQU   3
 
-;;; FONT Control Codes, should be equals to FontControlCodeEnum in graphics.h
-FONT_EOS            EQU 0      ; End of String
-FONT_SET_STYLE      EQU 1
-FONT_SET_X          EQU 2
-FONT_SET_Y          EQU 3
-FONT_SET_INK        EQU 4
-FONT_SET_PAPER      EQU 5
-FONT_SET_ATTRIB     EQU 6
-FONT_SET_BRIGHT     EQU 7
-FONT_SET_FLASH      EQU 8
-FONT_XXXXXX         EQU 9       ; Libre para ampliaciones
-FONT_LF             EQU 10
-FONT_CRLF           EQU 11
-FONT_BLANK          EQU 12
-FONT_CR             EQU 13
-FONT_BACKSPACE      EQU 14
-FONT_TAB            EQU 15
-FONT_INC_X          EQU 16      ; De la 17 a la 31 libres
 
-; LOWRES_SCR_WIDTH    EQU   32
-; LOWRES_SCR_HEIGHT   EQU   24
+LOWRES_SCR_WIDTH    EQU   32
+LOWRES_SCR_HEIGHT   EQU   24

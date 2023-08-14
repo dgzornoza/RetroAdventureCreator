@@ -66,8 +66,15 @@ extern enum FontStyleEnum FontStyle;
 // -----------------------------------------------------------------------------
 
 /**
- * @param character print character from charset
+ * Print character in screen from current charset in 'FontCharset'
+ * @param character character to print
  */
 extern void printChar8x8(char character) __z88dk_fastcall;
+
+/**
+ * Print string with format in screen
+ * @param string string to print
+ */
+extern void printString8x8(char *string) __z88dk_fastcall;
 
 #endif
