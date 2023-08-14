@@ -182,36 +182,36 @@ print_attribute:
 ;-------------------------------------------------------------
 _printString8x8:
 
-   ;;; Bucle de impresion de caracter
+   ;;; Loop print character string
 string_loop:
-   LD A, (HL)                ; Leemos un caracter de la cadena
-   OR A
-   RET Z                     ; Si es 0 (fin de cadena) volver
-   INC HL                    ; Siguiente caracter en la cadena
-   PUSH HL                   ; Salvaguardamos HL
-   CALL _printChar8x8        ; Imprimimos el caracter
-   POP HL                    ; Recuperamos HL
+   ld a, (hl)                ; get char from string
+   or a
+   ret z                     ; if \0 (end of string) return
+   inc hl                    ; next char in string
+   push hl                   ; store HL
+   call _printChar8x8        ; print char
+   pop hl                    ; restore HL
  
-   ;;; Ajustamos coordenadas X e Y
-   LD A, (_FontCoordinates)            ; Incrementamos la X
-   INC A                     ; pero comprobamos si borde derecho
-   CP 31                     ; X > 31?
-   JR C, noedge_x    ; No, se puede guardar el valor
+   ;;; calculate next X, Y coordinates
+   ld a, (_FontCoordinates)      ; Increment X
+   inc a                         
+   cp LOWRES_SCR_WIDTH - 1       ; Compare with right border (x > 31)
+   jr c, update_x                ; jump if not is in right border
  
-   LD A, (_FontCoordinates + 1)            ; Cogemos coordenada Y
-   CP 23                     ; Si ya es 23, no incrementar
-   JR NC, noedge_y   ; Si es 23, saltar
+   ld a, (_FontCoordinates + 1)  ; get Y coordinate
+   cp LOWRES_SCR_HEIGHT - 1      ; Compare with bottom border (y > 23)
+   jr nc, update_y               ; jump if (y = 23)
  
-   INC A                     ; No es 23, cambiar Y
-   LD (_FontCoordinates + 1), A
+   inc a                         ; (y < 23), increment Y
+   ld (_FontCoordinates + 1), a
  
-noedge_y:
-   LD (_FontCoordinates + 1), A        ; Guardamos la coordenada Y
-   XOR A                               ; Y ademas hacemos A = X = 0
+update_y:
+   ld (_FontCoordinates + 1), a  ; get Y coordinate
+   xor a                         ; reset X, x = 0
  
-noedge_x:
-   LD (_FontCoordinates), A            ; Almacenamos el valor de X
-   JR string_loop
+update_x:
+   ld (_FontCoordinates), a      ; get X coordinate
+   jr string_loop
 
    
 
