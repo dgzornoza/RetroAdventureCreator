@@ -4,17 +4,8 @@
 #include "main.h"
 #include "libs/graphics.h"
 
-uint8_t FontAttributes2;
-
-void setInk(uint8_t value)
-{
-    FontAttributes2 = value & 0b00000111;
-}
-
 int main()
 {
-    setInk(7);
-
     char *c = "prueba de cadena super larga larga sdtflaksj dfrals fjassld faswdflaks fdasdf\0";
     // FontAttributes = 56;
     // // FontStyle = bold;
