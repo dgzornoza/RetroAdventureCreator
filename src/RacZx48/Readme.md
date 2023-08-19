@@ -34,9 +34,6 @@ The first time it takes about 10 minutes to compile the image with the latest Z8
 https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_01_GettingStarted.md
 https://wiki.speccy.org/cursos/z88dk/contenidos
 
-https://www.z88dk.org/forum/viewtopic.php?t=8908
-https://www.z88dk.org/forum/viewtopic.php?f=2&t=11636
-
 http://www.breakintoprogram.co.uk/hardware/computers/zx-spectrum/assembly-language/z80-tutorials/print-in-assembly-language#:~:text=CALL%20ROM_OPEN_CHANNEL%20A%20single%20character%20can%20be%20printed,so%20the%20character%20%E2%80%98A%E2%80%99%20is%20character%20code%2065.
 
 https://espamatica.com/acerca-de/
@@ -44,6 +41,8 @@ https://espamatica.com/acerca-de/
 https://wiki.speccy.org/cursos/ensamblador/indice
 
 https://wiki.speccy.org/indice
+
+ROM Data: https://skoolkid.github.io/rom/index.html
 
 ## Releases
 

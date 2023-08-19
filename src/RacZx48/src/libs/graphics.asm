@@ -1,28 +1,38 @@
 SECTION code_user
 
-PUBLIC _printString  ; export C decl "extern void printString(char *string) __z88dk_fastcall;"
+PUBLIC _zxPrintString    ; export C decl "extern void zxPrintString(char *string) __z88dk_fastcall;"
+PUBLIC _zxSetFontCharset ; export C decl "extern void zxSetFontCharset(uint8_t *charset) __z88dk_fastcall;"
+PUBLIC _zxSetDefaultFontCharset ; export C decl "extern void zxSetDefaultFontCharset() __z88dk_fastcall;"
 
-PUBLIC _FontCharset
-; PUBLIC FontAttributes    DB    56      ; black over gray
-; PUBLIC FontStyle         DB    0
-; PUBLIC FontX             DB    0       ; FontX and FontY should be togheter on this order, don't change
-; PUBLIC FontY             DB    0       
+;-------------------------------------------------------------------------------
+;	Name:		      public _zxSetFontCharset
+;	Description:	set font charset
+;	Input:		   HL = pointer to charset
+;	Output: 	      --
+;-------------------------------------------------------------------------------
+_zxSetFontCharset:
+   ld (FontCharset), hl
+   ret
+ 
+;-------------------------------------------------------------------------------
+;	Name:		      public _zxSetDefaultFontCharset
+;	Description:	set default font charset
+;	Input:		   --
+;	Output: 	      --
+;-------------------------------------------------------------------------------
+_zxSetDefaultFontCharset:
+   ld (FontCharset), ROM_CHARSET
+   ret
 
-;-------------------------------------------------------------
-; public _printString:
-; print string with optional control codes in screen
-;
-; Use DE, BC
-; Input
-; -----------------------------------------------------
-; _FontCharset        = Charset memory address.
-; FontX              = X Coordinate in low-res (0-31)
-; FontY              = Y Coordinate in low-res (0-23)
-; FontAttributes     = Print attribute to use
-; FontStyle          = Font style to use.
-; Register HL        = ASCII char to print
-;-------------------------------------------------------------
-_printString:
+;-------------------------------------------------------------------------------
+;	Name:		      public _zxPrintString
+;	Description:	print string with optional control codes in screen
+;	Input:		   HL = ASCII char to print
+;	Output: 	      --
+;	Clobbers: 	   DE, BC
+;  Remarks:       FontCharset define charset memory address to use.
+;-------------------------------------------------------------------------------
+_zxPrintString:
  
 string_loop:
    ld a, (hl)                 ; Get char from string
@@ -32,7 +42,7 @@ string_loop:
    jp c,  string_control_code ; jump if is control code
  
    push hl                    ; store HL
-   call printChar8x8          ; print char
+   call print_char_8x8          ; print char
    pop hl                     ; restore HL
  
    ;;; increment cursor using font_blanck, increment x and update x and y if need
@@ -78,20 +88,19 @@ string_end_call_routine:
 
 
 
-;-------------------------------------------------------------
-; private printChar8x8:
-; print 8x8 pixels char from charset.
-;
-; Input
-; -----------------------------------------------------
-; _FontCharset        = Charset memory address.
-; FontX              = X Coordinate in low-res (0-31)
-; FontY              = Y Coordinate in low-res (0-23)
-; FontAttributes     = Print attributes to use
-; FontStyle          = Font style to use.
-; Register A         = ASCII char to print
-;-------------------------------------------------------------
-.printChar8x8:
+;-------------------------------------------------------------------------------
+;	Name:		      private print_char_8x8
+;	Description:	print 8x8 pixels char from charset.
+;	Input:		   A = ASCII char to print
+;	Output: 	      --
+;	Clobbers: 	   DE, BC
+;  Remarks:       FontCharset define charset memory address to use.
+;                 FontX              = X Coordinate in low-res (0-31)
+;                 FontY              = Y Coordinate in low-res (0-23)
+;                 FontAttributes     = Print attributes to use
+;                 FontStyle          = Font style to use.
+;-------------------------------------------------------------------------------
+.print_char_8x8:
  
    ld bc, (FontX)          ; B = Y,  C = X
    ex af, af'              ; store char in A'
@@ -111,7 +120,7 @@ string_end_call_routine:
 
    ;;; calculate origin position (array sprites) in HL: adress = base_sprites + (num_sprite * 8)
    ex af, af'              ; get char to print in A'
-   ld bc, (_FontCharset)
+   ld bc, (FontCharset)
    ld h, 0
    ld l, a
    add hl, hl
@@ -236,59 +245,58 @@ print_attribute:
 
 
 
-
  
-;-------------------------------------------------------------
-; set charset in use
-; input :  HL = charset address memory
-;-------------------------------------------------------------
-.font_set_charset:
-   ld (_FontCharset), hl
-   ret
- 
- 
-;-------------------------------------------------------------
-; set text style
-; input :  A = style
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_set_style
+;	Description:	set text style
+;	Input:		   A = Font style
+;	Output: 	      --
+;-------------------------------------------------------------------------------
 .font_set_style:
    ld (FontStyle), a
    ret
  
  
-;-------------------------------------------------------------
-; set screen x cursor coordinate
-; input :  A = x coordinate
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_set_x
+;	Description:	set screen X cursor coordinate
+;	Input:		   A = X coordinate
+;	Output: 	      --
+;-------------------------------------------------------------------------------
 .font_set_x:
    ld (FontX), a
    ret
  
  
-;-------------------------------------------------------------
-; set screen y cursor coordinate
-; input :  A = y coordinate
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_set_y
+;	Description:	set screen Y cursor coordinate
+;	Input:		   A = Y coordinate
+;	Output: 	      --
+;-------------------------------------------------------------------------------
 .font_set_y:
    ld (FontY), a
    ret
  
  
-;-------------------------------------------------------------
-; set screen x,y cursor coordinate
-; input :  B = y coordinate
-;          C = x coordinate
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_set_xy
+;	Description:	set screen x,y cursor coordinate
+;	Input:		   B = y coordinate
+;                 C = x coordinate
+;	Output: 	      --
+;-------------------------------------------------------------------------------
 .font_set_xy:
    ld (FontX), bc
    ret
  
  
-;-------------------------------------------------------------
-; set ink value in current font attribute
-; input :  A = ink (0-7)
-; modify:  AF
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_set_ink
+;	Description:	set ink value in current font attribute
+;	Input:		   A = ink (0-7)
+;	Clobbers: 	   AF
+;-------------------------------------------------------------------------------
 .font_set_ink:
    push bc                    ; preserve registers
    and 7                      ; remove bits 7-3
@@ -301,11 +309,12 @@ print_attribute:
    ret
  
  
-;-------------------------------------------------------------
-; set paper value in current attributes
-; input :  A = paper (0-7)
-; modify:  AF
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_set_paper
+;	Description:	set paper value in current attributes
+;	Input:		   A = paper (0-7)
+;	Clobbers: 	   AF
+;-------------------------------------------------------------------------------
 .font_set_paper:
    push bc                    ; preserve register
    and 7                      ; remove bits 7-3
@@ -321,20 +330,22 @@ print_attribute:
    ret
  
  
-;-------------------------------------------------------------
-; set current attribute value 
-; input :  A = ink
-;-------------------------------------------------------------
-.font_set_attrib:
+;-------------------------------------------------------------------------------
+;	Name:		      private font_set_attributes
+;	Description:	set current attribute value 
+;	Input:		   A = ink
+;-------------------------------------------------------------------------------
+.font_set_attributes:
    ld (FontAttributes), a
    ret
  
  
-;-------------------------------------------------------------
-; set bright value in current attributes (1/0) (bit 6)
-; input :  A = bright (1/0)
-; modify:  AF
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_set_bright
+;	Description:	set bright value in current attributes (1/0) (bit 6)
+;	Input:		   A = bright (1/0)
+;	Clobbers: 	   AF
+;-------------------------------------------------------------------------------
 .font_set_bright:
    and 1                      ; only bit 0 in a
    ld a, (FontAttributes)     ; set attributes in a
@@ -348,11 +359,12 @@ bright_1:
    ret
  
  
-;-------------------------------------------------------------
-; set flash value in current attributes (1/0) (bit 7)
-; input :  A = flash (1/0)
-; modify:  AF
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_set_flash
+;	Description:	set flash value in current attributes (1/0) (bit 7)
+;	Input:		   A = flash (1/0)
+;	Clobbers: 	   AF
+;-------------------------------------------------------------------------------
 .font_set_flash:
    and 1                      ; only bit 0 in a
    ld a, (FontAttributes)     ; set attributes in a
@@ -366,16 +378,17 @@ flash_1:
    ret
  
  
-;-------------------------------------------------------------
-; print space, override current position in cursor and increment X (updating y if need)
-; modify:  AF
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_blank
+;	Description:	print space, override current position in cursor and increment X (updating y if need)
+;	Clobbers: 	   AF
+;-------------------------------------------------------------------------------
 .font_blank:
    ld a, ' '            ; set char space
    push bc
    push de
    push hl
-   call printChar8x8    ; print char
+   call print_char_8x8    ; print char
    pop hl
    pop de
    pop bc
@@ -384,10 +397,11 @@ flash_1:
  
  
  
-;-------------------------------------------------------------
-; increments x coordinate by 1 taking into account the edge on the screen (updating Y accordingly).
-; modify:  AF
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_inc_x
+;	Description:	increments x coordinate by 1 taking into account the edge on the screen (updating Y accordingly).
+;	Clobbers: 	   AF
+;-------------------------------------------------------------------------------
 .font_inc_x:
    ld a, (FontX)              ; increment x
    inc a                     
@@ -401,11 +415,12 @@ update_x:
    ret
  
  
-;-------------------------------------------------------------
-; Generate un linefeed (increment Y by 1). 
-; Takes into account the height variables of the screen.
-; modify:  AF
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_lf
+;	Description:	Generate un linefeed (increment Y by 1). 
+;                 Takes into account the height variables of the screen.
+;	Clobbers: 	   AF
+;-------------------------------------------------------------------------------
 .font_lf:
    ld a, (FontY)              ; get Y coordinate
    cp LOWRES_SCR_HEIGHT - 1   ; Compare with bottom border (y > 23)
@@ -417,46 +432,50 @@ update_y:
    ret
  
  
-;-------------------------------------------------------------
-; Generate carriage return (CR) => x=0.
-; Modify:  AF
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_cr
+;	Description:	Generate carriage return (CR) => x=0.
+;	Clobbers: 	   AF
+;-------------------------------------------------------------------------------
 .font_cr:
    xor a
    ld (FontX), a
    ret
  
  
-;-------------------------------------------------------------
-; Generate linefeed and Carriage return (lf+cr).
-; Modify:  AF
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_crlf
+;	Description:	Generate linefeed and Carriage return (lf+cr).
+;	Clobbers: 	   AF
+;-------------------------------------------------------------------------------
 .font_crlf:
    call font_lf
    call font_cr
    ret
  
  
-;-------------------------------------------------------------
-; print tabulator (3 spaces) using printstring
-; modify:  AF
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_tab
+;	Description:	print tabulator (3 spaces) using printstring
+;	Clobbers: 	   AF
+;-------------------------------------------------------------------------------
 .font_tab:
    push bc
    push de
    push hl
    ld hl, FontTabString
-   call _printString      ; print 3 spaces
+   call _zxPrintString      ; print 3 spaces
    pop hl
    pop de
    pop bc
    ret 
  
  
-;-------------------------------------------------------------
-; decrement X cursor coordinate withouth delete char
-; Modify:  AF
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_dec_x
+;	Description:	decrement X cursor coordinate withouth delete char
+;	Clobbers: 	   AF
+;-------------------------------------------------------------------------------
 .font_dec_x:
    ld a, (FontX)     ; get X coordinate
    or a
@@ -466,18 +485,19 @@ update_y:
    ret               ; exit
  
  
-;-------------------------------------------------------------
-; decrement X cursor, deleting char backspace)
-; delete char printing space.
-; Modify:  AF
-;-------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Name:		      private font_backspace
+;	Description:	decrement X cursor, deleting char backspace)
+;                 delete char printing space.
+;	Clobbers: 	   AF
+;-------------------------------------------------------------------------------
 .font_backspace:
    call font_dec_x
    ld a, ' '               ; space to print
    push bc
    push de
    push hl
-   call printChar8x8       ; override char with space
+   call print_char_8x8     ; override char with space
    pop hl
    pop de
    pop bc
@@ -485,15 +505,18 @@ update_y:
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; VARIABLES 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; VARIABLES --------------------------------------------------------------------
-._FontCharset       DW    $3C00
-.FontAttributes    DB    56      ; black over gray
-.FontStyle         DB    0
-.FontX             DB    0       ; FontX and FontY should be togheter on this order, don't change
-.FontY             DB    0
+.FontCharset         dw ROM_CHARSET
 
-.FontTabString     DB  "   ", 0
+.FontAttributes      db 56      ; black over gray
+.FontStyle           db 0
+.FontX               db 0       ; FontX and FontY should be togheter on this order, don't change
+.FontY               db 0
+
+.FontTabString       db  "   ", 0
 
 ;-------------------------------------------------------------
 ; Table with 16 control code routines adresses.
@@ -501,18 +524,30 @@ update_y:
 ;-------------------------------------------------------------
 .FontControlCodeRoutines:
    dw 0000, font_set_style, font_set_x, font_set_y, font_set_ink
-   dw font_set_paper, font_set_attrib, font_set_bright
+   dw font_set_paper, font_set_attributes, font_set_bright
    dw font_set_flash, 0000, font_lf, font_crlf, font_blank
    dw font_cr, font_backspace, font_tab, font_inc_x
 
 
-; CONsTANTS --------------------------------------------------------------------
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; CONsTANTS 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; FONT styles, should be equals to FontStyleEnum in graphics.h
-FONT_NORMAL      EQU   0
-FONT_BOLD        EQU   1
-FONT_UNDERSCORE  EQU   2
-FONT_ITALIC      EQU   3
+; ----------------------------------------------------------------------------
+; FONT styles, should be equals to FontStyleEnum in graphics.h
+; ----------------------------------------------------------------------------
+FONT_NORMAL      equ   0
+FONT_BOLD        equ   1
+FONT_UNDERSCORE  equ   2
+FONT_ITALIC      equ   3
 
-LOWRES_SCR_WIDTH    EQU   32
-LOWRES_SCR_HEIGHT   EQU   24
+; ----------------------------------------------------------------------------
+; ZxSpectrum Low-Resolution
+; ----------------------------------------------------------------------------
+LOWRES_SCR_WIDTH    equ   32
+LOWRES_SCR_HEIGHT   equ   24
+
+; ----------------------------------------------------------------------------
+; ROM address with default charset
+; ----------------------------------------------------------------------------
+ROM_CHARSET:    equ $3C00;

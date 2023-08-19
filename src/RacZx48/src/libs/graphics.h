@@ -52,7 +52,7 @@ enum FontStyleEnum
 
 /** VARIABLES */
 // -----------------------------------------------------------------------------
-extern uint8_t *FontCharset;
+extern uint8_t *g_fontCharset;
 
 /** FUNCTIONS */
 // -----------------------------------------------------------------------------
@@ -61,7 +61,17 @@ extern uint8_t *FontCharset;
  * Print string with format in screen
  * @param string string to print
  */
-extern void
-printString(char *string) __z88dk_fastcall;
+extern void zxPrintString(char *string) __z88dk_fastcall;
+
+/**
+ * Set font charset to use in printing strings
+ * @param charset pointer to charset
+ */
+extern void zxSetFontCharset(uint8_t *charset) __z88dk_fastcall;
+
+/**
+ * Set default ROM charset to use in printing strings
+ */
+extern void zxSetDefaultFontCharset() __z88dk_fastcall;
 
 #endif

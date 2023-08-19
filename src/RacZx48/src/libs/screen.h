@@ -4,6 +4,8 @@
 /**
  * @param chain chain to set: 1 = command line, 2 = upper screen
  */
-extern void openScrChain(char chain) __z88dk_fastcall;
+extern void zx_open_screen_chain(char chain) __z88dk_fastcall;
+
+extern void test() __z88dk_fastcall;
 
 #endif
