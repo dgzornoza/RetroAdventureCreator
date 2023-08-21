@@ -31,7 +31,7 @@ string_loop:
    jp c,  string_control_code ; jump if is control code
  
    push hl                    ; store HL
-   call print_char_8x8          ; print char
+   call print_char_8x8        ; print char
    pop hl                     ; restore HL
  
    ;;; increment cursor using font_blanck, increment x and update x and y if need

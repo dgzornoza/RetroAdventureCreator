@@ -1,21 +1,26 @@
 SECTION code_user
 
 PUBLIC _zxInputstring    ; export C decl "extern char* zxInputstring(uint8_t *buffer, uint8_t length) __z88dk_fastcall;"
-PUBLIC _zxTestInput
+PUBLIC _zxTest
 
-_zxTestInput:
-   ;ei
-   ;rst $38
+_zxTest:
+   ld e, l     ; parametro 
+
+   ld a, (bufferIndex)
+   cp bufferLength      ; es menor que el tamaño del buffer?
+   jp nc, zxTest_exit   ; si es mayor sale de la funcion
    
-   xor a
-   ld (ROM_LAST_KEY), a         ; clean last key pressed
-   rst $38
-   ;push hl                      ; ROM_KEY_SCAN modify HL, (preserve)
-   ;call ROM_KEY_SCAN            ; call ROM routine for scan key
-   ;pop hl      
-   ;rst $38
-   ld a, (ROM_LAST_KEY)         ; get decoded value
-   ld l, a
+   ld hl, buffer      ; HL = puntero al offset en el buffer
+   ld c, a
+   ld b, 0                         
+   add hl, bc  
+   
+   inc a                ; incrementar buffer index
+   ld (bufferIndex), a
+
+   ld (hl), e           ; añadir el parametro al buffer
+   
+zxTest_exit:     
    ret
 
 ;-------------------------------------------------------------------------------
@@ -62,7 +67,7 @@ inputs_loop:
    ex af, af'                   ; store value in A'
  
    ;;; Check max string length
-   ld a, (InputsCounter )       ; A = available chars
+   ld a, (InputsCounter)       ; A = available chars
    or a                         ; is zero?
    jr z, inputs_loop            ; if Zero, not insert char
    dec a
@@ -139,3 +144,8 @@ inputs_delete:
 ROM_LAST_KEY      equ    $5C08
 ROM_KEY_SCAN      equ    $028E
 ROM_FLAGS         equ 23611
+
+.bufferLength  equ 10
+.bufferIndex   db 0
+.buffer        ds bufferLength - 1
+               db 0

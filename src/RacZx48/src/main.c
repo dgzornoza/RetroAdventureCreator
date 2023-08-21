@@ -48,15 +48,27 @@ char cadena1[] = {
 };
 
 int *sp;
-#define push(sp, n) (*((sp)++) = (n))
-#define pop(sp) (*--(sp))
+int length;
+// #define push(sp, n) (*((sp)++) = (n))
+// #define pop(sp) (*--(sp))
+
+void push(char n)
+{
+    if (length < 10)
+    {
+        *sp = (n);
+        sp++;
+        length++;
+    }
+    // *((sp)++) = (n);
+}
 
 IM2_DEFINE_ISR(isr)
 {
     char c;
 
     if ((c = in_inkey()) != 0)
-        push(sp, 10);
+        zxTest(c);
 
     // char byte = zxTestInput();
     // byte = byte == NULL ? 0x55 : byte;

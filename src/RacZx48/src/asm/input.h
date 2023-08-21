@@ -11,6 +11,6 @@
 
 extern char *zxInputstring(uint8_t *buffer, uint8_t length);
 
-extern char zxTestInput() __z88dk_fastcall;
+extern void zxTest(char a) __z88dk_fastcall;
 
 #endif
