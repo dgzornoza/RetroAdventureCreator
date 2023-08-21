@@ -1,5 +1,5 @@
-#ifndef __GRAPHICS_H__
-#define __GRAPHICS_H__
+#ifndef __DGZ_OUTPUT_H__
+#define __DGZ_OUTPUT_H__
 
 #include <stdlib.h>
 
@@ -10,49 +10,40 @@
 
 /** INFRASTRUCTURE */
 // -----------------------------------------------------------------------------
-struct Coordinates
-{
-    uint8_t X;
-    uint8_t Y;
-};
 
 /** Enum with font control codes */
 enum FontControlCodeEnum
 {
     /* End of String */
-    eos = 0,
-    set_style = 1,
-    set_x = 2,
-    set_y = 3,
-    set_ink = 4,
-    set_paper = 5,
-    set_attrib = 6,
-    set_bright = 7,
-    set_flash = 8,
+    EOS = 0,
+    SET_STYLE = 1,
+    SET_X = 2,
+    SET_Y = 3,
+    SET_INK = 4,
+    SET_PAPER = 5,
+    SET_ATTRIB = 6,
+    SET_BRIGHT = 7,
+    SET_FLASH = 8,
     /* currently unused */
-    unused = 9,
-    lf = 10,
-    crlf = 11,
-    blank = 12,
-    cr = 13,
-    backspace = 14,
-    tab = 15,
-    inc_x = 16,
+    UNUSED = 9,
+    LF = 10,
+    CRLF = 11,
+    BLANK = 12,
+    CR = 13,
+    BACKSPACE = 14,
+    TAB = 15,
+    INC_X = 16,
     /** From 17 to 31 free */
 };
 
 /** Enum with font styles */
 enum FontStyleEnum
 {
-    normal = 0,
-    bold = 1,
-    underscore = 2,
-    italic = 3,
+    NORMAL = 0,
+    BOLD = 1,
+    UNDERSCORE = 2,
+    ITALIC = 3,
 };
-
-/** VARIABLES */
-// -----------------------------------------------------------------------------
-extern uint8_t *g_fontCharset;
 
 /** FUNCTIONS */
 // -----------------------------------------------------------------------------
@@ -67,7 +58,7 @@ extern void zxPrintString(char *string) __z88dk_fastcall;
  * Set font charset to use in printing strings
  * @param charset pointer to charset
  */
-extern void zxSetFontCharset(uint8_t *charset) __z88dk_fastcall;
+extern void zxSetFontCharset(char *charset) __z88dk_fastcall;
 
 /**
  * Set default ROM charset to use in printing strings

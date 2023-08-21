@@ -43,6 +43,14 @@ https://wiki.speccy.org/cursos/ensamblador/indice
 https://wiki.speccy.org/indice
 
 ROM Data: https://skoolkid.github.io/rom/index.html
+Microhobby: https://microhobby.speccy.cz/proyectoscanner.htm
+Buscador microhobby: https://mhoogle.speccy.org/
+
+Github utils:
+https://github.com/gasman/openzxrom/blob/master/openzxrom/keyboard.asm
+
+Temp Keys:
+https://www.z88dk.org/wiki/doku.php?id=library:input
 
 ## Releases
 

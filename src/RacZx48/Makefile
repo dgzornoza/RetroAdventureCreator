@@ -2,7 +2,7 @@
 EXEC_OUTPUT=output
 
 # List all your source files here
-SOURCES = main.c libs/screen.asm libs/graphics.asm libs/graphics.c
+SOURCES = main.c asm/_files.asm
 
 # Set CRT
 CRT=31

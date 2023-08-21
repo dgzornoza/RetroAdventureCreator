@@ -1,8 +1,7 @@
 SECTION code_user
 
 PUBLIC _zxPrintString    ; export C decl "extern void zxPrintString(char *string) __z88dk_fastcall;"
-PUBLIC _zxSetFontCharset ; export C decl "extern void zxSetFontCharset(uint8_t *charset) __z88dk_fastcall;"
-PUBLIC _zxSetDefaultFontCharset ; export C decl "extern void zxSetDefaultFontCharset() __z88dk_fastcall;"
+PUBLIC _zxSetFontCharset ; export C decl "extern void zxSetFontCharset(char *charset) __z88dk_fastcall;"
 
 ;-------------------------------------------------------------------------------
 ;	Name:		      public _zxSetFontCharset
@@ -15,17 +14,7 @@ _zxSetFontCharset:
    ret
  
 ;-------------------------------------------------------------------------------
-;	Name:		      public _zxSetDefaultFontCharset
-;	Description:	set default font charset
-;	Input:		   --
-;	Output: 	      --
-;-------------------------------------------------------------------------------
-_zxSetDefaultFontCharset:
-   ld (FontCharset), ROM_CHARSET
-   ret
-
-;-------------------------------------------------------------------------------
-;	Name:		      public _zxPrintString
+;  Name:		      public _zxPrintString
 ;	Description:	print string with optional control codes in screen
 ;	Input:		   HL = ASCII char to print
 ;	Output: 	      --
