@@ -2,7 +2,7 @@
 EXEC_OUTPUT=output
 
 # List all your source files here
-SOURCES = main.c asm/_files.asm
+SOURCES = main.c asm/zx/romVariables.asm asm/zx/io/bufferKeys.asm asm/zx/io/globals.asm asm/zx/io/controlChars.asm asm/zx/io/openScreenChain.asm asm/zx/io/printChar.asm asm/zx/io/printString.asm asm/zx/io/readString.asm asm/zx/io/test.asm
 
 # Set CRT
 CRT=31

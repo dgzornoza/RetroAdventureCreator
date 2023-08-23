@@ -6,8 +6,7 @@
 #include <intrinsic.h>
 #include <im2.h>
 #include <arch/zx.h>
-#include "asm/input.h"
-#include "asm/output.h"
+#include "asm/zx/io.h"
 #include <input.h>
 
 int numtimers = 10;

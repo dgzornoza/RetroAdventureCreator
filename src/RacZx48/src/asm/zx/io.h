@@ -49,6 +49,17 @@ enum FontStyleEnum
 // -----------------------------------------------------------------------------
 
 /**
+ * @param chain chain to set: 1 = command line, 2 = upper screen
+ */
+extern void zx_openScreenChain(char chain) __z88dk_fastcall;
+
+extern void _zx_pushBufferKey(char key) __z88dk_fastcall;
+
+extern char *_zx_readString(uint8_t *buffer, uint8_t length);
+
+extern void zxTest(char a) __z88dk_fastcall;
+
+/**
  * Print string with format in screen
  * @param string string to print
  */
