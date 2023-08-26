@@ -19,17 +19,3 @@ PUBLIC _GLOBAL_FONT_X
     _GLOBAL_FONT_X:             db 0       ; FontX and FontY should be togheter on this order, don't change
 PUBLIC _GLOBAL_FONT_Y
     _GLOBAL_FONT_Y:             db 0  
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; CONSTANTS 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; ----------------------------------------------------------------------------
-; ZxSpectrum Low-Resolution
-; ----------------------------------------------------------------------------
-PUBLIC _LOWRES_SCR_WIDTH   
-    _LOWRES_SCR_WIDTH    equ   32
-PUBLIC _LOWRES_SCR_HEIGHT  
-    _LOWRES_SCR_HEIGHT   equ   24

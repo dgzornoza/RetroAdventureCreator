@@ -1,8 +1,8 @@
 SECTION code_user
 
-PUBLIC _zxTest
+PUBLIC _test_fn
 
-_zxTest:
+_test_fn:
    ; ld e, l     ; parametro 
 
    ; ld a, (BufferIndex)
@@ -19,6 +19,6 @@ _zxTest:
 
    ; ld (hl), e           ; añadir el parametro al buffer
    
-zxTest_exit:     
+test_exit:     
    ret
 

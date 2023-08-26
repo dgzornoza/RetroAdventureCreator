@@ -48,32 +48,22 @@ enum FontStyleEnum
 /** FUNCTIONS */
 // -----------------------------------------------------------------------------
 
+
+extern void push_buffer_key(char key) __z88dk_fastcall;
+
 /**
  * @param chain chain to set: 1 = command line, 2 = upper screen
  */
-extern void zx_openScreenChain(char chain) __z88dk_fastcall;
+extern void open_screen_chain(char chain) __z88dk_fastcall;
 
-extern void _zx_pushBufferKey(char key) __z88dk_fastcall;
-
-extern char *_zx_readString(uint8_t *buffer, uint8_t length);
-
-extern void zxTest(char a) __z88dk_fastcall;
+extern void print_char(char *ascii) __z88dk_fastcall;
 
 /**
  * Print string with format in screen
  * @param string string to print
  */
-extern void zxPrintString(char *string) __z88dk_fastcall;
+extern void print_string(char *string) __z88dk_fastcall;
 
-/**
- * Set font charset to use in printing strings
- * @param charset pointer to charset
- */
-extern void zxSetFontCharset(char *charset) __z88dk_fastcall;
-
-/**
- * Set default ROM charset to use in printing strings
- */
-extern void zxSetDefaultFontCharset() __z88dk_fastcall;
+extern char* read_string(uint8_t *buffer, uint8_t length);
 
 #endif

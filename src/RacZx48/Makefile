@@ -2,13 +2,12 @@
 EXEC_OUTPUT=output
 
 # List all your source files here
-SOURCES = main.c asm/zx/romVariables.asm asm/zx/io/bufferKeys.asm asm/zx/io/globals.asm asm/zx/io/controlChars.asm asm/zx/io/openScreenChain.asm asm/zx/io/printChar.asm asm/zx/io/printString.asm asm/zx/io/readString.asm asm/zx/io/test.asm
+SOURCES = $(wildcard src/*.c) $(wildcard src/asm/zx/*.asm) $(wildcard src/asm/zx/*/*.asm)
 
 # Set CRT
 CRT=31
 
 # You don't need to edit below here, have a happy coding.
-
 MKDIR = mkdir -p
 CC=zcc
 AS=zcc
@@ -19,7 +18,7 @@ PRAGMA_FILE=zpragma.inc
 CREATE_SNA=-Cz"--sna"
 
 OBJECTS=$(SOURCES:.*=.o)
-OBJS=$(patsubst %, src/%, $(OBJECTS))
+OBJS=$(patsubst %, %, $(OBJECTS))
 
 C_OPT_FLAGS=-SO3 --max-allocs-per-node200000 --opt-code-size
 
@@ -58,3 +57,7 @@ dirs:
 report: 
 	sh $(MEM_FREE) ./$(OUT_DIR)/$(EXEC_OUTPUT).map
 
+
+.PHONY: ls
+ls: 
+	echo "${SOURCES}"

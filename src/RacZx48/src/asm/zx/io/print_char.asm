@@ -1,10 +1,7 @@
 SECTION code_user
 
-PUBLIC _zx_printChar    ; export C decl "extern void zx_printChar(char *string) __z88dk_fastcall;"
+PUBLIC _print_char    ; export C decl "extern void print_char(char *ascii) __z88dk_fastcall;"
 PUBLIC asm_print_char
-
-EXTERN zxPrintString
-EXTERN _ROM_CHARSET
 
 EXTERN _GLOBAL_FONT_X
 EXTERN _GLOBAL_FONT_CHARSET
@@ -12,22 +9,19 @@ EXTERN _GLOBAL_FONT_STYLE
 EXTERN _GLOBAL_FONT_ATTRIBUTES
 
 
-;-------------------------------------------------------------
-; Ejecuta PrintChar_8x8 preservando registros
-;-------------------------------------------------------------
 ;-------------------------------------------------------------------------------
-;  Name:		      public _zx_printChar
+;  Name:		      public _print_char
 ;	Description:	print 8x8 pixels char from charset.
 ;	Input:		   A = ASCII char to print
 ;	Output: 	      --
 ;	Clobbers: 	   --
 ;  Remarks:       _GLOBAL_FONT_CHARSET define charset memory address to use.
 ;                 _GLOBAL_FONT_X              = X Coordinate in low-res (0-31)
-;                 FontY              = Y Coordinate in low-res (0-23)
+;                 _GLOBAL_FONT_Y              = Y Coordinate in low-res (0-23)
 ;                 _GLOBAL_FONT_ATTRIBUTES     = Print attributes to use
 ;                 _GLOBAL_FONT_STYLE          = Font style to use.
 ;-------------------------------------------------------------------------------
-_zx_printChar:
+_print_char:
    push bc
    push de
    push hl                   ; preserve registers
@@ -40,16 +34,17 @@ _zx_printChar:
 
 
 ;-------------------------------------------------------------------------------
-;	Name:		      private print_char
+;	Name:		      private asm_print_char
 ;	Description:	print 8x8 pixels char from charset.
 ;	Input:		   A = ASCII char to print
 ;	Output: 	      --
 ;	Clobbers: 	   DE, BC
 ;  Remarks:       _GLOBAL_FONT_CHARSET define charset memory address to use.
 ;                 _GLOBAL_FONT_X              = X Coordinate in low-res (0-31)
-;                 FontY              = Y Coordinate in low-res (0-23)
+;                 _GLOBAL_FONT_Y              = Y Coordinate in low-res (0-23)
 ;                 _GLOBAL_FONT_ATTRIBUTES     = Print attributes to use
 ;                 _GLOBAL_FONT_STYLE          = Font style to use.
+; This routine don't preserve registers (only internal use)
 ;-------------------------------------------------------------------------------
 asm_print_char:
  
@@ -82,7 +77,7 @@ asm_print_char:
    ex de, hl               ; exchange DE y HL (DE=origin, HL=destination)
  
    ;;; Validate style to use
-   ld a, (_GLOBAL_FONT_STYLE)            ; Get style
+   ld a, (_GLOBAL_FONT_STYLE)   ; Get style
    or a
    jr nz, not_normal_style      ; jump if not normal style ( != 0)
 

@@ -1,22 +1,25 @@
 SECTION code_user
 
-PUBLIC _zxPrintString    ; export C decl "extern void zxPrintString(char *string) __z88dk_fastcall;"
+PUBLIC _print_string    ; export C decl "extern void print_string(char *string) __z88dk_fastcall;"
 
 EXTERN asm_print_char
 EXTERN asm_font_inc_x
 EXTERN FontControlCodeRoutines
 
 ;-------------------------------------------------------------------------------
-;  Name:		      public _zxPrintString
+;  Name:		      public _print_string
 ;	Description:	print string with optional control codes in screen
-;	Input:		   HL = ASCII char to print
+;	Input:		   HL = string to print
 ;	Output: 	      --
-;	Clobbers: 	   DE, BC
+;	Clobbers: 	   HL
 ;  Remarks:       FontCharset define charset memory address to use.
 ;-------------------------------------------------------------------------------
-_zxPrintString:
+_print_string:
  
 string_loop:
+   push bc                    ; store stack
+   push de
+
    ld a, (hl)                 ; Get char from string
    inc hl                     ; pointer to next char
  
@@ -24,17 +27,21 @@ string_loop:
    jp c,  string_control_code ; jump if is control code
  
    push hl                    ; store HL
-   call asm_print_char            ; print char
+   call asm_print_char        ; print char
    pop hl                     ; restore HL
  
    ;;; increment cursor using font_blanck, increment x and update x and y if need
-   call asm_font_inc_x            ; increment X
+   call asm_font_inc_x        ; increment X
    jr string_loop             ; continue with next char in string
  
 string_control_code:
-   or a                       ; if control code is eos (end of string), exit 
-   ret z                     
- 
+   or a                             
+   jp nz, process_control_code      ; if control code is eos (end of string), exit, else call process_control_code
+   pop de
+   pop bc       
+   ret
+
+process_control_code:
    ;;; get control code routine and call it.
    ex de, hl
    ld hl, FontControlCodeRoutines
@@ -65,6 +72,6 @@ string_call_routine:
    ;;; end code for control code routine
 string_end_call_routine:
    ex de, hl                        ; set in HL string pointer
-   jr string_loop                 ; continue loop
+   jr string_loop                   ; continue loop
 
  

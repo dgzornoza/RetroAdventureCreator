@@ -6,8 +6,9 @@
 #include <intrinsic.h>
 #include <im2.h>
 #include <arch/zx.h>
-#include "asm/zx/io.h"
 #include <input.h>
+
+#include "asm/zx/io.h"
 
 int numtimers = 10;
 int timer[10];
@@ -67,7 +68,7 @@ IM2_DEFINE_ISR(isr)
     char c;
 
     if ((c = in_inkey()) != 0)
-        zxTest(c);
+        push_buffer_key(c);
 
     // char byte = zxTestInput();
     // byte = byte == NULL ? 0x55 : byte;

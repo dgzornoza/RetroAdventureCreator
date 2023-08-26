@@ -1,8 +1,7 @@
 SECTION code_user
 
-EXTERN _LOWRES_SCR_WIDTH
-EXTERN _LOWRES_SCR_HEIGHT
-EXTERN _ROM_CHARSET
+EXTERN _SYS_LOWRES_SCR_WIDTH
+EXTERN _SYS_LOWRES_SCR_HEIGHT
 
 EXTERN _GLOBAL_FONT_CHARSET
 EXTERN _GLOBAL_FONT_STYLE
@@ -10,24 +9,24 @@ EXTERN _GLOBAL_FONT_X
 EXTERN _GLOBAL_FONT_Y
 EXTERN _GLOBAL_FONT_ATTRIBUTES
 
-EXTERN _zxPrintString
+EXTERN _print_string
 
 EXTERN asm_print_char
 
 ;-------------------------------------------------------------------------------
-;	Name:		      private _setFontCharset
+;	Name:		      private asm_set_font_charset
 ;	Description:	set font charset
 ;	Input:		   HL = pointer to charset
 ;	Output: 	      --
 ;-------------------------------------------------------------------------------
-PUBLIC asm_setFontCharset
-asm_setFontCharset:
+PUBLIC asm_set_font_charset
+asm_set_font_charset:
    ld (_GLOBAL_FONT_CHARSET), hl
    ret
  
 
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_set_style
+;	Name:		      private asm_font_set_style
 ;	Description:	set text style
 ;	Input:		   A = Font style
 ;	Output: 	      --
@@ -39,7 +38,7 @@ asm_font_set_style:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_set_x
+;	Name:		      private asm_font_set_x
 ;	Description:	set screen X cursor coordinate
 ;	Input:		   A = X coordinate
 ;	Output: 	      --
@@ -51,7 +50,7 @@ asm_font_set_x:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_set_y
+;	Name:		      private asm_font_set_y
 ;	Description:	set screen Y cursor coordinate
 ;	Input:		   A = Y coordinate
 ;	Output: 	      --
@@ -63,7 +62,7 @@ asm_font_set_y:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_set_xy
+;	Name:		      private asm_font_set_xy
 ;	Description:	set screen x,y cursor coordinate
 ;	Input:		   B = y coordinate
 ;                 C = x coordinate
@@ -76,7 +75,7 @@ asm_font_set_xy:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_set_ink
+;	Name:		      private asm_font_set_ink
 ;	Description:	set ink value in current font attribute
 ;	Input:		   A = ink (0-7)
 ;	Clobbers: 	   AF
@@ -95,7 +94,7 @@ asm_font_set_ink:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_set_paper
+;	Name:		      private asm_font_set_paper
 ;	Description:	set paper value in current attributes
 ;	Input:		   A = paper (0-7)
 ;	Clobbers: 	   AF
@@ -117,7 +116,7 @@ asm_font_set_paper:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_set_attributes
+;	Name:		      private asm_font_set_attributes
 ;	Description:	set current attribute value 
 ;	Input:		   A = ink
 ;-------------------------------------------------------------------------------
@@ -128,7 +127,7 @@ asm_font_set_attributes:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_set_bright
+;	Name:		      private asm_font_set_bright
 ;	Description:	set bright value in current attributes (1/0) (bit 6)
 ;	Input:		   A = bright (1/0)
 ;	Clobbers: 	   AF
@@ -148,7 +147,7 @@ bright_1:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_set_flash
+;	Name:		      private asm_font_set_flash
 ;	Description:	set flash value in current attributes (1/0) (bit 7)
 ;	Input:		   A = flash (1/0)
 ;	Clobbers: 	   AF
@@ -168,7 +167,7 @@ flash_1:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_blank
+;	Name:		      private asm_font_blank
 ;	Description:	print space, override current position in cursor and increment X (updating y if need)
 ;	Clobbers: 	   AF
 ;-------------------------------------------------------------------------------
@@ -188,7 +187,7 @@ asm_font_blank:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_inc_x
+;	Name:		      private asm_font_inc_x
 ;	Description:	increments x coordinate by 1 taking into account the edge on the screen (updating Y accordingly).
 ;	Clobbers: 	   AF
 ;-------------------------------------------------------------------------------
@@ -196,7 +195,7 @@ PUBLIC asm_font_inc_x
 asm_font_inc_x:
    ld a, (_GLOBAL_FONT_X)              ; increment x
    inc a                     
-   cp _LOWRES_SCR_WIDTH - 1    ; Compare with right border (x > 31)
+   cp _SYS_LOWRES_SCR_WIDTH - 1    ; Compare with right border (x > 31)
    jr c, update_x             ; jump if not is in right border
    call asm_font_crlf
    ret
@@ -207,7 +206,7 @@ update_x:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_lf
+;	Name:		      private asm_font_lf
 ;	Description:	Generate un linefeed (increment Y by 1). 
 ;                 Takes into account the height variables of the screen.
 ;	Clobbers: 	   AF
@@ -215,7 +214,7 @@ update_x:
 PUBLIC asm_font_lf
 asm_font_lf:
    ld a, (_GLOBAL_FONT_Y)              ; get Y coordinate
-   cp _LOWRES_SCR_HEIGHT - 1   ; Compare with bottom border (y > 23)
+   cp _SYS_LOWRES_SCR_HEIGHT - 1   ; Compare with bottom border (y > 23)
    jr nc, update_y            ; jump if (y = 23)
    inc a                      ; (y < 23), increment Y
    ld (_GLOBAL_FONT_Y), a              ; store Y coordinate in var
@@ -225,7 +224,7 @@ update_y:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_cr
+;	Name:		      private asm_font_cr
 ;	Description:	Generate carriage return (CR) => x=0.
 ;	Clobbers: 	   AF
 ;-------------------------------------------------------------------------------
@@ -237,7 +236,7 @@ asm_font_cr:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_crlf
+;	Name:		      private asm_font_crlf
 ;	Description:	Generate linefeed and Carriage return (lf+cr).
 ;	Clobbers: 	   AF
 ;-------------------------------------------------------------------------------
@@ -249,25 +248,21 @@ asm_font_crlf:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_tab
+;	Name:		      private asm_font_tab
 ;	Description:	print tabulator (3 spaces) using printstring
 ;	Clobbers: 	   AF
 ;-------------------------------------------------------------------------------
 PUBLIC asm_font_tab
 asm_font_tab:
-   push bc
-   push de
    push hl
    ld hl, FontTabString
-   call _zxPrintString      ; print 3 spaces
+   call _print_string      ; print 3 spaces
    pop hl
-   pop de
-   pop bc
    ret 
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_dec_x
+;	Name:		      private asm_font_dec_x
 ;	Description:	decrement X cursor coordinate withouth delete char
 ;	Clobbers: 	   AF
 ;-------------------------------------------------------------------------------
@@ -282,7 +277,7 @@ asm_font_dec_x:
  
  
 ;-------------------------------------------------------------------------------
-;	Name:		      private font_backspace
+;	Name:		      private asm_font_backspace
 ;	Description:	decrement X cursor, deleting char backspace)
 ;                 delete char printing space.
 ;	Clobbers: 	   AF
