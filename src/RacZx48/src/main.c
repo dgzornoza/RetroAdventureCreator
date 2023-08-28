@@ -10,11 +10,15 @@
 
 #include "asm/zx/io.h"
 
+// extern char LAST_K(23560);
+
 int numtimers = 10;
 int timer[10];
 
 int screen = 0x4000;
 char keysBuffer[10];
+
+char buffer[25];
 
 char cadena1[] = {
     (char)SET_Y,
@@ -47,28 +51,25 @@ char cadena1[] = {
     (char)EOS,
 };
 
-int *sp;
-int length;
-// #define push(sp, n) (*((sp)++) = (n))
-// #define pop(sp) (*--(sp))
-
-void push(char n)
-{
-    if (length < 10)
-    {
-        *sp = (n);
-        sp++;
-        length++;
-    }
-    // *((sp)++) = (n);
-}
-
 IM2_DEFINE_ISR(isr)
 {
-    char c;
+    int c = in_inkey();
 
-    if ((c = in_inkey()) != 0)
-        push_buffer_key(c);
+    if (ROM_LAST_KEY == 0 && c)
+    {
+        ROM_LAST_KEY = c;
+        // push_buffer_key(c);
+    }
+    else if (ROM_LAST_KEY && !c)
+    {
+        ROM_LAST_KEY = 0;
+    }
+
+    // if ((c = in_inkey()) != 0)
+    // {
+    //     ROM_LAST_KEY = c;
+    //     // push_buffer_key(c);
+    // }
 
     // char byte = zxTestInput();
     // byte = byte == NULL ? 0x55 : byte;
@@ -102,17 +103,25 @@ IM2_DEFINE_ISR(isr)
 
 int main()
 {
-    memset(TABLE_ADDR, JUMP_POINT_HIGH_BYTE, 257);
+    get_key_reset();
 
-    z80_bpoke(JUMP_POINT, 195);
-    z80_wpoke(JUMP_POINT + 1, (unsigned int)isr);
+    // // START Instalation routine ISR
+    // memset(TABLE_ADDR, JUMP_POINT_HIGH_BYTE, 257);
 
-    im2_init(TABLE_ADDR);
+    // z80_bpoke(JUMP_POINT, 195);
+    // z80_wpoke(JUMP_POINT + 1, (unsigned int)isr);
 
-    intrinsic_ei();
+    // im2_init(TABLE_ADDR);
 
-    sp = keysBuffer;
+    // intrinsic_ei();
+    // // END Instalation routine ISR
+
+    // main loop
+    char *string = read_string(buffer, 20);
+    // print_string(string);
 
     while (1)
-        ;
+    {
+        // pop_buffer_key();
+    }
 }

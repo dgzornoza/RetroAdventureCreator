@@ -1,9 +1,6 @@
 SECTION code_user
 
-PUBLIC _read_string           ; export C decl "extern char* read_string(uint8_t *buffer, uint8_t length);"
-
-EXTERN asm_in_inkey           ; z88dk in_inkey from input.h 'libsrc/_DEVELOPMENT/input/zx/z80/asm_in_inkey.asm'
-EXTERN _get_key
+PUBLIC _read_string         ; export C decl "extern char* read_string(uint8_t *buffer, uint8_t length);"
 
 EXTERN _print_char
 
@@ -39,15 +36,10 @@ start:
    ld (_ROM_LAST_KEY), a         ; clean last key pressed
    
 loop:
-   push bc                       ; store register used by asm_in_inkey
-   push de
-   push hl
-   call _get_key                 ; call z88dk input.h routine for scan key
-   ld a, l                       ; get decoded value
-   ld (_ROM_LAST_KEY), a         ; store in LAST_K rom var
-   pop hl                       
-   pop de
-   pop bc
+   push hl                       ; ROM_KEY_SCAN modify HL, (preserve)
+   call _ROM_KEY_SCAN            ; call ROM routine for scan key
+   pop hl   
+   ld a, (_ROM_LAST_KEY)         ; get decoded value
    
    cp 13
    jr z, end                     ; is enter?, end routine

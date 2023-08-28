@@ -51,6 +51,7 @@ https://github.com/gasman/openzxrom/blob/master/openzxrom/keyboard.asm
 
 Temp Keys:
 https://www.z88dk.org/wiki/doku.php?id=library:input
+https://github.com/z88dk/z88dk/blob/master/libsrc/input/in_GetKey.asm
 
 ## Releases
 

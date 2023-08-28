@@ -45,11 +45,13 @@ enum FontStyleEnum
     ITALIC = 3,
 };
 
+extern char ROM_LAST_KEY;
+
 /** FUNCTIONS */
 // -----------------------------------------------------------------------------
 
-
 extern void push_buffer_key(char key) __z88dk_fastcall;
+extern void pop_buffer_key() __z88dk_fastcall;
 
 /**
  * @param chain chain to set: 1 = command line, 2 = upper screen
@@ -64,6 +66,9 @@ extern void print_char(char *ascii) __z88dk_fastcall;
  */
 extern void print_string(char *string) __z88dk_fastcall;
 
-extern char* read_string(uint8_t *buffer, uint8_t length);
+extern char *read_string(uint8_t *buffer, uint8_t length);
+
+extern unsigned int get_key(void) __z88dk_fastcall;
+extern void get_key_reset(void) __z88dk_fastcall;
 
 #endif

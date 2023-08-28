@@ -1,7 +1,7 @@
 SECTION code_user
 
-PUBLIC _push_buffer_key      ; export C decl "extern void push_buffer_key(char key) __z88dk_fastcall;"
-
+PUBLIC _push_buffer_key       ; export C decl "extern void push_buffer_key(char key) __z88dk_fastcall;"
+PUBLIC _pop_buffer_key        ; export C decl "extern void pop_buffer_key() __z88dk_fastcall;"
 
 
 
@@ -20,20 +20,48 @@ _push_buffer_key:
 
    ld a, (BufferIndex)
    cp BUFFER_LENGTH        ; compare with buffer size
-   jp nc, exit             ; if length > buffer, exit routine
+   jr nc, push_exit        ; if index > buffer, exit routine
    
-   ld hl, Buffer           ; HL = pointer to buffer offset
+   ld hl, Buffer           ; HL = pointer to buffer
    ld c, a
    ld b, 0                         
-   add hl, bc  
+   add hl, bc              ; add index offset to HL
    
    inc a                   ; increment buffer index
    ld (BufferIndex), a
 
    ld (hl), e              ; add parameter ascii to buffer
-exit:     
+push_exit:
+   pop de
+   pop bc
+   pop hl
    ret
 
+
+_pop_buffer_key:
+   push hl                 ; store stack registers
+   push bc
+   push de
+
+   ld a, (BufferIndex)
+   or a                    ; if BufferIndex == 0 ...
+   jr z, pop_exit          ; ... can not pop, otherwise, delete char
+   
+   ld hl, Buffer           ; HL = pointer to buffer
+   ld c, a
+   ld b, 0                         
+   add hl, bc              ; add index offset to HL
+   
+   dec a                   ; decrement buffer index
+   ld (BufferIndex), a
+
+   ld (hl), 0              ; reset ascii in buffer
+
+pop_exit:
+   pop de
+   pop bc
+   pop hl
+   ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; CONSTANTS 
