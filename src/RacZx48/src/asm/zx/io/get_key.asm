@@ -25,7 +25,7 @@ _get_key:
    jp c, _get_key_reset
 
    ld a, (_in_KbdState)
-   dec a
+   dec a   
    jr nz, nokey
 
    ld a, (_in_KbdState + 1)
@@ -34,6 +34,11 @@ _get_key:
    jp z, startrepeat
 
 .repeat
+
+   ld a, 0xFF
+.delay:
+   dec a
+   jr nz, delay
 
    ld a, (_in_KeyRepeatPeriod)
    ld (_in_KbdState), a
