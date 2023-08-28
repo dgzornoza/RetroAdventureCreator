@@ -48,6 +48,8 @@ _pop_buffer_key:
    
    push de                 ; store stack registers
 
+   ld hl, 0                ; by default result = 0
+   
    ld a, (BufferIndex)
    or a                    ; if BufferIndex == 0 ...
    jr z, pop_exit          ; ... can not pop, otherwise, delete char
