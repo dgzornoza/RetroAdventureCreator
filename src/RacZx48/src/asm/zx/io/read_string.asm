@@ -4,6 +4,8 @@ PUBLIC _read_string         ; export C decl "extern char* read_string(uint8_t *b
 
 EXTERN _print_char
 
+EXTERN _pop_queue_key
+
 EXTERN asm_font_inc_x
 EXTERN asm_font_dec_x
 
@@ -39,7 +41,9 @@ loop:
    ; push hl                       ; ROM_KEY_SCAN modify HL, (preserve)
    ; call _ROM_KEY_SCAN            ; call ROM routine for scan key
    ; pop hl   
-   ld a, (_ROM_LAST_KEY)         ; get decoded value
+   ; ld a, (_ROM_LAST_KEY)         ; get decoded value
+   call _pop_queue_key
+   ld a, l
    
    cp 13
    jr z, end                     ; is enter?, end routine

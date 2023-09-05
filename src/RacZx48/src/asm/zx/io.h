@@ -50,8 +50,8 @@ extern char ROM_LAST_KEY;
 /** FUNCTIONS */
 // -----------------------------------------------------------------------------
 
-extern void push_buffer_key(char key) __z88dk_fastcall;
-extern void pop_buffer_key() __z88dk_fastcall;
+extern void push_queue_key(char key) __z88dk_fastcall;
+extern void pop_queue_key() __z88dk_fastcall;
 
 /**
  * @param chain chain to set: 1 = command line, 2 = upper screen

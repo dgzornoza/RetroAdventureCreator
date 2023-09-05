@@ -54,6 +54,10 @@ char cadena1[] = {
 IM2_DEFINE_ISR(isr)
 {
     int c = in_inkey();
+    if (c)
+    {
+        push_queue_key(c);
+    }
 
     if (ROM_LAST_KEY == 0 && c)
     {
@@ -105,16 +109,16 @@ int main()
 {
     get_key_reset();
 
-    // // START Instalation routine ISR
-    // memset(TABLE_ADDR, JUMP_POINT_HIGH_BYTE, 257);
+    // START Instalation routine ISR
+    memset(TABLE_ADDR, JUMP_POINT_HIGH_BYTE, 257);
 
-    // z80_bpoke(JUMP_POINT, 195);
-    // z80_wpoke(JUMP_POINT + 1, (unsigned int)isr);
+    z80_bpoke(JUMP_POINT, 195);
+    z80_wpoke(JUMP_POINT + 1, (unsigned int)isr);
 
-    // im2_init(TABLE_ADDR);
+    im2_init(TABLE_ADDR);
 
-    // intrinsic_ei();
-    // // END Instalation routine ISR
+    intrinsic_ei();
+    // END Instalation routine ISR
 
     // main loop
     char *string = read_string(buffer, 20);
