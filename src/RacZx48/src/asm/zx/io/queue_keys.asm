@@ -1,8 +1,8 @@
 SECTION code_user
 
 PUBLIC _push_queue_key       ; export C decl "extern void push_queue_key(char key) __z88dk_fastcall;"
-PUBLIC _pop_queue_key        ; export C decl "extern void pop_queue_key() __z88dk_fastcall;"
-
+PUBLIC _pop_queue_key        ; export C decl "extern char pop_queue_key() __z88dk_fastcall;"
+PUBLIC _clean_queue_keys        ; export C decl "extern void clean_queue_keys() __z88dk_fastcall;"
 
 
 ;-------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ PUBLIC _pop_queue_key        ; export C decl "extern void pop_queue_key() __z88d
 ;  Output: 	      --
 ;-------------------------------------------------------------------------------
 _push_queue_key:
-
+   
    push bc                 ; store stack registers
    push de
 
@@ -24,7 +24,7 @@ _push_queue_key:
    
    ld hl, Buffer           ; HL = pointer to buffer
    ld e, a
-   ld d, 0                         
+   ld d, 00h                        
    add hl, de              ; add index offset to HL
    
    inc a                   ; increment buffer index
@@ -33,6 +33,7 @@ _push_queue_key:
    ld (hl), b              ; add parameter ascii to buffer
 
 push_exit:
+   
    pop de
    pop bc   
    ret
@@ -48,18 +49,31 @@ _pop_queue_key:
    
    push de                    ; store stack registers
 
-   ld hl, Buffer              ; get first byte queued
-   ld a, (hl)   
+   ld hl, Buffer              ; get first byte queued in A'
+   ld a, (hl) 
+   ex af, af'
+   
+   ld a, (BufferIndex)
+   or a
+   jr z, pop_exit             ; if BufferIndex == 0, exit routine
 
-   ld hl, Buffer              ; Set the start address
-   ld de, Buffer + 1          ; Set the next address   
-   ld bc, (BufferIndex)       ; Set the number of bytes to set to 0 in BC   
-   ld b, 1
+   ld de, Buffer              ; Set the start address
+   ld hl, Buffer + 1          ; Set the next address   
+   ld bc, (BufferIndex)       ; Set the number of bytes to set to 0 in BC
+   ld b, 00h
    ldir                       ; Repeat for the rest of the bytes
+   
+   ex de,hl                   ; last byte to 0
+   dec hl
+   ld (hl),00h
 
-pop_exit:alfonso
+   dec a                      ; decrement buffer index
+   ld (BufferIndex), a
 
-   ld l, a                    ; store result in l
+pop_exit:
+
+   ex af, af'                 ; return result from A'
+   ld l, a                    
    pop de
    ret
 
@@ -72,15 +86,19 @@ pop_exit:alfonso
 ;-------------------------------------------------------------------------------
 _clean_queue_keys:
 
-   push bc                 ; store stack registers
+   push bc                    ; store stack registers
    push de
 
-   ld hl, Buffer           ; Set the start address
-   ld de, Buffer + 1       ; Set the next address   
-   ld bc, (BufferIndex)    ; Set the number of bytes to set to 0 in BC
-   ld b, 0
-   ld (hl), 0              ; Set the first byte to 0
-   ldir                    ; Repeat for the rest of the bytes
+   ld hl, Buffer              ; Set the start address
+   ld de, Buffer + 1          ; Set the next address   
+   ld bc, (BufferIndex)       ; Set the number of bytes to set to 0 in BC (BufferIndex - 1)
+   ld b, 00h
+   dec bc
+   ld (hl), 00h               ; Set the first byte to 0
+   ldir                       ; Repeat for the rest of the bytes
+
+   xor a
+   ld (BufferIndex), a        ; buffer index = 0
 
 clean_exit:
    pop de
@@ -97,7 +115,7 @@ BUFFER_LENGTH     equ 10
 ; VARIABLES 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-.BufferIndex      db 5                  
+.BufferIndex      db 0
 .Buffer           ds BUFFER_LENGTH - 1
                   db 0
                   

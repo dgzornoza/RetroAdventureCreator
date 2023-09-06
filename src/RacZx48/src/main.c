@@ -51,23 +51,33 @@ char cadena1[] = {
     (char)EOS,
 };
 
+int count = 0;
+int result;
 IM2_DEFINE_ISR(isr)
 {
-    int c = in_inkey();
-    if (c)
+    if (count > 20)
     {
-        push_queue_key(c);
+        clean_queue_keys();
+    }
+    else
+    {
+        int c = in_inkey();
+        if (c)
+        {
+            push_queue_key(c);
+            count++;
+        }
     }
 
-    if (ROM_LAST_KEY == 0 && c)
-    {
-        ROM_LAST_KEY = c;
-        // push_buffer_key(c);
-    }
-    else if (ROM_LAST_KEY && !c)
-    {
-        ROM_LAST_KEY = 0;
-    }
+    // if (ROM_LAST_KEY == 0 && c)
+    // {
+    //     ROM_LAST_KEY = c;
+    //     // push_buffer_key(c);
+    // }
+    // else if (ROM_LAST_KEY && !c)
+    // {
+    //     ROM_LAST_KEY = 0;
+    // }
 
     // if ((c = in_inkey()) != 0)
     // {
@@ -121,7 +131,7 @@ int main()
     // END Instalation routine ISR
 
     // main loop
-    char *string = read_string(buffer, 20);
+    // char *string = read_string(buffer, 20);
     // print_string(string);
 
     while (1)

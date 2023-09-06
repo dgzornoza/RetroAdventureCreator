@@ -49,7 +49,7 @@ _print_char:
 asm_print_char:
  
    ld bc, (_GLOBAL_FONT_X)          ; B = Y,  C = X
-   ex af, af'              ; store char in A'
+   ex af, af'                       ; store char in A'
    
    ;;; calculate destination screen coordinates in DE.
    ld a, b
