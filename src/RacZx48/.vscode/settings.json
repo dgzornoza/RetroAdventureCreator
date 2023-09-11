@@ -8,7 +8,7 @@
         "**/Thumbs.db": true,
         "build": true,
         ".tmp": true,
-        "src/**/*[^main].c.lis": true,
+        "src/**/*[^main].c.lis": false,
         "src/**/*.asm.lis": true,
     },
     "C_Cpp.default.includePath": [
@@ -24,6 +24,7 @@
         "graphics.h": "c",
         "charset1.c": "cpp",
         "input.h": "c",
-        "input_zx.h": "c"
+        "input_zx.h": "c",
+        "io.h": "c"
     }
 }

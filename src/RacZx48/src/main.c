@@ -55,18 +55,18 @@ int count = 0;
 int result;
 IM2_DEFINE_ISR(isr)
 {
-    if (count > 20)
+
+    // store input keys in keyboard queue buffer
+    // (ensure don't repeat key without leave)
+    int key = in_inkey();
+    if (!key)
     {
-        clean_queue_keys();
+        ROM_LAST_KEY = 0x00;
     }
-    else
+    else if (ROM_LAST_KEY != key)
     {
-        int c = in_inkey();
-        if (c)
-        {
-            push_queue_key(c);
-            count++;
-        }
+        ROM_LAST_KEY = key;
+        push_queue_key(key);
     }
 
     // if (ROM_LAST_KEY == 0 && c)
@@ -117,8 +117,6 @@ IM2_DEFINE_ISR(isr)
 
 int main()
 {
-    get_key_reset();
-
     // START Instalation routine ISR
     memset(TABLE_ADDR, JUMP_POINT_HIGH_BYTE, 257);
 
@@ -131,8 +129,8 @@ int main()
     // END Instalation routine ISR
 
     // main loop
-    // char *string = read_string(buffer, 20);
-    // print_string(string);
+    char *string = read_string(buffer, 20);
+    print_string(string);
 
     while (1)
     {

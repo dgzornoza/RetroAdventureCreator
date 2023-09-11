@@ -34,8 +34,8 @@ start:
    ld a, '_'                     ; print new cursor
    call _print_char
  
-   xor a
-   ld (_ROM_LAST_KEY), a         ; clean last key pressed
+   ;xor a
+   ;ld (_ROM_LAST_KEY), a         ; clean last key pressed
    
 loop:
    ; push hl                       ; ROM_KEY_SCAN modify HL, (preserve)
