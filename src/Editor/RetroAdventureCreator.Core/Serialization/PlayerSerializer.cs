@@ -22,7 +22,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Player serializer:
 /// ----------------------------------------------
 /// 
-/// Data (player data ban be modified in game for update properties):
+/// Data (player data can be modified in game for update properties):
 /// Health: 4 bits (15)
 /// ExperiencePoints: 4 bits (15)
 /// Objects: 8 object id bytes
