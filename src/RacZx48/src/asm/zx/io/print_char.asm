@@ -25,6 +25,7 @@ _print_char:
    push bc
    push de
    push hl                   ; preserve registers
+   ld a, (hl)                ; store in A char to print
    call asm_print_char       ; print char
    pop hl                    ; recovery registers
    pop de
@@ -83,7 +84,7 @@ asm_print_char:
 
 ;;;;;; NORMAL style ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    ld B, 8                       ; 8 scanlines to draw
-drawchar_loop_normal:
+.drawchar_loop_normal:
    ld a, (de)                    ; get char data
    ld (hl), a                    ; set value in video memory
    inc de
@@ -91,13 +92,13 @@ drawchar_loop_normal:
    djnz drawchar_loop_normal
    jr print_attribute            ; jupm to print attributes
  
-not_normal_style:
+.not_normal_style:
    cp FONT_BOLD                  ; is bold style?
    jr nz, not_bold_style         ; jump if not bold style
  
    ;;;;;; BOLD style ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    ld b, 8                       ; 8 scanlines to draw
-drawchar_loop_bold:          
+.drawchar_loop_bold:          
    ld a, (de)                    ; get char data
    ld c, a                       ; copy A
    rrca                          ; Shift A
@@ -108,13 +109,13 @@ drawchar_loop_bold:
    djnz drawchar_loop_bold
    jr print_attribute
  
-not_bold_style:
+.not_bold_style:
    cp FONT_UNDERSCORE            ; is underscore style?
    jr nz, no_underscore_style    ; jump if not underscore style
  
    ;;;;;; UNDERSCORE style ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    ld b, 7                       ; 7 scanlines to draw (last one is bottom line)
-drawchar_loop_underscore:
+.drawchar_loop_underscore:
    ld a, (de)                    ; get char data
    ld (hl), a                    ; set value in video memory
    inc de
@@ -127,14 +128,14 @@ drawchar_loop_underscore:
    inc h                         
    jr print_attribute
  
-no_underscore_style:
+.no_underscore_style:
    cp FONT_ITALIC                ; is italic style?
    jr nz, unknown_style          ; jump if not italic style
  
    ;;;;;; ITALIC style ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    ;;; 3 first scanlines to right
    ld b, 3
-drawchar_loop_italic1:
+.drawchar_loop_italic1:
    ld a, (de)                    ; get char data
    sra a                         ; shift right
    ld (hl), a                    ; set value in video memory
@@ -144,7 +145,7 @@ drawchar_loop_italic1:
  
    ;;; 2 central scanlines are normal
    ld b, 2
-drawchar_loop_italic2:
+.drawchar_loop_italic2:
    ld a, (de)                    ; get char data
    ld (hl), a                    ; set value in video memory
    inc de
@@ -152,7 +153,7 @@ drawchar_loop_italic2:
    djnz drawchar_loop_italic2
  
    ld b, 3
-drawchar_loop_italic3:
+.drawchar_loop_italic3:
    ;;; 3 last scanlines to left
    ld a, (de)                    ; get char data
    sla a                         ; shift left
@@ -165,12 +166,12 @@ drawchar_loop_italic3:
 ;;; add more styles ............................................................
 ;;; ...
  
-unknown_style:                   ; unknown style ...
+.unknown_style:                   ; unknown style ...
    LD B, 8                       ; print with normal style
    JR drawchar_loop_normal       
 
    ;;; print attributes ........................................................
-print_attribute:
+.print_attribute:
  
    ld a, h                       ; get HL initial value
    sub 8                         ; substract 8 advanced scanlines

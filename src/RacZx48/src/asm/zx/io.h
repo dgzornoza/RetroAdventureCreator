@@ -1,5 +1,5 @@
-#ifndef __DGZ_OUTPUT_H__
-#define __DGZ_OUTPUT_H__
+#ifndef __DGZ_IO_H__
+#define __DGZ_IO_H__
 
 #include <stdlib.h>
 
@@ -49,15 +49,9 @@ extern char ROM_LAST_KEY;
 
 /** FUNCTIONS */
 // -----------------------------------------------------------------------------
-
-extern void push_queue_key(char key) __z88dk_fastcall;
-extern char pop_queue_key() __z88dk_fastcall;
-extern void clean_queue_keys() __z88dk_fastcall;
-
-/**
- * @param chain chain to set: 1 = command line, 2 = upper screen
- */
-extern void open_screen_chain(char chain) __z88dk_fastcall;
+extern char pop_buffer_key(void) __z88dk_fastcall;
+extern void clean_buffer_keys(void) __z88dk_fastcall;
+extern void push_buffer_key(char key) __z88dk_fastcall;
 
 extern void print_char(char *ascii) __z88dk_fastcall;
 
@@ -67,9 +61,8 @@ extern void print_char(char *ascii) __z88dk_fastcall;
  */
 extern void print_string(char *string) __z88dk_fastcall;
 
-extern char *read_string(uint8_t *buffer, uint8_t length);
+extern void print_buffer_keys(void);
 
 extern unsigned int get_key(void) __z88dk_fastcall;
-extern void get_key_reset(void) __z88dk_fastcall;
 
 #endif

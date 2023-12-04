@@ -2,9 +2,14 @@ SECTION code_user
 
 PUBLIC _get_key      ; export C decl "extern unsigned int get_key(void) __z88dk_fastcall;"
 
-EXTERN _in_inkey, _get_key_reset
-EXTERN _in_KeyDebounce, _in_KeyStartRepeat, _in_KeyRepeatPeriod
-EXTERN _in_KbdState
+EXTERN _in_inkey
+
+
+_in_KeyDebounce:	   db	1
+_in_KeyStartRepeat:	db	250
+_in_KeyRepeatPeriod:	db	250
+_in_KbdState:		   db	1
+			            db	0
 
 ;-------------------------------------------------------------------------------
 ;	Name:		    private get_key
@@ -22,7 +27,7 @@ EXTERN _in_KbdState
 _get_key:
 
    call _in_inkey              ; hl = ascii code & carry if no key
-   jp c, _get_key_reset
+   jp c, key_reset
 
    ld a, (_in_KbdState)
    dec a   
@@ -34,18 +39,12 @@ _get_key:
    jp z, startrepeat
 
 .repeat
-
-   ld a, 0xFF
-.delay:
-   dec a
-   jr nz, delay
-
    ld a, (_in_KeyRepeatPeriod)
    ld (_in_KbdState), a
    ret
 
 .debounce
-
+   ;;; set KdbState to _in_KeyStartRepeat value for decrement
    ld a, (_in_KeyStartRepeat)
    ld e, a
    ld d, 1
@@ -53,16 +52,25 @@ _get_key:
    ret
 
 .startrepeat
-
+   ;;; set KdbState to _in_KeyStartRepeat value for decrement
    ld a, (_in_KeyRepeatPeriod)
    ld e, a
    ld d, 2
    ld (_in_KbdState), de
    ret
 
-.nokey
+.key_reset:
+   ld a, (_in_KeyDebounce)
+   ld e, a
+   ld d, 0
+   ld (_in_KbdState), de
+   ret   
 
+.nokey
+   ; Not return key
    ld (_in_KbdState), a
    ld hl, 0
    scf
    ret
+
+

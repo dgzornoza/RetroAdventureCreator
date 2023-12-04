@@ -16,7 +16,7 @@ EXTERN FontControlCodeRoutines
 ;-------------------------------------------------------------------------------
 _print_string:
  
-string_loop:
+.string_loop:
    push bc                    ; store stack
    push de
 
@@ -34,14 +34,14 @@ string_loop:
    call asm_font_inc_x        ; increment X
    jr string_loop             ; continue with next char in string
  
-string_control_code:
+.string_control_code:
    or a                             
    jp nz, process_control_code      ; if control code is eos (end of string), exit, else call process_control_code
    pop de
    pop bc       
    ret
 
-process_control_code:
+.process_control_code:
    ;;; get control code routine and call it.
    ex de, hl
    ld hl, FontControlCodeRoutines
@@ -64,13 +64,13 @@ process_control_code:
    inc de                           ; pointer to next char
  
    ;;; code for call control code routine
-string_call_routine:
+.string_call_routine:
    ld bc, string_end_call_routine   ; store return address
    push bc                          
    jp (hl)                          ; jump to routine for manage control code
  
    ;;; end code for control code routine
-string_end_call_routine:
+.string_end_call_routine:
    ex de, hl                        ; set in HL string pointer
    jr string_loop                   ; continue loop
 

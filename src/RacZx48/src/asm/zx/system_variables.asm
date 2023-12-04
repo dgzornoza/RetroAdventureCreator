@@ -18,7 +18,10 @@ public _ROM_OPEN_CHAIN: ; Routine address for open chain screen (1 = command lin
 ; SYSTEM CONSTANTS 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+PUBLIC _SYS_TICKS_PER_SECOND    ; ticks per seccond
+    _SYS_TICKS_PER_SECOND       equ 50
+
 PUBLIC _SYS_LOWRES_SCR_WIDTH    ; Low-Resolution width
-    _SYS_LOWRES_SCR_WIDTH       equ   32
+    _SYS_LOWRES_SCR_WIDTH       equ 32
 PUBLIC _SYS_LOWRES_SCR_HEIGHT   ; Low-Resolution height
-    _SYS_LOWRES_SCR_HEIGHT      equ   24
+    _SYS_LOWRES_SCR_HEIGHT      equ 24

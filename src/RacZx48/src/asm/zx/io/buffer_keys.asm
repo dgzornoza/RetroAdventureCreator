@@ -1,17 +1,17 @@
 SECTION code_user
 
-PUBLIC _push_queue_key       ; export C decl "extern void push_queue_key(char key) __z88dk_fastcall;"
-PUBLIC _pop_queue_key        ; export C decl "extern char pop_queue_key() __z88dk_fastcall;"
-PUBLIC _clean_queue_keys        ; export C decl "extern void clean_queue_keys() __z88dk_fastcall;"
+PUBLIC _push_buffer_key       ; export C decl "extern void push_buffer_key(char key) __z88dk_fastcall;"
+PUBLIC _pop_buffer_key        ; export C decl "extern char pop_buffer_key() __z88dk_fastcall;"
+PUBLIC _clean_buffer_keys     ; export C decl "extern void clean_buffer_keys() __z88dk_fastcall;"
 
 
 ;-------------------------------------------------------------------------------
-;  Name:		      public _push_queue_key
+;  Name:		      public _push_buffer_key
 ;  Description:	insert key into input queue buffer (FIFO)
 ;  Input:		   L = key to push into queue buffer
 ;  Output: 	      --
 ;-------------------------------------------------------------------------------
-_push_queue_key:
+_push_buffer_key:
    
    push bc                 ; store stack registers
    push de
@@ -32,7 +32,7 @@ _push_queue_key:
 
    ld (hl), b              ; add parameter ascii to buffer
 
-push_exit:
+.push_exit:
    
    pop de
    pop bc   
@@ -40,12 +40,12 @@ push_exit:
 
 
 ;-------------------------------------------------------------------------------
-;  Name:		      public _pop_queue_key
+;  Name:		      public _pop_buffer_key
 ;  Description:	get key from input queue buffer (FIFO)
 ;  Input:		   --
 ;  Output: 	      L = key to pop from input queue buffer
 ;-------------------------------------------------------------------------------
-_pop_queue_key:
+_pop_buffer_key:
    
    push de                    ; store stack registers
 
@@ -70,7 +70,7 @@ _pop_queue_key:
    dec a                      ; decrement buffer index
    ld (BufferIndex), a
 
-pop_exit:
+.pop_exit:
 
    ex af, af'                 ; return result from A'
    ld l, a                    
@@ -79,12 +79,12 @@ pop_exit:
 
 
 ;-------------------------------------------------------------------------------
-;  Name:		      public _clean_queue_keys
+;  Name:		      public _clean_buffer_keys
 ;  Description:	clean all buffer keys, set to 0 all buffer
 ;  Input:		   --
 ;  Output: 	      --
 ;-------------------------------------------------------------------------------
-_clean_queue_keys:
+_clean_buffer_keys:
 
    push bc                    ; store stack registers
    push de
@@ -100,7 +100,7 @@ _clean_queue_keys:
    xor a
    ld (BufferIndex), a        ; buffer index = 0
 
-clean_exit:
+.clean_exit:
    pop de
    pop bc
    ret

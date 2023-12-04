@@ -1,6 +1,3 @@
-#pragma output REGISTER_SP = 0xFF58
-#pragma output CLIB_MALLOC_HEAP_SIZE = -0xFBFA
-
 #include <z80.h>
 #include <string.h>
 #include <intrinsic.h>
@@ -9,102 +6,45 @@
 #include <input.h>
 
 #include "asm/zx/io.h"
+#include "asm/zx/timer.h"
 
-// extern char LAST_K(23560);
+unsigned char clock_changed = 0;
+unsigned char ticks = 0;
+unsigned char seconds = 0;
+unsigned char minutes = 0;
+unsigned char pause = 0;
+unsigned int abs_ticks = 0;
+unsigned int timer = 0;
 
-int numtimers = 10;
-int timer[10];
-
-int screen = 0x4000;
-char keysBuffer[10];
-
-char buffer[25];
-
-char cadena1[] = {
-    (char)SET_Y,
-    0,
-    'I',
-    'n',
-    't',
-    'r',
-    'o',
-    'd',
-    'u',
-    'c',
-    'e',
-    ' ',
-    'u',
-    'n',
-    ' ',
-    't',
-    'e',
-    'x',
-    't',
-    'o',
-    ':',
-    (char)SET_INK,
-    (char)2,
-    (char)SET_STYLE,
-    (char)BOLD,
-    '>',
-    (char)CR,
-    (char)EOS,
-};
-
-int count = 0;
-int result;
 IM2_DEFINE_ISR(isr)
 {
+    update_timer();
+
+    // if (0 == GLOBAL_TIMER_TICKS)
+    // {
+    //     push_buffer_key('.');
+    // }
+
+    // int key = get_key();
 
     // store input keys in keyboard queue buffer
     // (ensure don't repeat key without leave)
-    int key = in_inkey();
-    if (!key)
-    {
-        ROM_LAST_KEY = 0x00;
-    }
-    else if (ROM_LAST_KEY != key)
-    {
-        ROM_LAST_KEY = key;
-        push_queue_key(key);
-    }
-
-    // if (ROM_LAST_KEY == 0 && c)
+    // key = in_inkey();
+    // if (key)
     // {
-    //     ROM_LAST_KEY = c;
-    //     // push_buffer_key(c);
-    // }
-    // else if (ROM_LAST_KEY && !c)
-    // {
-    //     ROM_LAST_KEY = 0;
+    //     push_buffer_key(key);
     // }
 
-    // if ((c = in_inkey()) != 0)
+    // if (!key)
     // {
-    //     ROM_LAST_KEY = c;
-    //     // push_buffer_key(c);
+    //     ROM_LAST_KEY = ROM_LAST_KEY == '_' ? ' ' : '_';
     // }
-
-    // char byte = zxTestInput();
-    // byte = byte == NULL ? 0x55 : byte;
-    // zxPrintString(cadena1);
-
-    // char cadena2[] = {
-    //     (char)SET_Y,
-    //     1,
-    //     c,
-    //     (char)CR,
-    //     (char)EOS,
-    // };
-    // zxPrintString(cadena2);
-
-    // *(unsigned char *)screen = byte ? 0x55 : byte;
-    // screen += 8;
-    // int i;
-
-    // for (i = 0; i != numtimers; i++)
-    //     if (timer[i])
-    //         timer[i]--;
+    // else if (ROM_LAST_KEY != key)
+    // {
+    //     ROM_LAST_KEY = key;
+    //     push_buffer_key(key);
+    // }
+    print_buffer_keys();
 }
 
 #define TABLE_HIGH_BYTE ((unsigned int)0xfc)
@@ -115,7 +55,7 @@ IM2_DEFINE_ISR(isr)
 #define TABLE_ADDR ((void *)(TABLE_HIGH_BYTE * UI_256))
 #define JUMP_POINT ((unsigned char *)((unsigned int)(JUMP_POINT_HIGH_BYTE * UI_256) + JUMP_POINT_HIGH_BYTE))
 
-int main()
+int main(void)
 {
     // START Instalation routine ISR
     memset(TABLE_ADDR, JUMP_POINT_HIGH_BYTE, 257);
@@ -128,12 +68,15 @@ int main()
     intrinsic_ei();
     // END Instalation routine ISR
 
-    // main loop
-    char *string = read_string(buffer, 20);
-    print_string(string);
-
+    // main app loop
     while (1)
     {
-        // pop_buffer_key();
+        int key = get_key();
+        if (key)
+        {
+            push_buffer_key(key);
+        }
+
+        // print_buffer_keys();
     }
 }

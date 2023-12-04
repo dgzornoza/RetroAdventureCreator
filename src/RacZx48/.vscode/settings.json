@@ -6,7 +6,7 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
-        "build": true,
+        "build": false,
         ".tmp": true,
         "src/**/*[^main].c.lis": false,
         "src/**/*.asm.lis": true,
@@ -16,15 +16,7 @@
     ],
     "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
     "files.associations": {
-        "zx.h": "c",
-        "z80.h": "c",
-        "spectrum.h": "c",
-        "stdlib.h": "c",
-        "screen.h": "c",
-        "graphics.h": "c",
-        "charset1.c": "cpp",
-        "input.h": "c",
-        "input_zx.h": "c",
-        "io.h": "c"
+        "timer.h": "c",
+        "input.h": "c"
     }
 }

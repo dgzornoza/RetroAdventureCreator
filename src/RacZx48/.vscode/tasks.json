@@ -18,6 +18,6 @@
 			"command": "make clean",
 			"problemMatcher": [],
 			"detail": "Clean project files"
-		}
+		},
 	]
 }

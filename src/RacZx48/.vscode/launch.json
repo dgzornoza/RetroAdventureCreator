@@ -34,6 +34,6 @@
             "load": "./build/output.sna",
             "smallValuesMaximum": 513,
             "tmpDir": ".tmp"
-        }
+        },
     ]
 }
