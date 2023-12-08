@@ -11,7 +11,7 @@
 /** INFRASTRUCTURE */
 // -----------------------------------------------------------------------------
 
-/** Enum with font control codes */
+/** Enum with font control codes, should be equal to control_chars -> 'FontControlCodeRoutines' */
 enum FontControlCodeEnum
 {
     /* End of String */
