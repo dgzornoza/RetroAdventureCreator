@@ -47,9 +47,9 @@ loop:
  
 ;;; Code to execute when delete key is pressed (delete char)
 .print_buffer_keys_delete:                  
+   call asm_font_dec_x
    ld a, ' '                     ; delete cursor and go to previous char
    call asm_print_char
-   call asm_font_dec_x
    jr loop                       ; repeat loop
 
 

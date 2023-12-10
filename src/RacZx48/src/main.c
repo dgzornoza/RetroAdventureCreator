@@ -16,34 +16,13 @@ unsigned char pause = 0;
 unsigned int abs_ticks = 0;
 unsigned int timer = 0;
 
+/**
+ * IM2 function, updated every 50 ms with vsync
+ */
 IM2_DEFINE_ISR(isr)
 {
     update_timer();
 
-    // if (0 == GLOBAL_TIMER_TICKS)
-    // {
-    //     push_buffer_key('.');
-    // }
-
-    // int key = get_key();
-
-    // store input keys in keyboard queue buffer
-    // (ensure don't repeat key without leave)
-    // key = in_inkey();
-    // if (key)
-    // {
-    //     push_buffer_key(key);
-    // }
-
-    // if (!key)
-    // {
-    //     ROM_LAST_KEY = ROM_LAST_KEY == '_' ? ' ' : '_';
-    // }
-    // else if (ROM_LAST_KEY != key)
-    // {
-    //     ROM_LAST_KEY = key;
-    //     push_buffer_key(key);
-    // }
     print_buffer_keys();
 }
 
@@ -71,12 +50,12 @@ int main(void)
     // main app loop
     while (1)
     {
+        // read keyboard
         int key = get_key();
         if (key)
         {
+            ROM_LAST_KEY = key;
             push_buffer_key(key);
         }
-
-        // print_buffer_keys();
     }
 }

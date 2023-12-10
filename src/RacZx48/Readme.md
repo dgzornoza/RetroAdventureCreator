@@ -60,3 +60,12 @@ https://github.com/z88dk/z88dk/blob/master/libsrc/input/in_GetKey.asm
 Initial release aligned with z88dk v2.2
 
 **Enjoy!**
+
+
+
+
+
+temporal links:
+
+rutinas asm z80
+https://github.com/breakintoprogram/lib-spectrum/blob/master/lib/screen_buffer.z80

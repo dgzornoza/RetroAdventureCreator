@@ -4,7 +4,8 @@ SECTION code_user
 ; ROM CONSTANTS 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
+PUBLIC _ROM_FRAMES      ; 3 byte (least significant first), frame counter. Incremented every 20ms.
+    _ROM_FRAMES         equ $5C78
 PUBLIC _ROM_LAST_KEY    ; address for get last key pressed
     _ROM_LAST_KEY       equ $5C08
 PUBLIC _ROM_KEY_SCAN    ; Routine address for scan keyboard keys
