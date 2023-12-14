@@ -17,6 +17,9 @@
     "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
     "files.associations": {
         "timer.h": "c",
-        "input.h": "c"
+        "input.h": "c",
+        "shell.h": "c",
+        "zx.h": "c",
+        "input_commands.h": "c"
     }
 }

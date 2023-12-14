@@ -26,3 +26,10 @@ PUBLIC _SYS_LOWRES_SCR_WIDTH    ; Low-Resolution width
     _SYS_LOWRES_SCR_WIDTH       equ 32
 PUBLIC _SYS_LOWRES_SCR_HEIGHT   ; Low-Resolution height
     _SYS_LOWRES_SCR_HEIGHT      equ 24
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; DEFAULTS CONSTANTS 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+PUBLIC _DEFAULT_FONT_ATTRIBUTES     ; default font attributes, black over gray
+    _DEFAULT_FONT_ATTRIBUTES        equ 56

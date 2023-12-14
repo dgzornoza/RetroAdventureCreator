@@ -6,14 +6,14 @@ EXTERN _in_inkey
 EXTERN _GLOBAL_TIMER_TICKS
 
 ;-------------------------------------------------------------------------------
-;	Name:		    private get_key
+;	Name:		    internal get_key
 ;	Description:    Scans the keyboard and returns an ascii code representing a single keypress.  
 ;        Operates as a state machine.  
 ;        First it get a key. 
 ;        The key will be registered and then it will wait until the key has been pressed for a period "_in_KeyStartRepeat" (byte).  
 ;        The key will again be registered and then repeated thereafter with period "_in_KeyRepeatPeriod" (byte).
 ;        If more than one key is pressed, no key is registered and the state machine returns to default state.  
-;        if other key is pressed, return new key and state machine returns to default state.
+;        If other key is pressed, return new key and state machine returns to default state.
 ;        Time intervals is sync with timer from _GLOBAL_TIMER_TICKS
 ;  Remarks: diagram is in file 'asm_get_key.drawio.svg'
 ;	Input:		   --
@@ -79,7 +79,7 @@ _get_key:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; CONSTANTS 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                  
-KEY_START_REPEAT     equ 20
+KEY_START_REPEAT     equ 40
 KEY_REPEAT_PERIOD    equ 10
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

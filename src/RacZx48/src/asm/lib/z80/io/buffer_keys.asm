@@ -1,8 +1,6 @@
 SECTION code_user
 
-PUBLIC _push_buffer_key       ; export C decl "extern void push_buffer_key(char key) __z88dk_fastcall;"
-PUBLIC _pop_buffer_key        ; export C decl "extern char pop_buffer_key() __z88dk_fastcall;"
-PUBLIC _clean_buffer_keys     ; export C decl "extern void clean_buffer_keys() __z88dk_fastcall;"
+PUBLIC _push_buffer_key          ; export C decl "extern void push_buffer_key(char key) __z88dk_fastcall;"
 
 
 ;-------------------------------------------------------------------------------
@@ -40,12 +38,13 @@ _push_buffer_key:
 
 
 ;-------------------------------------------------------------------------------
-;  Name:		      public _pop_buffer_key
+;  Name:		      internal _pop_buffer_key
 ;  Description:	get key from input queue buffer (FIFO)
 ;  Input:		   --
 ;  Output: 	      L = key to pop from input queue buffer
 ;-------------------------------------------------------------------------------
-_pop_buffer_key:
+PUBLIC asm_pop_buffer_key
+asm_pop_buffer_key:
    
    push de                    ; store stack registers
 
@@ -79,12 +78,13 @@ _pop_buffer_key:
 
 
 ;-------------------------------------------------------------------------------
-;  Name:		      public _clean_buffer_keys
+;  Name:		      internal _clean_buffer_keys
 ;  Description:	clean all buffer keys, set to 0 all buffer
 ;  Input:		   --
 ;  Output: 	      --
 ;-------------------------------------------------------------------------------
-_clean_buffer_keys:
+PUBLIC asm_clean_buffer_keys
+asm_clean_buffer_keys:
 
    push bc                    ; store stack registers
    push de

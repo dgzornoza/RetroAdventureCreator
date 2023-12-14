@@ -2,7 +2,7 @@ SECTION code_user
 
 PUBLIC _print_buffer_keys         ; export C decl "extern void print_buffer_keys();"
 
-EXTERN _pop_buffer_key
+EXTERN asm_pop_buffer_key
 
 EXTERN asm_print_char
 EXTERN asm_font_inc_x
@@ -23,7 +23,7 @@ _print_buffer_keys:
    push hl                       ; preserve stack
 
 loop:
-   call _pop_buffer_key
+   call asm_pop_buffer_key
    ld a, l
    
    cp 0
@@ -52,12 +52,3 @@ loop:
    call asm_print_char
    jr loop                       ; repeat loop
 
-
-
-   
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; VARIABLES 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-.InputsCounter    db  0
-.InputsLimit      db  0

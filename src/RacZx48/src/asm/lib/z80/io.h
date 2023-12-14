@@ -3,11 +3,6 @@
 
 #include <stdlib.h>
 
-/** DEFINITIONS */
-// -----------------------------------------------------------------------------
-/** ROM Default font charset */
-#define DefaultFontCharset 0x3C00
-
 /** INFRASTRUCTURE */
 // -----------------------------------------------------------------------------
 
@@ -45,15 +40,20 @@ enum FontStyleEnum
     ITALIC = 3,
 };
 
+/** Last key presed stored in rom */
 extern char ROM_LAST_KEY;
 
 /** FUNCTIONS */
 // -----------------------------------------------------------------------------
-extern char pop_buffer_key(void) __z88dk_fastcall;
-extern void clean_buffer_keys(void) __z88dk_fastcall;
-extern void push_buffer_key(char key) __z88dk_fastcall;
 
-extern void print_char(char *ascii) __z88dk_fastcall;
+/**
+ * insert key into input queue buffer (FIFO)
+ */
+extern void push_buffer_key(char key) __z88dk_fastcall;
+/**
+ * print string from buffer_keys.
+ */
+extern void print_buffer_keys(void);
 
 /**
  * Print string with format in screen
@@ -61,8 +61,16 @@ extern void print_char(char *ascii) __z88dk_fastcall;
  */
 extern void print_string(char *string) __z88dk_fastcall;
 
-extern void print_buffer_keys(void);
-
+/**
+ * Scans the keyboard and returns an ascii code representing a single keypress.
+ * Operates as a state machine. First it get a key.
+ * The key will be registered and then it will wait until the key has been pressed for a period "_in_KeyStartRepeat" (byte).
+ * The key will again be registered and then repeated thereafter with period "_in_KeyRepeatPeriod" (byte).
+ * If more than one key is pressed, no key is registered and the state machine returns to default state.
+ * If other key is pressed, return new key and state machine returns to default state.
+ * Time intervals is sync with timer from _GLOBAL_TIMER_TICKS
+ * @returns ascii code of key pressed, otherwise 0 and carry flag = false if not key pressed or multiple key pressed
+ */
 extern unsigned int get_key(void) __z88dk_fastcall;
 
 #endif

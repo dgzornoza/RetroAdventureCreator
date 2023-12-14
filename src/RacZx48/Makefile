@@ -2,7 +2,7 @@
 EXEC_OUTPUT=output
 
 # List all your source files here
-SOURCES = $(wildcard src/*.c) $(wildcard src/asm/zx/*.asm) $(wildcard src/asm/zx/*/*.asm)
+SOURCES = $(wildcard src/*.c) $(wildcard src/asm/components/*/*.asm) $(wildcard src/asm/lib/z80/*.asm) $(wildcard src/asm/lib/z80/*/*.asm)
 
 # Set CRT
 CRT=31

@@ -5,8 +5,9 @@
 #include <arch/zx.h>
 #include <input.h>
 
-#include "asm/zx/io.h"
-#include "asm/zx/timer.h"
+#include "asm/lib/z80/io.h"
+#include "asm/components/timer.h"
+#include "asm/components/input_commands.h"
 
 unsigned char clock_changed = 0;
 unsigned char ticks = 0;
@@ -47,9 +48,19 @@ int main(void)
     intrinsic_ei();
     // END Instalation routine ISR
 
+    struct r_Rect8 s1;
+    s1.x = 5;
+    s1.width = 10;
+    s1.y = 5;
+    s1.height = 10;
+    unsigned char attr = 22;
     // main app loop
     while (1)
     {
+        // zx_cls_wc(&s1, attr);
+
+        show_input_commands();
+
         // read keyboard
         int key = get_key();
         if (key)

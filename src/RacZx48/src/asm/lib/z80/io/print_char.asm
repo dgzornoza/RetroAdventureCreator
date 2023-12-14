@@ -1,5 +1,6 @@
 SECTION code_user
 
+; TODO: revisar si hace falta, en principio no deberia de necesitarse
 PUBLIC _print_char    ; export C decl "extern void print_char(char *ascii) __z88dk_fastcall;"
 PUBLIC asm_print_char
 
@@ -12,7 +13,7 @@ EXTERN _GLOBAL_FONT_ATTRIBUTES
 ;-------------------------------------------------------------------------------
 ;  Name:		      public _print_char
 ;	Description:	print 8x8 pixels char from charset.
-;	Input:		   A = ASCII char to print
+;	Input:		   HL = ASCII char to print
 ;	Output: 	      --
 ;	Clobbers: 	   --
 ;  Remarks:       _GLOBAL_FONT_CHARSET define charset memory address to use.
@@ -24,10 +25,8 @@ EXTERN _GLOBAL_FONT_ATTRIBUTES
 _print_char:
    push bc
    push de
-   push hl                   ; preserve registers
    ld a, (hl)                ; store in A char to print
    call asm_print_char       ; print char
-   pop hl                    ; recovery registers
    pop de
    pop bc
    ret
@@ -35,7 +34,7 @@ _print_char:
 
 
 ;-------------------------------------------------------------------------------
-;	Name:		      private asm_print_char
+;	Name:		      internal asm_print_char
 ;	Description:	print 8x8 pixels char from charset.
 ;	Input:		   A = ASCII char to print
 ;	Output: 	      --
