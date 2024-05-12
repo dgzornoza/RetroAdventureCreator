@@ -15,7 +15,7 @@ public class MessageModel : IUniqueKey
     public string Code { get; init; } = default!;
 
     /// <summary>
-    /// Message text, can be use <see cref="TextModifier"/> for text description
+    /// Message text, can be use <see cref="TextModifier"/> for text
     /// </summary>
     public string Text { get; init; } = default!;
 }

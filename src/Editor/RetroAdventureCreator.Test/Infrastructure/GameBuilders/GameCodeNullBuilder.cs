@@ -17,17 +17,6 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
 
         protected override string MainSceneCode => "MainScene";
 
-        protected override PlayerModel CreatePlayer() => new()
-        {
-        };
-
-        protected override SettingsModel CreateSettings() => new()
-        {
-        };
-
-        protected override IEnumerable<MessageModel> CreateMessages() =>
-            Enumerable.Range(0, elements).Select((item, index) => new MessageModel() { });
-
         protected override IEnumerable<VocabularyModel> CreateVocabulary()
         {
             var nouns = Enumerable.Range(0, elements)
@@ -38,8 +27,8 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             return nouns.Concat(verbs);
         }
 
-        protected override IEnumerable<ObjectModel> CreateObjects() =>
-            Enumerable.Range(0, elements).Select((item, index) => new ObjectModel() { });
+        protected override IEnumerable<MessageModel> CreateMessages() =>
+            Enumerable.Range(0, elements).Select((item, index) => new MessageModel() { });
 
         protected override IEnumerable<CommandModel> CreateCommands() =>
             Enumerable.Range(0, elements).Select((item, index) => new CommandModel() { });
@@ -59,10 +48,22 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             return afterDispatchers.Concat(beforeDipatchers);
         }
 
+        protected override IEnumerable<ObjectModel> CreateObjects() =>
+            Enumerable.Range(0, elements).Select((item, index) => new ObjectModel() { });
+
         protected override IEnumerable<SceneModel> CreateScenes() =>
             Enumerable.Range(0, elements).Select((item, index) => new SceneModel() { });
+
         protected override IEnumerable<FlagModel> CreateFlags() =>
             Enumerable.Range(0, elements).Select((item, index) => new FlagModel() { });
+
+        protected override PlayerModel CreatePlayer() => new()
+        {
+        };
+
+        protected override SettingsModel CreateSettings() => new()
+        {
+        };
 
     }
 }

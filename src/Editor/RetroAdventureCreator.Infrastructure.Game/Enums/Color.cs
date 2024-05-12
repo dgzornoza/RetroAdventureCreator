@@ -3,21 +3,22 @@
 /// <summary>
 /// Enum with available colors
 /// </summary>
+/// <remarks>All Enums start with 1 because 0 is reserved for end of objects serialization</remarks>
 public enum Color : byte
 {
-    Black = 0,
-    Blue = 1,
-    Red = 2,
-    Purple = 3,
-    Green = 4,
-    Cyan = 5,
-    Yellow = 6,
-    White = 7,
-    BrightBlue = 8,
-    BrightRed = 9,
-    BrightPurple = 10,
-    BrightGreen = 11,
-    BrightCyan = 12,
-    BrightYellow = 13,
-    BrightWhite = 14,
+    Black = 1,
+    Blue,
+    Red,
+    Purple,
+    Green,
+    Cyan,
+    Yellow,
+    White,
+    BrightBlue,
+    BrightRed,
+    BrightPurple,
+    BrightGreen,
+    BrightCyan,
+    BrightYellow,
+    BrightWhite,
 }

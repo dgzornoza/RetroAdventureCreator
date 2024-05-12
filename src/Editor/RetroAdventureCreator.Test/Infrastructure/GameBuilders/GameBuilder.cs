@@ -15,18 +15,19 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders;
 /// Game builder
 /// </summary>
 /// <remarks>
-///  Cretion Dependencies:
+///  Creation Dependencies:
 ///
 ///     VocabularyModel
 ///     MessageModel
-///     SettingsModel
 ///     CommandModel
-///     ObjectModel -> MessageModel, VocabularyModel
-///     InputCommandModel -> VocabularyModel
 ///     CommandGroupModel -> CommandModel
+///     InputCommandModel -> VocabularyModel
 ///     DispatcherModel -> InputCommandModel, CommandGroupModel
+///     ObjectModel -> MessageModel, VocabularyModel
 ///     SceneModel -> MessageModel, DispatcherModel, ObjectModel
+///     FlagsModel
 ///     PlayerModel -> ObjectModel
+///     SettingsModel
 ///     GameModel -> PlayerModel, SettingsModel, VocabularyModel, MessageModel, CommandModel, CommandGroupModel, InputCommandModel, DispatcherModel, ObjectModel, SceneModel
 ///     
 /// </remarks>
@@ -34,9 +35,6 @@ public abstract class GameBuilder
 {
     private GameModel? game;
 
-    protected PlayerModel Player { get; private set; }    
-    protected SettingsModel Settings { get; private set; }
-    
     protected IEnumerable<VocabularyModel> Vocabulary { get; private set; }
     protected IEnumerable<MessageModel> Messages { get; private set; }
     protected IEnumerable<CommandModel> Commands { get; private set; }
@@ -47,8 +45,12 @@ public abstract class GameBuilder
     protected IEnumerable<SceneModel> Scenes { get; private set; }
     protected IEnumerable<FlagModel> Flags { get; private set; }
 
+    protected PlayerModel Player { get; private set; }
+    protected SettingsModel Settings { get; private set; }
+
     protected GameBuilder()
     {
+        // Creation order
         Vocabulary = CreateVocabulary();
         Messages = CreateMessages();
         Commands = CreateCommands();
@@ -67,11 +69,8 @@ public abstract class GameBuilder
     {
         game ??= new GameModel
         {
-            MainSceneCode = MainSceneCode,  
-            
-            Player = Player,
-            Settings = Settings,
-            
+            MainSceneCode = MainSceneCode,
+
             Vocabulary = Vocabulary,
             Messages = Messages,
             Commands = Commands,
@@ -81,24 +80,27 @@ public abstract class GameBuilder
             Objects = Objects,
             Scenes = Scenes,
             Flags = Flags,
+
+            Player = Player,
+            Settings = Settings,
         };
 
         return game;
     }
 
     protected abstract string MainSceneCode { get; }
-    
-    protected abstract PlayerModel CreatePlayer();
-    protected abstract SettingsModel CreateSettings();
-    
-    protected abstract IEnumerable<MessageModel> CreateMessages();
+
     protected abstract IEnumerable<VocabularyModel> CreateVocabulary();
-    protected abstract IEnumerable<ObjectModel> CreateObjects();
+    protected abstract IEnumerable<MessageModel> CreateMessages();
     protected abstract IEnumerable<CommandModel> CreateCommands();
     protected abstract IEnumerable<CommandGroupModel> CreateCommandsGroups();
     protected abstract IEnumerable<InputCommandModel> CreateInputCommands();
     protected abstract IEnumerable<DispatcherModel> CreateDispatchers();
+    protected abstract IEnumerable<ObjectModel> CreateObjects();
     protected abstract IEnumerable<SceneModel> CreateScenes();
     protected abstract IEnumerable<FlagModel> CreateFlags();
+
+    protected abstract PlayerModel CreatePlayer();
+    protected abstract SettingsModel CreateSettings();
 }
 

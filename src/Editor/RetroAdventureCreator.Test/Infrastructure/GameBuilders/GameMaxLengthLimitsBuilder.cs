@@ -15,17 +15,6 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
     {
         protected override string MainSceneCode => "MainScene";
 
-        protected override PlayerModel CreatePlayer() => new()
-        {
-        };
-
-        protected override SettingsModel CreateSettings() => new()
-        {
-        };
-
-        protected override IEnumerable<MessageModel> CreateMessages() =>
-            Enumerable.Range(0, Constants.MaxLengthMessagesAllowed + 1).Select((item, index) => new MessageModel() { Code = $"Message{index}" });
-
         protected override IEnumerable<VocabularyModel> CreateVocabulary()
         {
             var nouns = Enumerable.Range(0, Constants.MaxLengthVocabularyNounsAllowed + 1)
@@ -36,8 +25,8 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             return nouns.Concat(verbs);
         }
 
-        protected override IEnumerable<ObjectModel> CreateObjects() =>
-            Enumerable.Range(0, Constants.MaxLengthObjectsAllowed + 1).Select((item, index) => new ObjectModel() { Code = $"Object{index}" });
+        protected override IEnumerable<MessageModel> CreateMessages() =>
+            Enumerable.Range(0, Constants.MaxLengthMessagesAllowed + 1).Select((item, index) => new MessageModel() { Code = $"Message{index}" });
 
         protected override IEnumerable<CommandModel> CreateCommands() =>
             Enumerable.Range(0, Constants.MaxLengthCommandsAllowed + 1).Select((item, index) => new CommandModel() { Code = $"Commmand{index}" });
@@ -57,10 +46,21 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             return afterDispatchers.Concat(beforeDipatchers);
         }
 
+        protected override IEnumerable<ObjectModel> CreateObjects() =>
+            Enumerable.Range(0, Constants.MaxLengthObjectsAllowed + 1).Select((item, index) => new ObjectModel() { Code = $"Object{index}" });
+
         protected override IEnumerable<SceneModel> CreateScenes() =>
             Enumerable.Range(0, Constants.MaxLengthScenesAllowed + 1).Select((item, index) => new SceneModel() { Code = $"Scene{index}" });
+
         protected override IEnumerable<FlagModel> CreateFlags() =>
             Enumerable.Range(0, Constants.MaxLengthFlagsAllowed + 1).Select((item, index) => new FlagModel() { Code = $"Flag{index}" });
 
+        protected override PlayerModel CreatePlayer() => new()
+        {
+        };
+
+        protected override SettingsModel CreateSettings() => new()
+        {
+        };
     }
 }

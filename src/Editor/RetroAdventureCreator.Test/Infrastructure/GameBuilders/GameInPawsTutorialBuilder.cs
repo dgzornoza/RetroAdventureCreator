@@ -14,122 +14,96 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
     {
         protected override string MainSceneCode => "EntradaScene";
 
-        protected override PlayerModel CreatePlayer() => new()
+        protected override IEnumerable<VocabularyModel> CreateVocabulary() => new List<VocabularyModel>
         {
-            Health = 7,
-            Objects = Objects,
-        };
-
-        protected override SettingsModel CreateSettings() => new()
-        {
-            Charset = 1,
-            BackgroundColor = Color.White,
-            BorderColor = Color.BrightPurple,
-            Color = Color.White,
+            new() { Code = "GuantesVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "GUANT" } },
+            new() { Code = "BoqueteVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "BOQUE", "PALAN" }},
+            new() { Code = "PalancaVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "PALAN" }},
+            new() { Code = "TemploVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "TEMPL" }},
+            new() { Code = "BloqueVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "BLOQU", "PIEDR" }},
+            new() { Code = "AbreVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "ABRE"  } },
+            new() { Code = "EntraVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "ENTRA" } },
+            new() { Code = "EntraVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "ENTRA" } },
+            new() { Code = "ExaminaVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "EX" } },
+            new() { Code = "MueveVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "MUEVE" } },
+            new() { Code = "EmpujaVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "EMPUJ" } },
+            new() { Code = "TiraVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "TIRA" } },
         };
 
         protected override IEnumerable<MessageModel> CreateMessages() => new List<MessageModel>
         {
-            new MessageModel { Code = "globDescriptionMessage", Text = "Unos guantes" },
-            new MessageModel
+            new() { Code = "globDescriptionMessage", Text = "Unos guantes" },
+            new()
             {
                 Code = "EntradaSceneDescription",
                 Text = "^^Tras meses de exploración en lo profundo de la selva, y después de haber sido perseguido, mordido, enfermado, pasado hambre y renunciado al todo, ahora por fin has encontrado lo que buscabas, el Templo de Ok, donde según cuenta la leyenda se guarda el Gran Diamante del Rajá Al-Meredin, rechazado por su amada y condenado a ser encerrado eternamente en lo profundo de la selva.^^ Hasta hoy.",
             },
-            new MessageModel
+            new()
             {
                 Code = "InteriorSceneDescription",
                 Text = "^^Has finalizado el primer puzzle^^ !!Bien echo.!!",
             }
         };
 
-        protected override IEnumerable<VocabularyModel> CreateVocabulary() => new List<VocabularyModel>
-        {
-            new VocabularyModel { Code = "GuantesVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "GUANT" } },
-            new VocabularyModel { Code = "BoqueteVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "BOQUE", "PALAN" }},
-            new VocabularyModel { Code = "PalancaVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "PALAN" }},
-            new VocabularyModel { Code = "TemploVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "TEMPL" }},
-            new VocabularyModel { Code = "BloqueVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "BLOQU", "PIEDR" }},
-            new VocabularyModel { Code = "AbreVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "ABRE"  } },
-            new VocabularyModel { Code = "EntraVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "ENTRA" } },
-            new VocabularyModel { Code = "EntraVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "ENTRA" } },
-            new VocabularyModel { Code = "ExaminaVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "EX" } },
-            new VocabularyModel { Code = "MueveVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "MUEVE" } },
-            new VocabularyModel { Code = "EmpujaVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "EMPUJ" } },
-            new VocabularyModel { Code = "TiraVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "TIRA" } },
-        };
-
-        protected override IEnumerable<ObjectModel> CreateObjects() => new List<ObjectModel>
-        {
-            new ObjectModel
-            {
-                Code = "GuantesObject",
-                Name = Vocabulary.Find("GuantesVocabulary"),
-                Description = Messages.Find("globDescriptionMessage"),
-                Weight = 1,
-            }
-        };
-
         protected override IEnumerable<CommandModel> CreateCommands() => new List<CommandModel>
         {
-            //    new CommandModel { Code = "", Token = CommandToken.AT, Arguments = new List<string> { "EntradaScene" } },
-            new CommandModel { Code = "IsSetOpenEntry", Token = CommandToken.IsSet, Arguments = new List<string> { "openEntry" } },
-            new CommandModel { Code = "IsUnSetOpenEntry", Token = CommandToken.IsUnset, Arguments = new List<string> { "openEntry" } },
-            new CommandModel { Code = "SetOpenEntry", Token = CommandToken.Set, Arguments = new List<string> { "openEntry" } },
-            new CommandModel { Code = "ShowMessageBloquePiedra", Token = CommandToken.Message, Arguments = new List<string> { "Un enorme bloque de piedra bloquea la entrada." } },
-            new CommandModel { Code = "ShowMessageInteriorTemplo", Token = CommandToken.Message, Arguments = new List<string> { "Un siniestro pasaje conduce al interior del templo." } },
-            new CommandModel { Code = "ShowMessageFuerza", Token = CommandToken.Message, Arguments = new List<string> { "Ni la fuerza combinada de diez como tú podría mover ese mastodonte de piedra." } },
-            new CommandModel { Code = "ShowMessageNoBloque", Token = CommandToken.Message, Arguments = new List<string> { "Ya no hay bloque que abrir." } },
-            new CommandModel { Code = "ShowMessageBoquete", Token = CommandToken.Message, Arguments = new List<string> { "Un oscuro boquete cuadrado, excavado por la mano del hombre, en cuyo interior ves una especie de palanca. También crees divisar ojos que te observan desde dentro." } },
-            new CommandModel { Code = "ShowMessageAraña", Token = CommandToken.Message, Arguments = new List<string> { "Al meter la mano en el boquete notas un pichazo agudo. Casi al instante tu vista se comienza a nublar y vas perdiendo contacto con la realidad.^^       *** ESTAS MUERTO ***" } },
-            new CommandModel { Code = "IsInUseGuantes", Token = CommandToken.InUse, Arguments = new List<string> { "GuantesObject" } },
-            new CommandModel { Code = "ShowMessageTiraPalanca", Token = CommandToken.Message, Arguments = new List<string> { "Con no poco repelús metes la mano enguantada y mueves la palanca. Oyes un chasquido, y luego un ruido de correas deslizándose. Al cabo de un rato, el enorme bloque cede y se hunde en el suelo como tragado por el infierno. La entrada está libre." } },
-            new CommandModel { Code = "ShowMessagePalancaUsada", Token = CommandToken.Message, Arguments = new List<string> { "No necesitas volver a meter la mano en \"eso\"." } },
-            new CommandModel { Code = "GotoInteriorScene", Token = CommandToken.Goto, Arguments = new List<string> { "InteriorScene" } },
-            new CommandModel { Code = "EndGame", Token = CommandToken.EndGame },
+            // new CommandModel { Code = "", Token = CommandToken.AT, Arguments = new List<string> { "EntradaScene" } },
+            new() { Code = "IsSetOpenEntry", Token = CommandToken.IsSet, Arguments = new List<string> { "openEntry" } },
+            new() { Code = "IsUnSetOpenEntry", Token = CommandToken.IsUnset, Arguments = new List<string> { "openEntry" } },
+            new() { Code = "SetOpenEntry", Token = CommandToken.Set, Arguments = new List<string> { "openEntry" } },
+            new() { Code = "ShowMessageBloquePiedra", Token = CommandToken.Message, Arguments = new List<string> { "Un enorme bloque de piedra bloquea la entrada." } },
+            new() { Code = "ShowMessageInteriorTemplo", Token = CommandToken.Message, Arguments = new List<string> { "Un siniestro pasaje conduce al interior del templo." } },
+            new() { Code = "ShowMessageFuerza", Token = CommandToken.Message, Arguments = new List<string> { "Ni la fuerza combinada de diez como tú podría mover ese mastodonte de piedra." } },
+            new() { Code = "ShowMessageNoBloque", Token = CommandToken.Message, Arguments = new List<string> { "Ya no hay bloque que abrir." } },
+            new() { Code = "ShowMessageBoquete", Token = CommandToken.Message, Arguments = new List<string> { "Un oscuro boquete cuadrado, excavado por la mano del hombre, en cuyo interior ves una especie de palanca. También crees divisar ojos que te observan desde dentro." } },
+            new() { Code = "ShowMessageAraña", Token = CommandToken.Message, Arguments = new List<string> { "Al meter la mano en el boquete notas un pichazo agudo. Casi al instante tu vista se comienza a nublar y vas perdiendo contacto con la realidad.^^       *** ESTAS MUERTO ***" } },
+            new() { Code = "IsInUseGuantes", Token = CommandToken.InUse, Arguments = new List<string> { "GuantesObject" } },
+            new() { Code = "ShowMessageTiraPalanca", Token = CommandToken.Message, Arguments = new List<string> { "Con no poco repelús metes la mano enguantada y mueves la palanca. Oyes un chasquido, y luego un ruido de correas deslizándose. Al cabo de un rato, el enorme bloque cede y se hunde en el suelo como tragado por el infierno. La entrada está libre." } },
+            new() { Code = "ShowMessagePalancaUsada", Token = CommandToken.Message, Arguments = new List<string> { "No necesitas volver a meter la mano en \"eso\"." } },
+            new() { Code = "GotoInteriorScene", Token = CommandToken.Goto, Arguments = new List<string> { "InteriorScene" } },
+            new() { Code = "EndGame", Token = CommandToken.EndGame },
         };
 
         protected override IEnumerable<CommandGroupModel> CreateCommandsGroups() => new List<CommandGroupModel>();
 
         protected override IEnumerable<InputCommandModel> CreateInputCommands() => new List<InputCommandModel>
         {
-            new InputCommandModel
-            {
+            new() {
                 Code = "AbreEntradaInputCommand",
                 Verb = Vocabulary.Find("AbreVocabulary"),
                 Nouns = new List<VocabularyModel> { Vocabulary.Find("EntraVocabulary") },
             },
-            new InputCommandModel
+            new()
             {
                 Code = "AbreBloqueInputCommand",
                 Verb = Vocabulary.Find("AbreVocabulary"),
                 Nouns = new List<VocabularyModel> { Vocabulary.Find("BloqueVocabulary") },
             },
-            new InputCommandModel
+            new()
             {
                 Code = "ExaminarBoquete",
                 Verb = Vocabulary.Find("ExaminaVocabulary"),
                 Nouns = new List<VocabularyModel> { Vocabulary.Find("BoqueteVocabulary") },
             },
-            new InputCommandModel
+            new()
             {
                 Code = "MuevePalanca",
                 Verb = Vocabulary.Find("MueveVocabulary"),
                 Nouns = new List<VocabularyModel> { Vocabulary.Find("PalancaVocabulary") },
             },
-            new InputCommandModel
+            new()
             {
                 Code = "EmpujaPalanca",
                 Verb =  Vocabulary.Find("EmpujaVocabulary"),
                 Nouns = new List<VocabularyModel> { Vocabulary.Find("PalancaVocabulary") },
             },
-            new InputCommandModel
+            new()
             {
                 Code = "TiraPalanca",
                 Verb =  Vocabulary.Find("TiraVocabulary"),
                 Nouns = new List<VocabularyModel> { Vocabulary.Find("PalancaVocabulary") },
             },
-            new InputCommandModel
+            new()
             {
                 Code = "Entra",
                 Verb = Vocabulary.Find("EntraVocabulary"),
@@ -138,7 +112,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
 
         protected override IEnumerable<DispatcherModel> CreateDispatchers() => new List<DispatcherModel>
         {
-            new DispatcherModel
+            new()
             {
                 Code = $"{MainSceneCode}-1",
                 Trigger = Trigger.BeforeInputCommand,
@@ -148,7 +122,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                     Commands.Find("ShowMessageBloquePiedra"),
                 }
             },
-            new DispatcherModel
+            new()
             {
                 Code = $"{MainSceneCode}-2",
                 Trigger = Trigger.BeforeInputCommand,
@@ -158,7 +132,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                     Commands.Find("ShowMessageInteriorTemplo"),
                 }
             },
-            new DispatcherModel
+            new()
             {
                 Code = $"{MainSceneCode}-3",
                 Trigger = Trigger.AfterInputCommand,
@@ -173,7 +147,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                     Commands.Find("ShowMessageFuerza"),
                 }
             },
-            new DispatcherModel
+            new()
             {
                 Code = $"{MainSceneCode}-4",
                 Trigger = Trigger.AfterInputCommand,
@@ -188,7 +162,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                     Commands.Find("ShowMessageNoBloque"),
                 }
             },
-            new DispatcherModel
+            new()
             {
                 Code = $"{MainSceneCode}-5",
                 Trigger = Trigger.AfterInputCommand,
@@ -201,7 +175,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                     Commands.Find("ShowMessageBoquete"),
                 }
             },
-            new DispatcherModel
+            new()
             {
                 Code = $"{MainSceneCode}-6",
                 Trigger = Trigger.AfterInputCommand,
@@ -218,7 +192,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                     Commands.Find("EndGame"),
                 },
             },
-            new DispatcherModel
+            new()
             {
                 Code = $"{MainSceneCode}-7",
                 Trigger = Trigger.AfterInputCommand,
@@ -236,7 +210,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                     Commands.Find("ShowMessageTiraPalanca"),
                 },
             },
-            new DispatcherModel
+            new()
             {
                 Code = $"{MainSceneCode}-8",
                 Trigger = Trigger.AfterInputCommand,
@@ -252,7 +226,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                     Commands.Find("ShowMessagePalancaUsada"),
                 },
             },
-            new DispatcherModel
+            new()
             {
                 Code = $"{MainSceneCode}-9",
                 Trigger = Trigger.AfterInputCommand,
@@ -268,16 +242,27 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             },
         };
 
+        protected override IEnumerable<ObjectModel> CreateObjects() => new List<ObjectModel>
+        {
+            new()
+            {
+                Code = "GuantesObject",
+                Name = Vocabulary.Find("GuantesVocabulary"),
+                Description = Messages.Find("globDescriptionMessage"),
+                Weight = 1,
+            }
+        };
+
         protected override IEnumerable<SceneModel> CreateScenes() => new List<SceneModel>
         {
-            new SceneModel
+            new()
             {
                 Code = MainSceneCode,
                 Description = Messages.Find("EntradaSceneDescription"),
                 AfterInputCommandDispatchers = Dispatchers.Where(item => item.Code.StartsWith(MainSceneCode) && item.Trigger == Trigger.AfterInputCommand),
                 BeforeInputCommandDispatchers = Dispatchers.Where(item => item.Code.StartsWith(MainSceneCode) && item.Trigger == Trigger.BeforeInputCommand)
             },
-            new SceneModel
+            new()
             {
                 Code = "InteriorScene",
                 Description = Messages.Find("InteriorSceneDescription"),
@@ -286,7 +271,21 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
 
         protected override IEnumerable<FlagModel> CreateFlags() => new List<FlagModel>
         {
-            new FlagModel { Code = "openEntry", Value = false }
+            new() { Code = "openEntry", Value = false }
+        };
+
+        protected override PlayerModel CreatePlayer() => new()
+        {
+            Health = 7,
+            Objects = Objects,
+        };
+
+        protected override SettingsModel CreateSettings() => new()
+        {
+            Charset = 1,
+            BackgroundColor = Color.White,
+            BorderColor = Color.BrightPurple,
+            Color = Color.White,
         };
     }
 }

@@ -3,13 +3,14 @@
 /// <summary>
 /// Enum with word types
 /// </summary>
+/// <remarks>All Enums start with 1 because 0 is reserved for end of objects serialization</remarks>
 public enum WordType : byte
 {
-    Verb = 0,
-    Noun = 1,
-    //Adjective = 2, 
-    //Preposition = 3,
-    //Adverb = 4, 
-    //Conjunction = 5,
-    //Pronoun = 6,
+    Verb = 1,
+    Noun,
+    //Adjective, 
+    //Preposition,
+    //Adverb, 
+    //Conjunction,
+    //Pronoun,
 }
