@@ -13,26 +13,28 @@ using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Core.Services;
 
-
+/// <summary>
+/// Service to serialize a game model to a byte array.
+/// </summary>
 internal class GameSerializerService
 {
     public byte[] Serialize(GameModel gameModel)
     {
         var serializerBuilder = new SerializerFactory(gameModel);
 
-        var commandGroupSerializer = serializerBuilder.GetSerializer<CommandGroupSerializer>().Serialize(serializerBuilder.GameComponentsPointersModel);
-        var commandsSerializer = serializerBuilder.GetSerializer<CommandsSerializer>().Serialize(serializerBuilder.GameComponentsPointersModel);
-        var afterInputCommandDispatchersSerializer = serializerBuilder.GetSerializer<AfterInputCommandDispatchersSerializer>().Serialize(serializerBuilder.GameComponentsPointersModel);
-        var beforeInputCommandDispatchersSerializer = serializerBuilder.GetSerializer<BeforeInputCommandDispatchersSerializer>().Serialize(serializerBuilder.GameComponentsPointersModel);
-        var flagsSerializer = serializerBuilder.GetSerializer<FlagsSerializer>().Serialize(serializerBuilder.GameComponentsPointersModel);
-        var inputCommandsSerializer = serializerBuilder.GetSerializer<InputCommandsSerializer>().Serialize(serializerBuilder.GameComponentsPointersModel);
-        var messagesSerializer = serializerBuilder.GetSerializer<MessagesSerializer>().Serialize(serializerBuilder.GameComponentsPointersModel);
-        var objectsSerializer = serializerBuilder.GetSerializer<ObjectsSerializer>().Serialize(serializerBuilder.GameComponentsPointersModel);
-        var playerSerializer = serializerBuilder.GetSerializer<PlayerSerializer>().Serialize(serializerBuilder.GameComponentsPointersModel);
-        var scenesSerializer = serializerBuilder.GetSerializer<ScenesSerializer>().Serialize(serializerBuilder.GameComponentsPointersModel);
-        var settingsSerializer = serializerBuilder.GetSerializer<SettingsSerializer>().Serialize(serializerBuilder.GameComponentsPointersModel);
-        var vocabularyNounsSerializer = serializerBuilder.GetSerializer<VocabularyNounsSerializer>().Serialize(serializerBuilder.GameComponentsPointersModel);
-        var vocabularyVerbsSerializer = serializerBuilder.GetSerializer<VocabularyVerbsSerializer>().Serialize(serializerBuilder.GameComponentsPointersModel);
+        var commandGroupSerializer = serializerBuilder.Serialize<CommandGroupSerializer>();
+        var commandsSerializer = serializerBuilder.Serialize<CommandsSerializer>();
+        var afterInputCommandDispatchersSerializer = serializerBuilder.Serialize<AfterInputCommandDispatchersSerializer>();
+        var beforeInputCommandDispatchersSerializer = serializerBuilder.Serialize<BeforeInputCommandDispatchersSerializer>();
+        var flagsSerializer = serializerBuilder.Serialize<FlagsSerializer>();
+        var inputCommandsSerializer = serializerBuilder.Serialize<InputCommandsSerializer>();
+        var messagesSerializer = serializerBuilder.Serialize<MessagesSerializer>();
+        var objectsSerializer = serializerBuilder.Serialize<ObjectsSerializer>();
+        var playerSerializer = serializerBuilder.Serialize<PlayerSerializer>();
+        var scenesSerializer = serializerBuilder.Serialize<ScenesSerializer>();
+        var settingsSerializer = serializerBuilder.Serialize<SettingsSerializer>();
+        var vocabularyNounsSerializer = serializerBuilder.Serialize<VocabularyNounsSerializer>();
+        var vocabularyVerbsSerializer = serializerBuilder.Serialize<VocabularyVerbsSerializer>();
 
         return null;
     }

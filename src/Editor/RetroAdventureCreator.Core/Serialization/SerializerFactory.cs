@@ -8,6 +8,9 @@ using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Core.Serialization;
 
+/// <summary>
+/// Factory class to create serializers for each game component.
+/// </summary>
 internal class SerializerFactory
 {
     private readonly CommandGroupSerializer commandGroupSerializer;
@@ -23,7 +26,6 @@ internal class SerializerFactory
     private readonly SettingsSerializer settingsSerializer;
     private readonly VocabularyNounsSerializer vocabularyNounsSerializer;
     private readonly VocabularyVerbsSerializer vocabularyVerbsSerializer;
-
 
     public SerializerFactory(GameModel gameModel)
     {
@@ -55,9 +57,16 @@ internal class SerializerFactory
             VocabularyVerbs: vocabularyVerbsSerializer.GenerateGameComponentPointers());
     }
 
-    public GameComponentsPointersModel GameComponentsPointersModel { get; init; }
+    internal GameComponentsPointersModel GameComponentsPointersModel { get; init; }
 
-    public T GetSerializer<T>() => typeof(T).Name switch
+    /// <summary>
+    /// Serialize the game components.
+    /// </summary>
+    /// <typeparam name="T">Game component type</typeparam>
+    /// <returns>Serialization result model</returns>
+    public SerializerResultModel Serialize<T>() where T : ISerializer => GetSerializer<T>().Serialize(GameComponentsPointersModel);
+
+    private T GetSerializer<T>() => typeof(T).Name switch
     {
         nameof(CommandGroupSerializer) => (T)Convert.ChangeType(commandGroupSerializer, typeof(T)),
         nameof(CommandsSerializer) => (T)Convert.ChangeType(commandsSerializer, typeof(T)),

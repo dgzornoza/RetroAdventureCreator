@@ -21,12 +21,11 @@ public class PlayerSerializerTest : SerializerBaseTest
         // Arrange
         CreateGame<GameInPawsTutorialBuilder>();
         var serializerFactory = new SerializerFactory(game);
-        var serializer = serializerFactory.GetSerializer<PlayerSerializer>();
 
         var expectedDataBytes = GetPlayerData(game.Player, serializerFactory);
 
         // Act
-        var actual = serializer.Serialize(serializerFactory.GameComponentsPointersModel);
+        var actual = serializerFactory.Serialize<PlayerSerializer>();
 
         // Assert
         Assert.NotNull(actual);

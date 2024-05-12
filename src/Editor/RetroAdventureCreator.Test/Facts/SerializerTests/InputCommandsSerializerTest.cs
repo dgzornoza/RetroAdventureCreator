@@ -21,12 +21,11 @@ public class InputCommandsSerializerTest : SerializerBaseTest
         // Arrange
         CreateGame<GameInPawsTutorialBuilder>();
         var serializerFactory = new SerializerFactory(game);
-        var serializer = serializerFactory.GetSerializer<InputCommandsSerializer>();
 
         var expectedDataBytes = GetInputCommandData(game.InputCommands, serializerFactory);
 
         // Act
-        var actual = serializer.Serialize(serializerFactory.GameComponentsPointersModel);
+        var actual = serializerFactory.Serialize<InputCommandsSerializer>();
 
         // Assert
         Assert.NotNull(actual);

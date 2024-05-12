@@ -17,14 +17,13 @@ public class MessagesSerializerTest : SerializerBaseTest
         // Arrange
         CreateGame<GameInPawsTutorialBuilder>();
         var serializerFactory = new SerializerFactory(game);
-        var serializer = serializerFactory.GetSerializer<MessagesSerializer>();
 
         var expectedDataLength = game.Messages.SortByKey().Sum(item => item.Text.Length + Constants.EndTokenLength);
         var expectedBytes = Encoding.ASCII.GetBytes(string.Join(EndTokenString, game.Messages.SortByKey().Select(item => item.Text)) + EndTokenString);
         var expectedText = Encoding.ASCII.GetString(expectedBytes);
 
         // Act
-        var actual = serializer.Serialize(serializerFactory.GameComponentsPointersModel);
+        var actual = serializerFactory.Serialize<MessagesSerializer>();
 
         // Assert
         Assert.NotNull(actual);

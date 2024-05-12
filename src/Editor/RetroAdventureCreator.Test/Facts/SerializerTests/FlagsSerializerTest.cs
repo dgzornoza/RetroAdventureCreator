@@ -19,14 +19,13 @@ public class FlagsSerializerTest : SerializerBaseTest
         // Arrange
         CreateGame<GameInPawsTutorialBuilder>();
         var serializerFactory = new SerializerFactory(game);
-        var serializer = serializerFactory.GetSerializer<FlagsSerializer>();
 
         var flags = game.Flags;
         var expectedDataLength = Math.Ceiling(flags.Count() / 8M);
         var expectedData = 0b00000000;
 
         // Act
-        var actual = serializer.Serialize(serializerFactory.GameComponentsPointersModel);
+        var actual = serializerFactory.Serialize<FlagsSerializer>();
 
         // Assert
         Assert.NotNull(actual);
@@ -41,7 +40,6 @@ public class FlagsSerializerTest : SerializerBaseTest
         // Arrange
         CreateGame<GameInPawsTutorialBuilder>();
         var serializerFactory = new SerializerFactory(game);
-        var serializer = serializerFactory.GetSerializer<FlagsSerializer>();
 
         var bits = CreateRandomBits();
         var flags = CreateFlags(bits);
@@ -50,6 +48,7 @@ public class FlagsSerializerTest : SerializerBaseTest
 
         // Act
         var actual = new FlagsSerializer(flags).Serialize(serializerFactory.GameComponentsPointersModel);
+
 
         // Assert
         Assert.NotNull(actual);

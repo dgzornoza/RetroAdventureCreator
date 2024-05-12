@@ -13,7 +13,6 @@ public class SettingsSerializerTest : SerializerBaseTest
         // Arrange
         CreateGame<GameInPawsTutorialBuilder>();
         var serializerFactory = new SerializerFactory(game);
-        var serializer = serializerFactory.GetSerializer<SettingsSerializer>();
 
         var expectedDataBytes = new byte[]
         {
@@ -22,7 +21,7 @@ public class SettingsSerializerTest : SerializerBaseTest
         };
 
         // Act
-        var actual = serializer.Serialize(serializerFactory.GameComponentsPointersModel);
+        var actual = serializerFactory.Serialize<SettingsSerializer>();
 
         // Assert
         Assert.NotNull(actual);
