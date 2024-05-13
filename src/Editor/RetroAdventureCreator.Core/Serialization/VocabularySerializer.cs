@@ -44,7 +44,7 @@ internal abstract class VocabularySerializer : Serializer<IEnumerable<Vocabulary
 
             result.Add(new GameComponentPointerModel(vocabulary.Code, pointer));
 
-            pointer += JoinSynonyms(vocabulary).Length + Constants.EndTokenLength;
+            pointer += SerializerEncoding.GetBytes(JoinSynonyms(vocabulary)).Length + Constants.EndTokenLength;
         }
 
         return result;

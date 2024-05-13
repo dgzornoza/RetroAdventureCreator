@@ -9,7 +9,6 @@ namespace RetroAdventureCreator.Core.Models;
 
 internal record GameComponentsPointersModel(
     IEnumerable<GameComponentPointerModel> Commands,
-    IEnumerable<GameComponentPointerModel> CommandsGroups,
     
     IEnumerable<GameComponentPointerModel> Flags,
     IEnumerable<GameComponentPointerModel> InputCommands,

@@ -57,11 +57,6 @@ public class GameModel
     public IEnumerable<CommandModel> Commands { get; init; } = default!;
 
     /// <summary>
-    /// Commands groups
-    /// </summary>
-    public IEnumerable<CommandGroupModel> CommandsGroups { get; init; } = default!;
-
-    /// <summary>
     /// Dispatcher commands
     /// </summary>
     public IEnumerable<DispatcherModel> Dispatchers { get; init; } = default!;

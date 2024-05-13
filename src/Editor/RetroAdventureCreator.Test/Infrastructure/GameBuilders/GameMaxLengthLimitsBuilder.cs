@@ -31,8 +31,6 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
         protected override IEnumerable<CommandModel> CreateCommands() =>
             Enumerable.Range(0, Constants.MaxLengthCommandsAllowed + 1).Select((item, index) => new CommandModel() { Code = $"Commmand{index}" });
 
-        protected override IEnumerable<CommandGroupModel> CreateCommandsGroups() => new List<CommandGroupModel>();
-
         protected override IEnumerable<InputCommandModel> CreateInputCommands() =>
             Enumerable.Range(0, Constants.MaxLengthInputCommandsAllowed + 1).Select((item, index) => new InputCommandModel() { Code = $"InpuCommmand{index}" });
 

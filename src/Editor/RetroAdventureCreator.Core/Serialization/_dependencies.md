@@ -3,7 +3,6 @@
 - **VocabularyModel**: Contains the words that the game can understand. It is used to parse the input commands and to generate the output messages.
 - **MessageModel**: Contains the messages that the game can show to the player. It is used to generate the output messages.
 - **CommandModel**: Contains execution commands that the game can use.
-- **CommandGroupModel**: Contains execution command groups that the game can use (combined commands).
 - **InputCommandModel**: Contains input commands that the game can understand. It is used to parse the input commands.
 - **DispatcherModel**: Contains the dispatchers that the game can use to process the input commands. It is used to parse the input commands.
 - **ObjectModel**: Contains the objects that the game can use. It is used to store the game player objects.
@@ -18,7 +17,6 @@
     VocabularyModel
     MessageModel
     CommandModel
-    CommandGroupModel -> CommandModel
     InputCommandModel -> VocabularyModel
     DispatcherModel -> InputCommandModel, CommandGroupModel
     ObjectModel -> MessageModel, VocabularyModel
@@ -26,7 +24,7 @@
     FlagsModel
     PlayerModel -> ObjectModel
     SettingsModel
-    GameModel -> PlayerModel, SettingsModel, VocabularyModel, MessageModel, CommandModel, CommandGroupModel, InputCommandModel, DispatcherModel, ObjectModel, SceneModel
+    GameModel -> PlayerModel, SettingsModel, VocabularyModel, MessageModel, CommandModel, InputCommandModel, DispatcherModel, ObjectModel, SceneModel
 
 ## Game Components Serializers
 
@@ -56,21 +54,11 @@
 
     Data:
         1 bit = 0 (Command)
-        Token = 7 byte (128)
+        Token = 7 bits (127)
         Arguments = ids bytes (end with 0x00)
 
     Limits:
         MaxLengthCommandsAllowed = 255;
-
-### CommandGroupSerializer
-
-    Data
-        1 bit = 1 (CommandGroup)
-        LogicalOperator = 1 bit (and = 0, or = 1)
-        Commands = Command/commandGroup id bytes (end with 0x00)
-
-    Limits:
-        MaxLengthCommandsGroupsAllowed = 255
 
 ### InputCommandSerializer
 

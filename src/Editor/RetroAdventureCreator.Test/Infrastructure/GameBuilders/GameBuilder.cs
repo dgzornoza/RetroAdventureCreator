@@ -20,7 +20,6 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders;
 ///     VocabularyModel
 ///     MessageModel
 ///     CommandModel
-///     CommandGroupModel -> CommandModel
 ///     InputCommandModel -> VocabularyModel
 ///     DispatcherModel -> InputCommandModel, CommandGroupModel
 ///     ObjectModel -> MessageModel, VocabularyModel
@@ -38,7 +37,6 @@ public abstract class GameBuilder
     protected IEnumerable<VocabularyModel> Vocabulary { get; private set; }
     protected IEnumerable<MessageModel> Messages { get; private set; }
     protected IEnumerable<CommandModel> Commands { get; private set; }
-    protected IEnumerable<CommandGroupModel> CommandsGroups { get; private set; }
     protected IEnumerable<InputCommandModel> InputCommands { get; private set; }
     protected IEnumerable<DispatcherModel> Dispatchers { get; private set; }
     protected IEnumerable<ObjectModel> Objects { get; private set; }
@@ -54,7 +52,6 @@ public abstract class GameBuilder
         Vocabulary = CreateVocabulary();
         Messages = CreateMessages();
         Commands = CreateCommands();
-        CommandsGroups = CreateCommandsGroups();
         InputCommands = CreateInputCommands();
         Dispatchers = CreateDispatchers();
         Objects = CreateObjects();
@@ -74,7 +71,6 @@ public abstract class GameBuilder
             Vocabulary = Vocabulary,
             Messages = Messages,
             Commands = Commands,
-            CommandsGroups = CommandsGroups,
             InputCommands = InputCommands,
             Dispatchers = Dispatchers,
             Objects = Objects,
@@ -93,7 +89,6 @@ public abstract class GameBuilder
     protected abstract IEnumerable<VocabularyModel> CreateVocabulary();
     protected abstract IEnumerable<MessageModel> CreateMessages();
     protected abstract IEnumerable<CommandModel> CreateCommands();
-    protected abstract IEnumerable<CommandGroupModel> CreateCommandsGroups();
     protected abstract IEnumerable<InputCommandModel> CreateInputCommands();
     protected abstract IEnumerable<DispatcherModel> CreateDispatchers();
     protected abstract IEnumerable<ObjectModel> CreateObjects();

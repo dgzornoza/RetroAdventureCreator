@@ -64,8 +64,6 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             new() { Code = "EndGame", Token = CommandToken.EndGame },
         };
 
-        protected override IEnumerable<CommandGroupModel> CreateCommandsGroups() => new List<CommandGroupModel>();
-
         protected override IEnumerable<InputCommandModel> CreateInputCommands() => new List<InputCommandModel>
         {
             new() {

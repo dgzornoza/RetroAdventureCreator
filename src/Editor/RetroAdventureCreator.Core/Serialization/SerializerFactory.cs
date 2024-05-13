@@ -13,7 +13,6 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// </summary>
 internal class SerializerFactory
 {
-    private readonly CommandGroupSerializer commandGroupSerializer;
     private readonly CommandsSerializer commandsSerializer;
     private readonly AfterInputCommandDispatchersSerializer afterInputCommandDispatchersSerializer;
     private readonly BeforeInputCommandDispatchersSerializer beforeInputCommandDispatchersSerializer;
@@ -29,7 +28,6 @@ internal class SerializerFactory
 
     public SerializerFactory(GameModel gameModel)
     {
-        commandGroupSerializer = new CommandGroupSerializer(gameModel.CommandsGroups);
         commandsSerializer = new CommandsSerializer(gameModel.Commands);
         afterInputCommandDispatchersSerializer = new AfterInputCommandDispatchersSerializer(gameModel.Dispatchers);
         beforeInputCommandDispatchersSerializer = new BeforeInputCommandDispatchersSerializer(gameModel.Dispatchers);
@@ -45,7 +43,6 @@ internal class SerializerFactory
 
         GameComponentsPointersModel = new GameComponentsPointersModel(
             Commands: commandsSerializer.GenerateGameComponentPointers(),
-            CommandsGroups: commandGroupSerializer.GenerateGameComponentPointers(),
             Flags: flagsSerializer.GenerateGameComponentPointers(),
             InputCommands: inputCommandsSerializer.GenerateGameComponentPointers(),
             Messages: messagesSerializer.GenerateGameComponentPointers(),
@@ -68,7 +65,6 @@ internal class SerializerFactory
 
     private T GetSerializer<T>() => typeof(T).Name switch
     {
-        nameof(CommandGroupSerializer) => (T)Convert.ChangeType(commandGroupSerializer, typeof(T)),
         nameof(CommandsSerializer) => (T)Convert.ChangeType(commandsSerializer, typeof(T)),
         nameof(AfterInputCommandDispatchersSerializer) => (T)Convert.ChangeType(afterInputCommandDispatchersSerializer, typeof(T)),
         nameof(BeforeInputCommandDispatchersSerializer) => (T)Convert.ChangeType(beforeInputCommandDispatchersSerializer, typeof(T)),

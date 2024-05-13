@@ -81,9 +81,7 @@ internal class DispatchersSerializer : Serializer<IEnumerable<DispatcherModel>>
     }
 
     private static IEnumerable<byte> GetCommandsIndexes(DispatcherModel dispatcher, GameComponentsPointersModel gameComponentsIndexes) =>
-        dispatcher.Commands is IEnumerable<CommandGroupModel> ?
-            dispatcher.Commands.Select(item => gameComponentsIndexes.CommandsGroups.IndexOf(item.Code)) :
-            dispatcher.Commands.Select(item => gameComponentsIndexes.Commands.IndexOf(item.Code));
+        dispatcher.Commands.Select(item => gameComponentsIndexes.Commands.IndexOf(item.Code));
 
     protected static void EnsureGameComponentProperties(DispatcherModel dispatcher, IEnumerable<GameComponentPointerModel> gameComponentPointers)
     {

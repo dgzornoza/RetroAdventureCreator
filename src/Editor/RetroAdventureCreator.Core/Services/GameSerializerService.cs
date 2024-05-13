@@ -22,7 +22,6 @@ internal class GameSerializerService
     {
         var serializerBuilder = new SerializerFactory(gameModel);
 
-        var commandGroupSerializer = serializerBuilder.Serialize<CommandGroupSerializer>();
         var commandsSerializer = serializerBuilder.Serialize<CommandsSerializer>();
         var afterInputCommandDispatchersSerializer = serializerBuilder.Serialize<AfterInputCommandDispatchersSerializer>();
         var beforeInputCommandDispatchersSerializer = serializerBuilder.Serialize<BeforeInputCommandDispatchersSerializer>();
