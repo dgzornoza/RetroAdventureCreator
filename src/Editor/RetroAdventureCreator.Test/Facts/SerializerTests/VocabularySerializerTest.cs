@@ -14,6 +14,8 @@ namespace RetroAdventureCreator.Test.Facts.SerializerTests;
 
 public class VocabularySerializerTest : SerializerBaseTest
 {
+    private static readonly Encoding encoding = Encoding.ASCII;
+
     [Fact]
     public void VocabularyNounsSerializer_Serialize_AsExpected()
     {
@@ -23,10 +25,10 @@ public class VocabularySerializerTest : SerializerBaseTest
 
         var vocabularyNouns = game.Vocabulary.Where(item => item.WordType == WordType.Noun);
         var expectedNounsDataLength = vocabularyNouns.Where(item => item.Synonyms != null).SortByKey().Sum(item => string.Join('|', item.Synonyms!).Length + Constants.EndTokenLength);
-        var expectedSynonymsBytes = Encoding.ASCII.GetBytes(string.Join(EndTokenString, 
+        var expectedSynonymsBytes = encoding.GetBytes(string.Join(EndTokenString, 
             vocabularyNouns.Where(item => item.Synonyms != null)
             .SortByKey().Select(item => string.Join('|', item.Synonyms!))) + EndTokenString);
-        var expectedSynonymsText = Encoding.ASCII.GetString(expectedSynonymsBytes);
+        var expectedSynonymsText = encoding.GetString(expectedSynonymsBytes);
         
         // Act
         var actual = serializerFactory.Serialize<VocabularyNounsSerializer>();
@@ -35,7 +37,7 @@ public class VocabularySerializerTest : SerializerBaseTest
         Assert.NotNull(actual);
         Assert.NotNull(actual.Data);
         Assert.True(actual.Data.Length == expectedNounsDataLength);
-        Assert.Equal(expectedSynonymsText, Encoding.ASCII.GetString(actual.Data));
+        Assert.Equal(expectedSynonymsText, encoding.GetString(actual.Data));
     }
 
     [Fact]
@@ -56,7 +58,7 @@ public class VocabularySerializerTest : SerializerBaseTest
         Assert.NotNull(actual);
         Assert.NotNull(actual.Data);
         Assert.True(actual.Data.Length == expectedVerbsDataLength);
-        Assert.Equal(expectedSynonyms, Encoding.ASCII.GetString(actual.Data));
+        Assert.Equal(expectedSynonyms, encoding.GetString(actual.Data));
     }
     
     [Fact]
@@ -68,7 +70,7 @@ public class VocabularySerializerTest : SerializerBaseTest
         var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.MaxLengthVocabularyNounsAllowedError, Constants.MaxLengthVocabularyNounsAllowed);
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyNounsSerializer(game.Vocabulary)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyNounsSerializer(game.Vocabulary, encoding)).Message == messageError);
     }
 
     [Fact]
@@ -80,7 +82,7 @@ public class VocabularySerializerTest : SerializerBaseTest
         var messageError = string.Format(RetroAdventureCreator.Core.Properties.Resources.MaxLengthVocabularyVerbsAllowedError, Constants.MaxLengthVocabularyVerbsAllowed);
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyVerbsSerializer(game.Vocabulary)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyVerbsSerializer(game.Vocabulary, encoding)).Message == messageError);
     }
 
     [Fact]
@@ -91,7 +93,7 @@ public class VocabularySerializerTest : SerializerBaseTest
         var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { WordType = WordType.Noun, Code = "code", Synonyms = Enumerable.Range(0, Constants.MaxLengthVocabularySynonymsAllowed + 1).Select(synonym => "Synonym") });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyNounsSerializer(vocabularies).GenerateGameComponentPointers()).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyNounsSerializer(vocabularies, encoding).GenerateGameComponentPointers()).Message == messageError);
     }
 
     [Fact]
@@ -102,7 +104,7 @@ public class VocabularySerializerTest : SerializerBaseTest
         var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { WordType = WordType.Verb, Code = "code", Synonyms = Enumerable.Range(0, Constants.MaxLengthVocabularySynonymsAllowed + 1).Select(synonym => "Synonym") });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyVerbsSerializer(vocabularies).GenerateGameComponentPointers()).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyVerbsSerializer(vocabularies, encoding).GenerateGameComponentPointers()).Message == messageError);
     }
 
     [Fact]
@@ -113,7 +115,7 @@ public class VocabularySerializerTest : SerializerBaseTest
         var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { WordType = WordType.Noun, Code = "code", Synonyms = Enumerable.Empty<string>() });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyNounsSerializer(vocabularies).GenerateGameComponentPointers()).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyNounsSerializer(vocabularies, encoding).GenerateGameComponentPointers()).Message == messageError);
     }
 
     [Fact]
@@ -124,7 +126,7 @@ public class VocabularySerializerTest : SerializerBaseTest
         var vocabularies = Enumerable.Range(0, 2).Select(item => new VocabularyModel() { WordType = WordType.Verb, Code = "code", Synonyms = Enumerable.Empty<string>() });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyVerbsSerializer(vocabularies).GenerateGameComponentPointers()).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyVerbsSerializer(vocabularies, encoding).GenerateGameComponentPointers()).Message == messageError);
     }
 
     [Fact]
@@ -136,7 +138,7 @@ public class VocabularySerializerTest : SerializerBaseTest
         var messageError = RetroAdventureCreator.Core.Properties.Resources.CodeIsRequiredError;
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyNounsSerializer(game.Vocabulary).GenerateGameComponentPointers()).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyNounsSerializer(game.Vocabulary, encoding).GenerateGameComponentPointers()).Message == messageError);
     }
 
     [Fact]
@@ -148,6 +150,6 @@ public class VocabularySerializerTest : SerializerBaseTest
         var messageError = RetroAdventureCreator.Core.Properties.Resources.CodeIsRequiredError;        
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyVerbsSerializer(game.Vocabulary).GenerateGameComponentPointers()).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyVerbsSerializer(game.Vocabulary, encoding).GenerateGameComponentPointers()).Message == messageError);
     }
 }

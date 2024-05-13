@@ -8,16 +8,14 @@ using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Core.Serialization;
 
-internal abstract class Serializer<T> : ISerializer<T> where T: class
-{    
+internal abstract class Serializer<T> : ISerializer<T> where T : class
+{
     protected Serializer(T gameComponent)
     {
         GameComponent = gameComponent;
     }
 
     public T GameComponent { get; init; }
-
-    protected Encoding SerializerEncoding => System.Text.Encoding.ASCII;
 
     public abstract IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers();
 

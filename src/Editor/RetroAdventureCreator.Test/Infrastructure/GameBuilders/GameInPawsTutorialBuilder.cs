@@ -42,24 +42,63 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             {
                 Code = "InteriorSceneDescription",
                 Text = "^^Has finalizado el primer puzzle^^ !!Bien echo.!!",
-            }
+            },
+            new()
+            {
+                Code = "MessageBloquePiedra",
+                Text = "Un enorme bloque de piedra bloquea la entrada.",
+            },
+            new()
+            {
+                Code = "MessageInteriorTemplo",
+                Text = "Un siniestro pasaje conduce al interior del templo.",
+            },
+            new()
+            {
+                Code = "MessageFuerza",
+                Text = "Ni la fuerza combinada de diez como tú podría mover ese mastodonte de piedra.",
+            },
+            new()
+            {
+                Code = "MessageNoBloque",
+                Text = "Ya no hay bloque que abrir.",
+            },
+            new()
+            {
+                Code = "MessageBoquete",
+                Text = "Un oscuro boquete cuadrado, excavado por la mano del hombre, en cuyo interior ves una especie de palanca. También crees divisar ojos que te observan desde dentro.",
+            },
+            new()
+            {
+                Code = "MessageAraña",
+                Text = "Al meter la mano en el boquete notas un pichazo agudo. Casi al instante tu vista se comienza a nublar y vas perdiendo contacto con la realidad.^^       *** ESTAS MUERTO ***",
+            },
+            new()
+            {
+                Code = "MessageTiraPalanca",
+                Text = "Con no poco repelús metes la mano enguantada y mueves la palanca. Oyes un chasquido, y luego un ruido de correas deslizándose. Al cabo de un rato, el enorme bloque cede y se hunde en el suelo como tragado por el infierno. La entrada está libre.",
+            },
+            new()
+            {
+                Code = "MessagePalancaUsada",
+                Text = "No necesitas volver a meter la mano en \"eso\".",
+            },
         };
 
         protected override IEnumerable<CommandModel> CreateCommands() => new List<CommandModel>
         {
-            // new CommandModel { Code = "", Token = CommandToken.AT, Arguments = new List<string> { "EntradaScene" } },
             new() { Code = "IsSetOpenEntry", Token = CommandToken.IsSet, Arguments = new List<string> { "openEntry" } },
             new() { Code = "IsUnSetOpenEntry", Token = CommandToken.IsUnset, Arguments = new List<string> { "openEntry" } },
             new() { Code = "SetOpenEntry", Token = CommandToken.Set, Arguments = new List<string> { "openEntry" } },
-            new() { Code = "ShowMessageBloquePiedra", Token = CommandToken.Message, Arguments = new List<string> { "Un enorme bloque de piedra bloquea la entrada." } },
-            new() { Code = "ShowMessageInteriorTemplo", Token = CommandToken.Message, Arguments = new List<string> { "Un siniestro pasaje conduce al interior del templo." } },
-            new() { Code = "ShowMessageFuerza", Token = CommandToken.Message, Arguments = new List<string> { "Ni la fuerza combinada de diez como tú podría mover ese mastodonte de piedra." } },
-            new() { Code = "ShowMessageNoBloque", Token = CommandToken.Message, Arguments = new List<string> { "Ya no hay bloque que abrir." } },
-            new() { Code = "ShowMessageBoquete", Token = CommandToken.Message, Arguments = new List<string> { "Un oscuro boquete cuadrado, excavado por la mano del hombre, en cuyo interior ves una especie de palanca. También crees divisar ojos que te observan desde dentro." } },
-            new() { Code = "ShowMessageAraña", Token = CommandToken.Message, Arguments = new List<string> { "Al meter la mano en el boquete notas un pichazo agudo. Casi al instante tu vista se comienza a nublar y vas perdiendo contacto con la realidad.^^       *** ESTAS MUERTO ***" } },
+            new() { Code = "ShowMessageBloquePiedra", Token = CommandToken.Message, Arguments = new List<string> { "MessageBloquePiedra" } },
+            new() { Code = "ShowMessageInteriorTemplo", Token = CommandToken.Message, Arguments = new List<string> { "MessageInteriorTemplo" } },
+            new() { Code = "ShowMessageFuerza", Token = CommandToken.Message, Arguments = new List<string> { "MessageFuerza" } },
+            new() { Code = "ShowMessageNoBloque", Token = CommandToken.Message, Arguments = new List<string> { "MessageNoBloque" } },
+            new() { Code = "ShowMessageBoquete", Token = CommandToken.Message, Arguments = new List<string> { "MessageBoquete" } },
+            new() { Code = "ShowMessageAraña", Token = CommandToken.Message, Arguments = new List<string> { "MessageAraña" } },
+            new() { Code = "ShowMessageTiraPalanca", Token = CommandToken.Message, Arguments = new List<string> { "MessageTiraPalanca" } },
+            new() { Code = "ShowMessagePalancaUsada", Token = CommandToken.Message, Arguments = new List<string> { "MessagePalancaUsada" } },
             new() { Code = "IsInUseGuantes", Token = CommandToken.InUse, Arguments = new List<string> { "GuantesObject" } },
-            new() { Code = "ShowMessageTiraPalanca", Token = CommandToken.Message, Arguments = new List<string> { "Con no poco repelús metes la mano enguantada y mueves la palanca. Oyes un chasquido, y luego un ruido de correas deslizándose. Al cabo de un rato, el enorme bloque cede y se hunde en el suelo como tragado por el infierno. La entrada está libre." } },
-            new() { Code = "ShowMessagePalancaUsada", Token = CommandToken.Message, Arguments = new List<string> { "No necesitas volver a meter la mano en \"eso\"." } },
             new() { Code = "GotoInteriorScene", Token = CommandToken.Goto, Arguments = new List<string> { "InteriorScene" } },
             new() { Code = "EndGame", Token = CommandToken.EndGame },
         };

@@ -20,7 +20,7 @@ internal class GameSerializerService
 {
     public byte[] Serialize(GameModel gameModel)
     {
-        var serializerBuilder = new SerializerFactory(gameModel);
+        var serializerBuilder = new SerializerFactory(gameModel, Encoding.ASCII);
 
         var commandsSerializer = serializerBuilder.Serialize<CommandsSerializer>();
         var afterInputCommandDispatchersSerializer = serializerBuilder.Serialize<AfterInputCommandDispatchersSerializer>();

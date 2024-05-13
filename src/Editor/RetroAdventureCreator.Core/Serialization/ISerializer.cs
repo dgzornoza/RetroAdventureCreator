@@ -11,7 +11,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 
 internal interface ISerializer<out T> : ISerializer where T : class
 {
-    T GameComponent {  get; }
+    T GameComponent { get; }
 }
 
 internal interface ISerializer

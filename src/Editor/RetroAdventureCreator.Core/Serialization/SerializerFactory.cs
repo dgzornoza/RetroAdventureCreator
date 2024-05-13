@@ -26,20 +26,24 @@ internal class SerializerFactory
     private readonly VocabularyNounsSerializer vocabularyNounsSerializer;
     private readonly VocabularyVerbsSerializer vocabularyVerbsSerializer;
 
-    public SerializerFactory(GameModel gameModel)
+    public SerializerFactory(GameModel gameModel) : this(gameModel, Encoding.ASCII)
+    {
+    }
+
+    public SerializerFactory(GameModel gameModel, Encoding encoding)
     {
         commandsSerializer = new CommandsSerializer(gameModel.Commands);
         afterInputCommandDispatchersSerializer = new AfterInputCommandDispatchersSerializer(gameModel.Dispatchers);
         beforeInputCommandDispatchersSerializer = new BeforeInputCommandDispatchersSerializer(gameModel.Dispatchers);
         flagsSerializer = new FlagsSerializer(gameModel.Flags);
         inputCommandsSerializer = new InputCommandsSerializer(gameModel.InputCommands);
-        messagesSerializer = new MessagesSerializer(gameModel.Messages);
+        messagesSerializer = new MessagesSerializer(gameModel.Messages, encoding);
         objectsSerializer = new ObjectsSerializer(gameModel.Objects);
         playerSerializer = new PlayerSerializer(gameModel.Player);
         scenesSerializer = new ScenesSerializer(gameModel.Scenes);
         settingsSerializer = new SettingsSerializer(gameModel.Settings);
-        vocabularyNounsSerializer = new VocabularyNounsSerializer(gameModel.Vocabulary);
-        vocabularyVerbsSerializer = new VocabularyVerbsSerializer(gameModel.Vocabulary);
+        vocabularyNounsSerializer = new VocabularyNounsSerializer(gameModel.Vocabulary, encoding);
+        vocabularyVerbsSerializer = new VocabularyVerbsSerializer(gameModel.Vocabulary, encoding);
 
         GameComponentsPointersModel = new GameComponentsPointersModel(
             Commands: commandsSerializer.GenerateGameComponentPointers(),

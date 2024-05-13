@@ -26,10 +26,14 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// </remarks>
 internal class MessagesSerializer : Serializer<IEnumerable<MessageModel>>
 {
-    public MessagesSerializer(IEnumerable<MessageModel> gameComponent) : base(gameComponent)
+    private readonly Encoding encoding;
+
+    public MessagesSerializer(IEnumerable<MessageModel> gameComponent, Encoding encoding) : base(gameComponent)
     {
         EnsureHelpers.EnsureMaxLength(GameComponent, Constants.MaxLengthMessagesAllowed,
             string.Format(Properties.Resources.MaxLengthMessagesAllowedError, Constants.MaxLengthMessagesAllowed));
+
+        this.encoding = encoding;
     }
 
     public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers()
@@ -55,7 +59,7 @@ internal class MessagesSerializer : Serializer<IEnumerable<MessageModel>>
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    private byte[] CreateDataBytes(MessageModel message) => SerializerEncoding.GetBytes(message.Text).Concat(new byte[] { Constants.EndToken }).ToArray();
+    private byte[] CreateDataBytes(MessageModel message) => encoding.GetBytes(message.Text).Concat(new byte[] { Constants.EndToken }).ToArray();
 
     private static void EnsureGameComponentProperties(MessageModel message, IEnumerable<GameComponentPointerModel> gameComponentPointers)
     {

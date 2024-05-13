@@ -13,6 +13,8 @@ namespace RetroAdventureCreator.Test.Facts.SerializerTests;
 
 public class FlagsSerializerTest : SerializerBaseTest
 {
+    private static readonly Encoding encoding = Encoding.ASCII;
+
     [Fact]
     public void FlagsSerializerTest_Serialize_AsExpected()
     {

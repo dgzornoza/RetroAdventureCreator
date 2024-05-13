@@ -11,6 +11,8 @@ namespace RetroAdventureCreator.Test.Facts.SerializerTests;
 
 public class MessagesSerializerTest : SerializerBaseTest
 {
+    private static readonly Encoding encoding = Encoding.ASCII;
+
     [Fact]
     public void MessagesSerializer_Serialize_AsExpected()
     {
@@ -19,8 +21,8 @@ public class MessagesSerializerTest : SerializerBaseTest
         var serializerFactory = new SerializerFactory(game);
 
         var expectedDataLength = game.Messages.SortByKey().Sum(item => item.Text.Length + Constants.EndTokenLength);
-        var expectedBytes = Encoding.ASCII.GetBytes(string.Join(EndTokenString, game.Messages.SortByKey().Select(item => item.Text)) + EndTokenString);
-        var expectedText = Encoding.ASCII.GetString(expectedBytes);
+        var expectedBytes = encoding.GetBytes(string.Join(EndTokenString, game.Messages.SortByKey().Select(item => item.Text)) + EndTokenString);
+        var expectedText = encoding.GetString(expectedBytes);
 
         // Act
         var actual = serializerFactory.Serialize<MessagesSerializer>();
@@ -29,7 +31,7 @@ public class MessagesSerializerTest : SerializerBaseTest
         Assert.NotNull(actual);
         Assert.NotNull(actual.Data);
         Assert.True(actual.Data.Length == expectedDataLength);
-        Assert.Equal(expectedText, Encoding.ASCII.GetString(actual.Data));
+        Assert.Equal(expectedText, encoding.GetString(actual.Data));
     }
 
     [Fact]
@@ -40,7 +42,7 @@ public class MessagesSerializerTest : SerializerBaseTest
         var messageError = string.Format(Core.Properties.Resources.MaxLengthMessagesAllowedError, Constants.MaxLengthMessagesAllowed);
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(game.Messages)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(game.Messages, encoding)).Message == messageError);
     }
 
     [Fact]
@@ -51,7 +53,7 @@ public class MessagesSerializerTest : SerializerBaseTest
         var messages = Enumerable.Range(0, 1).Select(item => new MessageModel() { Code = "code1" });
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(messages).GenerateGameComponentPointers()).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(messages, encoding).GenerateGameComponentPointers()).Message == messageError);
     }
 
     [Fact]
@@ -63,6 +65,6 @@ public class MessagesSerializerTest : SerializerBaseTest
         var messageError = Core.Properties.Resources.CodeIsRequiredError;
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(game.Messages).GenerateGameComponentPointers()).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(game.Messages, encoding).GenerateGameComponentPointers()).Message == messageError);
     }
 }
