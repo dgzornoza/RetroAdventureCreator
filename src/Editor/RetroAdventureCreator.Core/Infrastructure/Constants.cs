@@ -24,12 +24,11 @@ namespace RetroAdventureCreator.Core.Infrastructure
         // Commands
         public const int MaxLengthCommandsAllowed = MaxLengthIds;
 
-        // Commands
+        // Commands Groups
         public const int MaxLengthCommandsGroupsAllowed = MaxLengthIds;
 
         // Input Commands
         public const int MaxLengthInputCommandsAllowed = MaxLengthIds;
-        public const int MaxLengthInputCommandsNounsAllowed = 3;
 
         // Dispatcher
         public const int MaxLengthAfterInputCommandDispatchersAllowed = MaxLengthIds;

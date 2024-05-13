@@ -28,11 +28,11 @@
     SettingsModel
     GameModel -> PlayerModel, SettingsModel, VocabularyModel, MessageModel, CommandModel, CommandGroupModel, InputCommandModel, DispatcherModel, ObjectModel, SceneModel
 
-## Game Components Serializer
+## Game Components Serializers
 
 **Remarks:** *All strings are encoded as ASCII*
 
-### VocabularyModel
+### VocabularySerializer
 
 **Remarks:** *Exists two volcabuilary models: 'VocabularyNouns' and 'VocabularyVerbs'*
 
@@ -44,7 +44,7 @@
         MaxLengthVocabularyVerbsAllowed = 255
         MaxLengthVocabularySynonymsAllowed = 16
 
-### MessageModel
+### MessageSerializer
 
     Data:
         Text: Mesage text bytes (end with 0x00)
@@ -52,7 +52,7 @@
     Limits:
         MaxLengthMessagesAllowed = 255
 
-### CommandModel
+### CommandSerializer
 
     Data:
         1 bit = 0 (Command)
@@ -61,3 +61,87 @@
 
     Limits:
         MaxLengthCommandsAllowed = 255;
+
+### CommandGroupSerializer
+
+    Data
+        1 bit = 1 (CommandGroup)
+        LogicalOperator = 1 bit (and = 0, or = 1)
+        Commands = Command/commandGroup id bytes (end with 0x00)
+
+    Limits:
+        MaxLengthCommandsGroupsAllowed = 255
+
+### InputCommandSerializer
+
+    Data:
+        Verb = 8 bits (id verb vocabulary)
+        Nouns = vocabulary id bytes (end with 0x00)
+
+    Limits:
+        MaxLengthInputCommandsAllowed = 255
+
+### DispatcherSerializer
+
+    Data:
+        Commands = Command/commandGroup id bytes (end with 0x00)
+        InputCommands = InputCommand id bytes (end with 0x00) (only in AfterInputCommandDispatchers)
+
+    Limits:
+        MaxLengthAfterInputCommandDispatchersAllowed = 255
+        MaxLengthBeforeInputCommandDispatchersAllowed = 255
+
+### ObjectSerializer
+
+    Data:
+        Name = 8 bits (id vocabulary)
+        Description = 8 bits (id message)
+        Weight = 5 bits (31)
+        Health = 3 bits (7)
+        Properties = 8 bits (flag 8 properties)
+        ChildObjects = (Optional, only if properties has 'IsContainer') 8 object id bytes
+
+    Limits:
+        MaxLengthObjectsAllowed = 64
+        MaxLengthObjectWeightAllowed = 32
+        MaxLengthObjectHealthAllowed = 8
+        MaxLengthChildObjectsAllowed = 8
+
+### SceneSerializer
+
+    Data:
+        Description = message id byte
+        AfterInputCommandDispatchers = dispatcher id bytes (end with 0x00)
+        BeforeInputCommandDispatchers = dispatcher id bytes (end with 0x00)
+        Objects = object id bytes (end with 0x00)
+
+    Limits:
+        MaxLengthScenesAllowed = 255
+
+### FlagsSerializer
+
+    Data:
+        Flags = 1 bit per flag
+        
+    Limnits: 
+        MaxLengthFlagsAllowed = 255
+
+### PlayerSerializer
+
+    Data (player data can be modified in game for update properties):
+        Health: 4 bits (15)
+        ExperiencePoints: 4 bits (15)
+        Objects: 8 object id bytes
+
+    Limits:
+        MaxLengthPlayerObjectsAllowed = 8
+        MaxLengthPlayerHealthAllowed = 16
+        MaxLengthPlayerExperiencePointsAllowed = 16
+
+### SettingsSerializer
+
+    Data: (2 bytes)
+        Charset = 4 bits
+        Color = 4 bits
+        BackgroundColor = 4 bits
+        BorderColor = 4 bits    
