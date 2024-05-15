@@ -1,0 +1,15 @@
+{
+    "files.exclude": {
+        ".devcontainer": true,
+        ".tmp": true,
+        // ".vscode": false,
+        "**/.DS_Store": true,
+        "**/.git": true,
+        "**/.hg": true,
+        "**/.svn": true,
+        "**/CVS": true,
+        "**/Thumbs.db": true,
+        "build": true,
+    },
+    "cmake.useCMakePresets": "always",
+}

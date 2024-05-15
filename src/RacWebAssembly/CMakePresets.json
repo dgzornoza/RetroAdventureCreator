@@ -1,0 +1,29 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 21,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "Emscripten",
+            "displayName": "WebAssembly",
+            "binaryDir": "${sourceDir}/build",
+            "generator": "Ninja Multi-Config",
+            "toolchainFile": "/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "WebAssemblyDebug",
+            "configurePreset": "Emscripten",
+            "configuration": "Debug"
+        },
+        {
+            "name": "WebAssemblyRelease",
+            "configurePreset": "Emscripten",
+            "configuration": "Release"
+        }
+    ]
+}

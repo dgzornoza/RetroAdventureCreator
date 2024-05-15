@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "Emscripten",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/emsdk/upstream/emscripten/system/**",
+                "/emsdk/upstream/emscripten/cache/sysroot/include/**"
+            ],
+            "compilerPath": "/emsdk/upstream/emscripten/emcc",
+            "intelliSenseMode": "clang-x64",
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}
