@@ -7,8 +7,6 @@
 #include <SDL2/SDL_ttf.h>
 #include <emscripten.h>
 
-bool is_running;
-
 SDL_Window *window;
 SDL_Renderer *renderer;
 
@@ -84,8 +82,6 @@ SDL_Texture *jvpTexte = NULL,
             *player1Texte = NULL,
             *player2Texte = NULL;
 
-char *basePath;
-
 void initialize()
 {
     printf("initialize\n");
@@ -114,8 +110,6 @@ void initialize()
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     // Chargement des images
     chargerImages(&images, renderer);
-
-    is_running = true;
 }
 
 void destroy()
@@ -137,32 +131,31 @@ void destroy()
     SDL_Quit();
 }
 
-void draw_next_frame()
+bool draw_next_frame()
 {
     printf("mainLoop\n");
 
     if (gs == EXIT)
     {
-        is_running = false;
-        return;
+        return EXIT_FAILURE;
     }
 
     switch (gs)
     {
     case MENU:
         if (afficherImage(renderer, images.menuTex) == EXIT_FAILURE)
-            is_running = false;
+            return EXIT_FAILURE;
         break;
     case JVJ:
         if (afficherImage(renderer, images.input2Tex) == EXIT_FAILURE)
-            is_running = false;
+            return EXIT_FAILURE;
 
         SDL_RenderCopy(renderer, jvj1Texte, NULL, &jvj1TexteRect);
         SDL_RenderCopy(renderer, jvj2Texte, NULL, &jvj2TexteRect);
         break;
     case JVP:
         if (afficherImage(renderer, images.input1Tex) == EXIT_FAILURE)
-            is_running = false;
+            return EXIT_FAILURE;
 
         SDL_RenderCopy(renderer, jvpTexte, NULL, &jvpTexteRect);
         break;
@@ -171,7 +164,8 @@ void draw_next_frame()
     }
 
     SDL_Event event;
-    SDL_WaitEvent(&event);
+    SDL_PollEvent(&event);
+    // SDL_WaitEvent(&event);
     switch (event.type)
     {
     case SDL_KEYDOWN:
@@ -321,6 +315,7 @@ void draw_next_frame()
         gs = EXIT;
         break;
     }
+
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 100);
     if (isJVPTexteInput)
         SDL_RenderFillRect(renderer, &jvpTexteRect);
@@ -331,6 +326,8 @@ void draw_next_frame()
 
     /* À la place de SDL_Flip */
     SDL_RenderPresent(renderer);
+
+    return EXIT_SUCCESS;
 }
 
 void initButtons(Buttons *btns)
