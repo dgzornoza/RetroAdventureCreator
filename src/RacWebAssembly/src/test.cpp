@@ -87,8 +87,10 @@ bool isInitialized = false;
 
 void initialize()
 {
+    printf("initialize\n");
+
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_CreateWindowAndRenderer(512, 512, 0, &window, &renderer);
+    SDL_CreateWindowAndRenderer(800, 600, 0, &window, &renderer);
 
     TTF_Init();
     initButtons(&btns);
@@ -100,7 +102,7 @@ void initialize()
     jvpTexteRect.w = jvj1TexteRect.w = jvj2TexteRect.w = 305;
     jvpTexteRect.h = jvj1TexteRect.h = jvj2TexteRect.h = 98;
 
-    SamanthaFBFont = TTF_OpenFont("./assets/TheForeign.otf", 64);
+    SamanthaFBFont = TTF_OpenFont("assets/TheForeign.otf", 64);
     if (SamanthaFBFont == NULL)
     {
         printf("Error : %s\n", SDL_GetError());
@@ -117,6 +119,8 @@ void initialize()
 
 void destroy()
 {
+    printf("Exit\n");
+
     FreeImages(&images);
     SDL_FreeSurface(jvpSurfaceTexte);
     SDL_FreeSurface(player1SurfaceTexte);
@@ -132,198 +136,208 @@ void destroy()
     SDL_Quit();
 
     emscripten_cancel_main_loop();
+    isInitialized = false;
 }
 
 void mainLoop()
 {
-    while (gs != EXIT)
+    printf("mainLoop\n");
+
+    if (!isInitialized)
     {
+        return;
+    }
 
-        switch (gs)
-        {
-        case MENU:
-            if (afficherImage(renderer, images.menuTex) == EXIT_FAILURE)
-                return destroy();
-            break;
-        case JVJ:
-            if (afficherImage(renderer, images.input2Tex) == EXIT_FAILURE)
-                return destroy();
-            SDL_RenderCopy(renderer, jvj1Texte, NULL, &jvj1TexteRect);
-            SDL_RenderCopy(renderer, jvj2Texte, NULL, &jvj2TexteRect);
-            break;
-        case JVP:
-            if (afficherImage(renderer, images.input1Tex) == EXIT_FAILURE)
-                return destroy();
-            SDL_RenderCopy(renderer, jvpTexte, NULL, &jvpTexteRect);
-            break;
-        default:
-            break;
-        }
+    if (gs == EXIT)
+    {
+        destroy();
+        return;
+    }
 
-        SDL_Event event;
-        SDL_WaitEvent(&event);
-        switch (event.type)
+    switch (gs)
+    {
+    case MENU:
+        if (afficherImage(renderer, images.menuTex) == EXIT_FAILURE)
+            destroy();
+        break;
+    case JVJ:
+        if (afficherImage(renderer, images.input2Tex) == EXIT_FAILURE)
+            destroy();
+
+        SDL_RenderCopy(renderer, jvj1Texte, NULL, &jvj1TexteRect);
+        SDL_RenderCopy(renderer, jvj2Texte, NULL, &jvj2TexteRect);
+        break;
+    case JVP:
+        if (afficherImage(renderer, images.input1Tex) == EXIT_FAILURE)
+            destroy();
+
+        SDL_RenderCopy(renderer, jvpTexte, NULL, &jvpTexteRect);
+        break;
+    default:
+        break;
+    }
+
+    SDL_Event event;
+    SDL_WaitEvent(&event);
+    switch (event.type)
+    {
+    case SDL_KEYDOWN:
+        if (event.key.keysym.sym == SDLK_BACKSPACE)
         {
-        case SDL_KEYDOWN:
-            if (event.key.keysym.sym == SDLK_BACKSPACE)
+            if (gs == JVP && jvpTexteLength > 0)
             {
-                if (gs == JVP && jvpTexteLength > 0)
-                {
-                    jvpTexteLength--;
-                    jvpTexteInput[strlen(jvpTexteInput) - 1] = 0;
-                    jvpSurfaceTexte = TTF_RenderText_Blended(SamanthaFBFont, jvpTexteInput, black);
-                    jvpTexte = SDL_CreateTextureFromSurface(renderer, jvpSurfaceTexte);
-                }
-                else if (gs == JVJ)
-                {
-                    // Joueur 1
-                    if (isJVJ1TexteInput && jvj1TexteLength > 0)
-                    {
-                        jvj1TexteLength--;
-                        jvj1TexteInput[strlen(jvj1TexteInput) - 1] = 0;
-                        jvj1SurfaceTexte = TTF_RenderText_Blended(SamanthaFBFont, jvj1TexteInput, black);
-                        jvj1Texte = SDL_CreateTextureFromSurface(renderer, jvj1SurfaceTexte);
-                    } // Joueur 2
-                    else if (isJVJ2TexteInput && jvj2TexteLength > 0)
-                    {
-                        jvj2TexteLength--;
-                        jvj2TexteInput[strlen(jvj2TexteInput) - 1] = 0;
-                        jvj2SurfaceTexte = TTF_RenderText_Blended(SamanthaFBFont, jvj2TexteInput, black);
-                        jvj2Texte = SDL_CreateTextureFromSurface(renderer, jvj2SurfaceTexte);
-                    }
-                }
-            }
-            break;
-        case SDL_TEXTINPUT:
-            if (gs == JVP && jvpTexteLength < MAX_NAME_LENGTH)
-            {
-                jvpTexteLength++;
-                strcat(jvpTexteInput, event.text.text);
+                jvpTexteLength--;
+                jvpTexteInput[strlen(jvpTexteInput) - 1] = 0;
                 jvpSurfaceTexte = TTF_RenderText_Blended(SamanthaFBFont, jvpTexteInput, black);
                 jvpTexte = SDL_CreateTextureFromSurface(renderer, jvpSurfaceTexte);
             }
             else if (gs == JVJ)
             {
                 // Joueur 1
-                if (isJVJ1TexteInput && jvj1TexteLength < MAX_NAME_LENGTH)
+                if (isJVJ1TexteInput && jvj1TexteLength > 0)
                 {
-                    jvj1TexteLength++;
-                    strcat(jvj1TexteInput, event.text.text);
+                    jvj1TexteLength--;
+                    jvj1TexteInput[strlen(jvj1TexteInput) - 1] = 0;
                     jvj1SurfaceTexte = TTF_RenderText_Blended(SamanthaFBFont, jvj1TexteInput, black);
                     jvj1Texte = SDL_CreateTextureFromSurface(renderer, jvj1SurfaceTexte);
                 } // Joueur 2
-                else if (isJVJ2TexteInput && jvj2TexteLength < MAX_NAME_LENGTH)
+                else if (isJVJ2TexteInput && jvj2TexteLength > 0)
                 {
-                    jvj2TexteLength++;
-                    strcat(jvj2TexteInput, event.text.text);
+                    jvj2TexteLength--;
+                    jvj2TexteInput[strlen(jvj2TexteInput) - 1] = 0;
                     jvj2SurfaceTexte = TTF_RenderText_Blended(SamanthaFBFont, jvj2TexteInput, black);
                     jvj2Texte = SDL_CreateTextureFromSurface(renderer, jvj2SurfaceTexte);
                 }
             }
-            break;
-        case SDL_MOUSEBUTTONDOWN:
-            if (gs == JVJ)
-            {
-                int x = event.button.x, y = event.button.y;
-                // Cliquer l'un des cadres du texte
-                if (x >= jvj1TexteRect.x && x <= jvj1TexteRect.x + jvj1TexteRect.w &&
-                    y >= jvj1TexteRect.y && y <= jvj1TexteRect.y + jvj1TexteRect.h)
-                {
-                    SDL_StartTextInput();
-                    isJVJ1TexteInput = true;
-                    isJVJ2TexteInput = false;
-                }
-                else if (x >= jvj2TexteRect.x && x <= jvj2TexteRect.x + jvj2TexteRect.w &&
-                         y >= jvj2TexteRect.y && y <= jvj2TexteRect.y + jvj2TexteRect.h)
-                {
-                    SDL_StartTextInput();
-                    isJVJ1TexteInput = false;
-                    isJVJ2TexteInput = true;
-                }
-                else
-                {
-                    isJVJ1TexteInput = false;
-                    isJVJ2TexteInput = false;
-                    SDL_StopTextInput();
-                }
-                // Cliquer sur la bouton 'Valider'
-                if (x >= btns.validerBtn.min_x && x <= btns.validerBtn.max_x &&
-                    y >= btns.validerBtn.min_y && y <= btns.validerBtn.max_y)
-                {
-                    printf("Vous avez cliqué sur la bouton Valider\n");
-                }
-
-                // Cliquer sur la bouton 'Retour'
-                if (x >= btns.retourBtn.min_x && x <= btns.retourBtn.max_x &&
-                    y >= btns.retourBtn.min_y && y <= btns.retourBtn.max_y)
-                {
-                    gs = MENU;
-                }
-            }
-            else if (gs == JVP)
-            {
-                int x = event.button.x, y = event.button.y;
-                // Cliquer sur le cadre du texte
-                if (x >= jvpTexteRect.x && x <= jvpTexteRect.x + jvpTexteRect.w &&
-                    y >= jvpTexteRect.y && y <= jvpTexteRect.y + jvpTexteRect.h)
-                {
-                    isJVPTexteInput = true;
-
-                    SDL_StartTextInput();
-                }
-                else
-                {
-                    isJVPTexteInput = false;
-                    SDL_StopTextInput();
-                }
-
-                // Cliquer sur la bouton 'Valider'
-                if (x >= btns.validerBtn.min_x && x <= btns.validerBtn.max_x &&
-                    y >= btns.validerBtn.min_y && y <= btns.validerBtn.max_y)
-                {
-                    printf("Vous avez cliqué sur la bouton Valider\n");
-                }
-                // Cliquer sur la bouton 'Retour'
-                if (x >= btns.retourBtn.min_x && x <= btns.retourBtn.max_x &&
-                    y >= btns.retourBtn.min_y && y <= btns.retourBtn.max_y)
-                {
-                    gs = MENU;
-                }
-            }
-            else if (gs == MENU)
-            {
-                int bouton = mouseABouton(event.button.x, event.button.y, btns);
-                if (bouton == 0)
-                {
-                    gs = JVJ;
-                }
-                else if (bouton == 1)
-                {
-                    gs = JVP;
-                }
-                else if (bouton == 2)
-                {
-                    gs = EXIT;
-                }
-            }
-            break;
-        case SDL_QUIT:
-            gs = EXIT;
-            break;
         }
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 100);
-        if (isJVPTexteInput)
-            SDL_RenderFillRect(renderer, &jvpTexteRect);
-        if (isJVJ1TexteInput)
-            SDL_RenderFillRect(renderer, &jvj1TexteRect);
-        if (isJVJ2TexteInput)
-            SDL_RenderFillRect(renderer, &jvj2TexteRect);
+        break;
+    case SDL_TEXTINPUT:
+        if (gs == JVP && jvpTexteLength < MAX_NAME_LENGTH)
+        {
+            jvpTexteLength++;
+            strcat(jvpTexteInput, event.text.text);
+            jvpSurfaceTexte = TTF_RenderText_Blended(SamanthaFBFont, jvpTexteInput, black);
+            jvpTexte = SDL_CreateTextureFromSurface(renderer, jvpSurfaceTexte);
+        }
+        else if (gs == JVJ)
+        {
+            // Joueur 1
+            if (isJVJ1TexteInput && jvj1TexteLength < MAX_NAME_LENGTH)
+            {
+                jvj1TexteLength++;
+                strcat(jvj1TexteInput, event.text.text);
+                jvj1SurfaceTexte = TTF_RenderText_Blended(SamanthaFBFont, jvj1TexteInput, black);
+                jvj1Texte = SDL_CreateTextureFromSurface(renderer, jvj1SurfaceTexte);
+            } // Joueur 2
+            else if (isJVJ2TexteInput && jvj2TexteLength < MAX_NAME_LENGTH)
+            {
+                jvj2TexteLength++;
+                strcat(jvj2TexteInput, event.text.text);
+                jvj2SurfaceTexte = TTF_RenderText_Blended(SamanthaFBFont, jvj2TexteInput, black);
+                jvj2Texte = SDL_CreateTextureFromSurface(renderer, jvj2SurfaceTexte);
+            }
+        }
+        break;
+    case SDL_MOUSEBUTTONDOWN:
+        if (gs == JVJ)
+        {
+            int x = event.button.x, y = event.button.y;
+            // Cliquer l'un des cadres du texte
+            if (x >= jvj1TexteRect.x && x <= jvj1TexteRect.x + jvj1TexteRect.w &&
+                y >= jvj1TexteRect.y && y <= jvj1TexteRect.y + jvj1TexteRect.h)
+            {
+                SDL_StartTextInput();
+                isJVJ1TexteInput = true;
+                isJVJ2TexteInput = false;
+            }
+            else if (x >= jvj2TexteRect.x && x <= jvj2TexteRect.x + jvj2TexteRect.w &&
+                     y >= jvj2TexteRect.y && y <= jvj2TexteRect.y + jvj2TexteRect.h)
+            {
+                SDL_StartTextInput();
+                isJVJ1TexteInput = false;
+                isJVJ2TexteInput = true;
+            }
+            else
+            {
+                isJVJ1TexteInput = false;
+                isJVJ2TexteInput = false;
+                SDL_StopTextInput();
+            }
+            // Cliquer sur la bouton 'Valider'
+            if (x >= btns.validerBtn.min_x && x <= btns.validerBtn.max_x &&
+                y >= btns.validerBtn.min_y && y <= btns.validerBtn.max_y)
+            {
+                printf("Vous avez cliqué sur la bouton Valider\n");
+            }
 
-        /* À la place de SDL_Flip */
-        SDL_RenderPresent(renderer);
+            // Cliquer sur la bouton 'Retour'
+            if (x >= btns.retourBtn.min_x && x <= btns.retourBtn.max_x &&
+                y >= btns.retourBtn.min_y && y <= btns.retourBtn.max_y)
+            {
+                gs = MENU;
+            }
+        }
+        else if (gs == JVP)
+        {
+            int x = event.button.x, y = event.button.y;
+            // Cliquer sur le cadre du texte
+            if (x >= jvpTexteRect.x && x <= jvpTexteRect.x + jvpTexteRect.w &&
+                y >= jvpTexteRect.y && y <= jvpTexteRect.y + jvpTexteRect.h)
+            {
+                isJVPTexteInput = true;
+
+                SDL_StartTextInput();
+            }
+            else
+            {
+                isJVPTexteInput = false;
+                SDL_StopTextInput();
+            }
+
+            // Cliquer sur la bouton 'Valider'
+            if (x >= btns.validerBtn.min_x && x <= btns.validerBtn.max_x &&
+                y >= btns.validerBtn.min_y && y <= btns.validerBtn.max_y)
+            {
+                printf("Vous avez cliqué sur la bouton Valider\n");
+            }
+            // Cliquer sur la bouton 'Retour'
+            if (x >= btns.retourBtn.min_x && x <= btns.retourBtn.max_x &&
+                y >= btns.retourBtn.min_y && y <= btns.retourBtn.max_y)
+            {
+                gs = MENU;
+            }
+        }
+        else if (gs == MENU)
+        {
+            int bouton = mouseABouton(event.button.x, event.button.y, btns);
+            if (bouton == 0)
+            {
+                gs = JVJ;
+            }
+            else if (bouton == 1)
+            {
+                gs = JVP;
+            }
+            else if (bouton == 2)
+            {
+                gs = EXIT;
+            }
+        }
+        break;
+    case SDL_QUIT:
+        gs = EXIT;
+        break;
     }
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 100);
+    if (isJVPTexteInput)
+        SDL_RenderFillRect(renderer, &jvpTexteRect);
+    if (isJVJ1TexteInput)
+        SDL_RenderFillRect(renderer, &jvj1TexteRect);
+    if (isJVJ2TexteInput)
+        SDL_RenderFillRect(renderer, &jvj2TexteRect);
 
-    destroy();
+    /* À la place de SDL_Flip */
+    SDL_RenderPresent(renderer);
 }
 
 void initButtons(Buttons *btns)
@@ -353,11 +367,23 @@ void FreeImages(Images *images)
 }
 void chargerImages(Images *images, SDL_Renderer *renderer)
 {
-    SDL_Surface *s = IMG_Load("./assets/images/menu.png");
+    SDL_Surface *s = IMG_Load("assets/menu.png");
+    if (!s)
+    {
+        printf("IMG_Load: %s\n", IMG_GetError());
+    }
     images->menuTex = SDL_CreateTextureFromSurface(renderer, s);
-    s = IMG_Load("./assets/images/input1.png");
+    s = IMG_Load("assets/input1.png");
+    if (!s)
+    {
+        printf("IMG_Load: %s\n", IMG_GetError());
+    }
     images->input1Tex = SDL_CreateTextureFromSurface(renderer, s);
-    s = IMG_Load("./assets/images/input2.png");
+    s = IMG_Load("assets/input2.png");
+    if (!s)
+    {
+        printf("IMG_Load: %s\n", IMG_GetError());
+    }
     images->input2Tex = SDL_CreateTextureFromSurface(renderer, s);
 }
 
