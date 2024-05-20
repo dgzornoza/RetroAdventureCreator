@@ -15,10 +15,6 @@ Author: David González Zornoza
 
 - Docker environment
 
-paquetes a instalar
-sudo apt-get install libsdl2-image-dev
-sudo apt-get install libsdl2-ttf-dev
-
 ## How to use
 
 - Download repository
@@ -39,6 +35,11 @@ The first time it download docker hub image with the sjasmplus sources from 2023
 ## emscripten build commands
 
 This commads are for information, the proyect is configured to use the build task in visual studio code with cmake.
+
+```bash
+#show available SDL ports
+emcc --show-ports
+```
 
 ```bash
 # compile to wasm

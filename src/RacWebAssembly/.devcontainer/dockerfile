@@ -7,3 +7,4 @@ RUN apt install ninja-build -y
 RUN embuilder build sdl2
 RUN embuilder build sdl2_image
 RUN embuilder build sdl2_ttf
+RUN embuilder build zlib

@@ -1,14 +1,11 @@
 #include <SDL2/SDL.h>
 #include <emscripten.h>
-#include "test.cpp"
-
-SDL_Window *window;
-SDL_Renderer *renderer;
+#include "test.h"
 
 int main(int argc, char *argv[])
 {
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_CreateWindowAndRenderer(512, 512, 0, &window, &renderer);
+    initialize();
+    emscripten_set_main_loop(mainLoop, 0, 1);
 
-    emscripten_set_main_loop(main_loop, 0, 1);
+    return EXIT_SUCCESS;
 }

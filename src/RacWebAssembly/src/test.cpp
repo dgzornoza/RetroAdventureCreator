@@ -1,8 +1,14 @@
+#include "test.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <emscripten.h>
+
+SDL_Window *window;
+SDL_Renderer *renderer;
 
 #define MAX_NAME_LENGTH 16
 
@@ -38,14 +44,6 @@ typedef struct Buttons
     Button retourBtn;
 } Buttons;
 
-typedef enum BOOL
-{
-    TRUE = 1,
-    FALSE = 0,
-    true = 1,
-    false = 0
-} BOOL;
-
 void FreeImages(Images *images);
 void chargerImages(Images *images, SDL_Renderer *renderer);
 void initButtons(Buttons *btns);
@@ -53,49 +51,48 @@ int afficherImage(SDL_Renderer *renderer, SDL_Texture *texture);
 int afficherTexte(SDL_Renderer *renderer, SDL_Texture *texture, int posX, int posY);
 short int mouseABouton(int x, int y, Buttons btns);
 
-int main()
-{
-    Images images;
-    Buttons btns;
-    gameState gs = MENU;
-    unsigned int quitter = 0,
-                 jvpTexteLength = 0,
-                 jvj1TexteLength = 0,
-                 jvj2TexteLength = 0;
-    char *jvpTexteInput = (char *)malloc(16),
-         *jvj1TexteInput = (char *)malloc(16),
-         *jvj2TexteInput = (char *)malloc(16);
-    BOOL isJVPTexteInput = FALSE,
-         isJVJ1TexteInput = FALSE,
-         isJVJ2TexteInput = FALSE;
+Images images;
+Buttons btns;
+gameState gs = MENU;
+unsigned int quitter = 0,
+             jvpTexteLength = 0,
+             jvj1TexteLength = 0,
+             jvj2TexteLength = 0;
+char *jvpTexteInput = (char *)malloc(16),
+     *jvj1TexteInput = (char *)malloc(16),
+     *jvj2TexteInput = (char *)malloc(16);
+bool isJVPTexteInput = false,
+     isJVJ1TexteInput = false,
+     isJVJ2TexteInput = false;
 
+// Définir la rectangle de la saisie
+SDL_Rect jvpTexteRect, jvj1TexteRect, jvj2TexteRect;
+
+TTF_Font *SamanthaFBFont;
+SDL_Color black = {0, 0, 0};
+SDL_Color white = {255, 255, 255};
+SDL_Surface *jvpSurfaceTexte = NULL,
+            *jvj1SurfaceTexte = NULL,
+            *jvj2SurfaceTexte = NULL,
+            *player1SurfaceTexte = NULL,
+            *player2SurfaceTexte = NULL;
+SDL_Texture *jvpTexte = NULL,
+            *jvj1Texte = NULL,
+            *jvj2Texte = NULL,
+            *player1Texte = NULL,
+            *player2Texte = NULL;
+
+char *basePath;
+bool isInitialized = false;
+
+void initialize()
+{
     SDL_Init(SDL_INIT_VIDEO);
+    SDL_CreateWindowAndRenderer(512, 512, 0, &window, &renderer);
+
     TTF_Init();
     initButtons(&btns);
 
-    SDL_Window *ecran = SDL_CreateWindow("Awélé",
-                                         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                         800, 600, SDL_WINDOW_RESIZABLE);
-    SDL_SetWindowResizable(ecran, SDL_FALSE);
-    if (ecran == NULL)
-    {
-        printf("Error : %s\n", SDL_GetError());
-        return EXIT_FAILURE;
-    }
-
-    SDL_Renderer *renderer = SDL_CreateRenderer(ecran, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == NULL)
-    {
-        printf("Error : %s\n", SDL_GetError());
-        return EXIT_FAILURE;
-    }
-    // Activation de l'alpha (transparence)
-    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-    // Chargement des images
-    chargerImages(&images, renderer);
-
-    // Définir la rectangle de la saisie
-    SDL_Rect jvpTexteRect, jvj1TexteRect, jvj2TexteRect;
     jvpTexteRect.x = 248;
     jvj1TexteRect.x = 59;
     jvj2TexteRect.x = 435;
@@ -103,42 +100,60 @@ int main()
     jvpTexteRect.w = jvj1TexteRect.w = jvj2TexteRect.w = 305;
     jvpTexteRect.h = jvj1TexteRect.h = jvj2TexteRect.h = 98;
 
-    TTF_Font *SamanthaFBFont = TTF_OpenFont("The Foreign.otf", 64);
+    SamanthaFBFont = TTF_OpenFont("./assets/TheForeign.otf", 64);
     if (SamanthaFBFont == NULL)
     {
         printf("Error : %s\n", SDL_GetError());
-        return EXIT_FAILURE;
+        emscripten_cancel_main_loop();
     }
-    SDL_Color black = {0, 0, 0};
-    SDL_Color white = {255, 255, 255};
-    SDL_Surface *jvpSurfaceTexte = NULL,
-                *jvj1SurfaceTexte = NULL,
-                *jvj2SurfaceTexte = NULL,
-                *player1SurfaceTexte = NULL,
-                *player2SurfaceTexte = NULL;
-    SDL_Texture *jvpTexte = NULL,
-                *jvj1Texte = NULL,
-                *jvj2Texte = NULL,
-                *player1Texte = NULL,
-                *player2Texte = NULL;
 
+    // Activation de l'alpha (transparence)
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    // Chargement des images
+    chargerImages(&images, renderer);
+
+    isInitialized = true;
+}
+
+void destroy()
+{
+    FreeImages(&images);
+    SDL_FreeSurface(jvpSurfaceTexte);
+    SDL_FreeSurface(player1SurfaceTexte);
+    SDL_FreeSurface(player2SurfaceTexte);
+    SDL_DestroyTexture(jvpTexte);
+    SDL_DestroyTexture(player1Texte);
+    SDL_DestroyTexture(player2Texte);
+    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(renderer);
+    TTF_CloseFont(SamanthaFBFont);
+    TTF_Quit();
+    IMG_Quit();
+    SDL_Quit();
+
+    emscripten_cancel_main_loop();
+}
+
+void mainLoop()
+{
     while (gs != EXIT)
     {
+
         switch (gs)
         {
         case MENU:
             if (afficherImage(renderer, images.menuTex) == EXIT_FAILURE)
-                return EXIT_FAILURE;
+                return destroy();
             break;
         case JVJ:
             if (afficherImage(renderer, images.input2Tex) == EXIT_FAILURE)
-                return EXIT_FAILURE;
+                return destroy();
             SDL_RenderCopy(renderer, jvj1Texte, NULL, &jvj1TexteRect);
             SDL_RenderCopy(renderer, jvj2Texte, NULL, &jvj2TexteRect);
             break;
         case JVP:
             if (afficherImage(renderer, images.input1Tex) == EXIT_FAILURE)
-                return EXIT_FAILURE;
+                return destroy();
             SDL_RenderCopy(renderer, jvpTexte, NULL, &jvpTexteRect);
             break;
         default:
@@ -215,20 +230,20 @@ int main()
                     y >= jvj1TexteRect.y && y <= jvj1TexteRect.y + jvj1TexteRect.h)
                 {
                     SDL_StartTextInput();
-                    isJVJ1TexteInput = TRUE;
-                    isJVJ2TexteInput = FALSE;
+                    isJVJ1TexteInput = true;
+                    isJVJ2TexteInput = false;
                 }
                 else if (x >= jvj2TexteRect.x && x <= jvj2TexteRect.x + jvj2TexteRect.w &&
                          y >= jvj2TexteRect.y && y <= jvj2TexteRect.y + jvj2TexteRect.h)
                 {
                     SDL_StartTextInput();
-                    isJVJ1TexteInput = FALSE;
-                    isJVJ2TexteInput = TRUE;
+                    isJVJ1TexteInput = false;
+                    isJVJ2TexteInput = true;
                 }
                 else
                 {
-                    isJVJ1TexteInput = FALSE;
-                    isJVJ2TexteInput = FALSE;
+                    isJVJ1TexteInput = false;
+                    isJVJ2TexteInput = false;
                     SDL_StopTextInput();
                 }
                 // Cliquer sur la bouton 'Valider'
@@ -252,13 +267,13 @@ int main()
                 if (x >= jvpTexteRect.x && x <= jvpTexteRect.x + jvpTexteRect.w &&
                     y >= jvpTexteRect.y && y <= jvpTexteRect.y + jvpTexteRect.h)
                 {
-                    isJVPTexteInput = TRUE;
+                    isJVPTexteInput = true;
 
                     SDL_StartTextInput();
                 }
                 else
                 {
-                    isJVPTexteInput = FALSE;
+                    isJVPTexteInput = false;
                     SDL_StopTextInput();
                 }
 
@@ -308,21 +323,7 @@ int main()
         SDL_RenderPresent(renderer);
     }
 
-    FreeImages(&images);
-    SDL_FreeSurface(jvpSurfaceTexte);
-    SDL_FreeSurface(player1SurfaceTexte);
-    SDL_FreeSurface(player2SurfaceTexte);
-    SDL_DestroyTexture(jvpTexte);
-    SDL_DestroyTexture(player1Texte);
-    SDL_DestroyTexture(player2Texte);
-    SDL_DestroyWindow(ecran);
-    SDL_DestroyRenderer(renderer);
-    TTF_CloseFont(SamanthaFBFont);
-    TTF_Quit();
-    IMG_Quit();
-    SDL_Quit();
-
-    return EXIT_SUCCESS;
+    destroy();
 }
 
 void initButtons(Buttons *btns)
@@ -352,11 +353,11 @@ void FreeImages(Images *images)
 }
 void chargerImages(Images *images, SDL_Renderer *renderer)
 {
-    SDL_Surface *s = IMG_Load("images/menu.png");
+    SDL_Surface *s = IMG_Load("./assets/images/menu.png");
     images->menuTex = SDL_CreateTextureFromSurface(renderer, s);
-    s = IMG_Load("images/input1.png");
+    s = IMG_Load("./assets/images/input1.png");
     images->input1Tex = SDL_CreateTextureFromSurface(renderer, s);
-    s = IMG_Load("images/input2.png");
+    s = IMG_Load("./assets/images/input2.png");
     images->input2Tex = SDL_CreateTextureFromSurface(renderer, s);
 }
 

@@ -9,7 +9,7 @@
         "**/.svn": true,
         "**/CVS": true,
         "**/Thumbs.db": true,
-        "build": true,
+        "build": false,
     },
     "cmake.useCMakePresets": "always",
 }
