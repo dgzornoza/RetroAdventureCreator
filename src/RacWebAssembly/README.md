@@ -1,13 +1,12 @@
-# emscripten-dev-environment README
+# RacWebAssembly README
 
-emscripten Developer Container Environment for Visual Studio Code.
+RetroAdventureCreator  in webassembly with SDL2
 
 Author: David González Zornoza
 
 ## Features
 
-Project to set up a development environment for emscripten, in a visual studio code dev-container.
-<https://emscripten.org/index.html>
+--
 
 ## Requirements
 
@@ -15,6 +14,10 @@ Project to set up a development environment for emscripten, in a visual studio c
   [https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers](vscode-remote.remote-containers)
 
 - Docker environment
+
+paquetes a instalar
+sudo apt-get install libsdl2-image-dev
+sudo apt-get install libsdl2-ttf-dev
 
 ## How to use
 
