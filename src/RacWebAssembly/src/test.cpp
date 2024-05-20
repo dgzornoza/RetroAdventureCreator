@@ -7,6 +7,8 @@
 #include <SDL2/SDL_ttf.h>
 #include <emscripten.h>
 
+bool is_running;
+
 SDL_Window *window;
 SDL_Renderer *renderer;
 
@@ -83,7 +85,6 @@ SDL_Texture *jvpTexte = NULL,
             *player2Texte = NULL;
 
 char *basePath;
-bool isInitialized = false;
 
 void initialize()
 {
@@ -114,7 +115,7 @@ void initialize()
     // Chargement des images
     chargerImages(&images, renderer);
 
-    isInitialized = true;
+    is_running = true;
 }
 
 void destroy()
@@ -134,23 +135,15 @@ void destroy()
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
-
-    emscripten_cancel_main_loop();
-    isInitialized = false;
 }
 
-void mainLoop()
+void draw_next_frame()
 {
     printf("mainLoop\n");
 
-    if (!isInitialized)
-    {
-        return;
-    }
-
     if (gs == EXIT)
     {
-        destroy();
+        is_running = false;
         return;
     }
 
@@ -158,18 +151,18 @@ void mainLoop()
     {
     case MENU:
         if (afficherImage(renderer, images.menuTex) == EXIT_FAILURE)
-            destroy();
+            is_running = false;
         break;
     case JVJ:
         if (afficherImage(renderer, images.input2Tex) == EXIT_FAILURE)
-            destroy();
+            is_running = false;
 
         SDL_RenderCopy(renderer, jvj1Texte, NULL, &jvj1TexteRect);
         SDL_RenderCopy(renderer, jvj2Texte, NULL, &jvj2TexteRect);
         break;
     case JVP:
         if (afficherImage(renderer, images.input1Tex) == EXIT_FAILURE)
-            destroy();
+            is_running = false;
 
         SDL_RenderCopy(renderer, jvpTexte, NULL, &jvpTexteRect);
         break;
