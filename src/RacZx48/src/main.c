@@ -54,6 +54,8 @@ int main(void)
     s1.y = 5;
     s1.height = 10;
     unsigned char attr = 22;
+    // zx_cls_wc(&s1, attr);
+
     // main app loop
     while (1)
     {

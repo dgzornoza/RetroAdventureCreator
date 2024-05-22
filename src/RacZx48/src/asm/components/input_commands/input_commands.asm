@@ -81,21 +81,27 @@ _update_input_commands:
 ;-------------------------------------------------------------------------------
 asm_clear_input_commands_region:
 
-   push iy              ; preserve ix register
+   push iy              ; preserve iy register
 
-   ld iy, 0             ; set ix = stack pointer
-   add iy, sp   
-   push af              ; reserve 4 bytes for Rect data and create rect
+   push af              ; reserve 4 bytes in stack for Rect data
    push af
-   ld (iy-4), 0x05      ; Rect X
-   ld	(iy-2), 0x05      ; Rect Y
-   ld	(iy-3), 0x0a      ; Rect Width
-   ld	(iy-1), 0x0a      ; Rect Height
- 
+
+   ld iy, 0             ; set iy = stack pointer
+   add iy, sp  
+
+   ld (iy), 0x05        ; Rect X
+   ld	(iy+1), 0x0a      ; Rect Width
+   ld	(iy+2), 0x05      ; Rect Y
+   ld	(iy+3), 0x0a      ; Rect Height
+
    ld l, 22             ; set attributes
+
    call asm_zx_cls_wc   ; call z88dk function for fill rect
 
    pop af
+   pop af
+   pop iy
+   
    ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

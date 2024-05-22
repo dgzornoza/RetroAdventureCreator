@@ -60,9 +60,6 @@ EMCC_DEBUG=1 emcc src/sdl_1_2_sample.cpp -o public/sdl_1_2_sample.html
 
 - My Github account: <https://github.com/dgzornoza>
 
-
-- Andre Weissflog: https://floooh.github.io/2023/11/11/emscripten-ide.html
-
 ## Releases
 
 ### 1.0.0
