@@ -68,9 +68,18 @@ int main(void)
 
         // read keyboard
         int key = get_key();
-        if (key && is_visible_input_commands())
+        if (key)
         {
-            push_buffer_key(key);
+            unsigned char isVisibleInputCommands = is_visible_input_commands();
+
+            if (key == 0x0D)
+            {
+                isVisibleInputCommands ? hide_input_commands() : show_input_commands();
+            }
+            else if (isVisibleInputCommands)
+            {
+                push_buffer_key(key);
+            }
         }
     }
 }
