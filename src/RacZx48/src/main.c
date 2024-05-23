@@ -9,13 +9,13 @@
 #include "asm/components/timer.h"
 #include "asm/components/input_commands.h"
 
-unsigned char clock_changed = 0;
-unsigned char ticks = 0;
-unsigned char seconds = 0;
-unsigned char minutes = 0;
-unsigned char pause = 0;
-unsigned int abs_ticks = 0;
-unsigned int timer = 0;
+// unsigned char clock_changed = 0;
+// unsigned char ticks = 0;
+// unsigned char seconds = 0;
+// unsigned char minutes = 0;
+// unsigned char pause = 0;
+// unsigned int abs_ticks = 0;
+// unsigned int timer = 0;
 
 /**
  * IM2 function, updated every 50 ms with vsync
@@ -24,7 +24,10 @@ IM2_DEFINE_ISR(isr)
 {
     update_timer();
 
-    print_buffer_keys();
+    if (is_visible_input_commands())
+    {
+        print_buffer_keys();
+    }
 }
 
 #define TABLE_HIGH_BYTE ((unsigned int)0xfc)
@@ -48,12 +51,12 @@ int main(void)
     intrinsic_ei();
     // END Instalation routine ISR
 
-    struct r_Rect8 s1;
-    s1.x = 5;
-    s1.width = 10;
-    s1.y = 5;
-    s1.height = 10;
-    unsigned char attr = 22;
+    // struct r_Rect8 s1;
+    // s1.x = 5;
+    // s1.width = 10;
+    // s1.y = 5;
+    // s1.height = 10;
+    // unsigned char attr = 22;
     // zx_cls_wc(&s1, attr);
 
     // main app loop
@@ -61,13 +64,12 @@ int main(void)
     {
         // zx_cls_wc(&s1, attr);
 
-        show_input_commands();
+        // show_input_commands();
 
         // read keyboard
         int key = get_key();
-        if (key)
+        if (key && is_visible_input_commands())
         {
-            ROM_LAST_KEY = key;
             push_buffer_key(key);
         }
     }

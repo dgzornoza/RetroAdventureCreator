@@ -8,9 +8,6 @@ EXTERN asm_print_char
 EXTERN asm_font_inc_x
 EXTERN asm_font_dec_x
 
-EXTERN _ROM_LAST_KEY    
-EXTERN _ROM_KEY_SCAN    
-
 ;-------------------------------------------------------------------------------
 ;  Name:		      public _print_buffer_keys
 ;  Description:	print string from buffer_keys.

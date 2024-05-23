@@ -1,15 +1,23 @@
 SECTION code_user
 
-public _show_input_commands         ; export C decl "extern void enable_input_commands(void) __z88dk_fastcall;"
+public _is_visible_input_commands   ; ex1port C decl "extern bool is_visible_input_commands(void) __z88dk_fastcall;"
+public _show_input_commands         ; ex1port C decl "extern void enable_input_commands(void) __z88dk_fastcall;"
 public _hide_input_commands         ; export C decl "extern void disable_input_commands(void) __z88dk_fastcall;"
 PUBLIC _update_input_commands       ; export C decl "extern void update_input_commands(void) __z88dk_fastcall;"
 
-; z88dk/libsrc/_DEVELOPMENT/arch/zx/misc/z80/asm_zx_cls_wc.asm
-; params :  l = attr
-;           iy = rect* (x=iy-4, y=iy-2, width=iy-3, height=iy-1)
 EXTERN asm_zx_cls_wc
 
 EXTERN asm_show_shell
+
+;-------------------------------------------------------------------------------
+;  Name:		public _is_visible_input_commands
+;  Description:	routine for get input commands component visibility
+;  Input:		--
+;  Output: 	   L = 0x00 => not visible, 0x01 => visible
+;-------------------------------------------------------------------------------
+_is_visible_input_commands:
+   ld hl, (InputCommandState)   
+   ret
 
 ;-------------------------------------------------------------------------------
 ;  Name:		public _show_input_commands
@@ -23,13 +31,13 @@ _show_input_commands:
    push de
    
    ld a, (InputCommandState)
-   cp 0x01                                ; activate only if not is active.
+   cp 0x01                                ; show only if not is visible.
    jr z, exit_show
 
    call asm_clear_input_commands_region   ; clear region
    call asm_show_shell                    ; show shell
 
-   ld a, 0x01                             ; set as activated
+   ld a, 0x01                             ; set as visible
    ld (InputCommandState), a
 
 .exit_show
@@ -43,17 +51,18 @@ _show_input_commands:
 ;  Input:		--
 ;  Output: 	   --
 ;-------------------------------------------------------------------------------
+; TODO: dgzornoza, no probado, cuando haga falta, se tiene que implementar correctamente guardar los atributos en el show, y aqui volver a ponerlos.
 _hide_input_commands:
 
    push bc         
    push de
    
    ld a, (InputCommandState)
-   cp 0x00                       ; activate only if not is active.
+   cp 0x00                                ; hide only if is visible.
    jr z, exit_hide
-   call asm_show_shell
+   call asm_clear_input_commands_region   ; clear region
 
-   ld a, 0x00                    ; set as activated
+   ld a, 0x00                             ; set as not visible
    ld (InputCommandState), a
 
 .exit_hide
@@ -83,29 +92,19 @@ asm_clear_input_commands_region:
 
    push iy              ; preserve iy register
 
-   push af              ; reserve 4 bytes in stack for Rect data
-   push af
-
-   ld iy, 0             ; set iy = stack pointer
-   add iy, sp  
-
-   ld (iy), 0x05        ; Rect X
-   ld	(iy+1), 0x0a      ; Rect Width
-   ld	(iy+2), 0x05      ; Rect Y
-   ld	(iy+3), 0x0a      ; Rect Height
-
-   ld l, 22             ; set attributes
+   ld iy, InputCommandArea                ; copy Rect data to stack
+   ld hl, (InputCommandAreaAttributes)    ; set attributes
 
    call asm_zx_cls_wc   ; call z88dk function for fill rect
-
-   pop af
-   pop af
-   pop iy
    
+   pop iy         ; restore iy register
    ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; VARIABLES 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-.InputCommandState   db 0;
+.InputCommandState   db 0
+
+.InputCommandArea:   db	0, 32, 23, 1      ; Input command area: X, Width, Y, Height
+.InputCommandAreaAttributes:  db 0x78     ; Attributes (8 flash, 7 bright, 6-4 paper, 3-1 ink)

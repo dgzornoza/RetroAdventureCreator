@@ -40,9 +40,6 @@ enum FontStyleEnum
     ITALIC = 3,
 };
 
-/** Last key presed stored in rom */
-extern char ROM_LAST_KEY;
-
 /** FUNCTIONS */
 // -----------------------------------------------------------------------------
 

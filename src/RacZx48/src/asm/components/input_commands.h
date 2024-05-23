@@ -13,6 +13,11 @@
 /**
  * Show input commands component
  */
+extern unsigned char is_visible_input_commands(void) __z88dk_fastcall;
+
+/**
+ * Show input commands component
+ */
 extern void show_input_commands(void) __z88dk_fastcall;
 
 /**
