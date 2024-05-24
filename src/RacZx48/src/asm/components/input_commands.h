@@ -26,8 +26,13 @@ extern void show_input_commands(void) __z88dk_fastcall;
 extern void hide_input_commands(void) __z88dk_fastcall;
 
 /**
- * Update input commands component, should be called in main loop
+ * Update function for input commands component, should be called in main update loop
  */
-extern void update_input_commands(void) __z88dk_fastcall;
+extern void input_commands_update(void) __z88dk_fastcall;
+
+/**
+ * Render function for input commands component, should be called in main render loop
+ */
+extern void input_commands_render(void) __z88dk_fastcall;
 
 #endif

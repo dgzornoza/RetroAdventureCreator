@@ -14,13 +14,13 @@ EXTERN _GLOBAL_FONT_STYLE
 
 
 ;-------------------------------------------------------------------------------
-;  Name:		internal asm_show_shell
+;  Name:		internal asm_show_shell_prompt
 ;  Description:	routine for initialize shell cursor
 ;  Input:		--
 ;  Output: 	    --
 ;-------------------------------------------------------------------------------
-PUBLIC asm_show_shell
-asm_show_shell:
+PUBLIC asm_show_shell_prompt
+asm_show_shell_prompt:
 
    ;;; Set character properties for shell
    ld hl, _ROM_CHARSET                
@@ -50,6 +50,7 @@ asm_show_shell:
 ;  Input:		--
 ;  Output: 	    --
 ;-------------------------------------------------------------------------------
+; TODO: dgzornoza - falta implementar
 PUBLIC asm_hide_shell
 asm_hide_shell:
    ;;; print shell
@@ -61,3 +62,4 @@ asm_hide_shell:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; VARIABLES 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+

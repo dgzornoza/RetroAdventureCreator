@@ -40,17 +40,15 @@ enum FontStyleEnum
     ITALIC = 3,
 };
 
+/** ROM Last key memory,
+ * @remarks this app uses custom scan keyboard functions to optimize keyboard typing,
+ * i'm test ROM routines and are slow in comparison.
+ * Main loop should update this variable with last key pressed.
+ **/
+extern char ROM_LAST_KEY;
+
 /** FUNCTIONS */
 // -----------------------------------------------------------------------------
-
-/**
- * insert key into input queue buffer (FIFO)
- */
-extern void push_buffer_key(char key) __z88dk_fastcall;
-/**
- * print string from buffer_keys.
- */
-extern void print_buffer_keys(void);
 
 /**
  * Print string with format in screen

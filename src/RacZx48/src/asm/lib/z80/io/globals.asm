@@ -7,6 +7,7 @@ EXTERN _DEFAULT_FONT_ATTRIBUTES
 ; VARIABLES 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; FONT VARIABLES
 PUBLIC _GLOBAL_FONT_CHARSET
     _GLOBAL_FONT_CHARSET:       dw _ROM_CHARSET
 
@@ -20,4 +21,3 @@ PUBLIC _GLOBAL_FONT_X
     _GLOBAL_FONT_X:             db 0       ; FontX and FontY should be togheter on this order for use in pair registers, don't change
 PUBLIC _GLOBAL_FONT_Y
     _GLOBAL_FONT_Y:             db 0  
-

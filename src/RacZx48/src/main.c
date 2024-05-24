@@ -24,10 +24,7 @@ IM2_DEFINE_ISR(isr)
 {
     update_timer();
 
-    if (is_visible_input_commands())
-    {
-        print_buffer_keys();
-    }
+    input_commands_render();
 }
 
 #define TABLE_HIGH_BYTE ((unsigned int)0xfc)
@@ -67,19 +64,15 @@ int main(void)
         // show_input_commands();
 
         // read keyboard
-        int key = get_key();
-        if (key)
+        ROM_LAST_KEY = get_key();
+        if (ROM_LAST_KEY)
         {
-            unsigned char isVisibleInputCommands = is_visible_input_commands();
+            if (ROM_LAST_KEY == 0x0D)
+            {
+                is_visible_input_commands() ? hide_input_commands() : show_input_commands();
+            }
 
-            if (key == 0x0D)
-            {
-                isVisibleInputCommands ? hide_input_commands() : show_input_commands();
-            }
-            else if (isVisibleInputCommands)
-            {
-                push_buffer_key(key);
-            }
+            input_commands_update();
         }
     }
 }

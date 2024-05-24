@@ -1,15 +1,14 @@
 SECTION code_user
 
-PUBLIC _push_buffer_key          ; export C decl "extern void push_buffer_key(char key) __z88dk_fastcall;"
-
 
 ;-------------------------------------------------------------------------------
-;  Name:		      public _push_buffer_key
+;  Name:		      internal _push_buffer_key
 ;  Description:	insert key into input queue buffer (FIFO)
 ;  Input:		   L = key to push into queue buffer
 ;  Output: 	      --
 ;-------------------------------------------------------------------------------
-_push_buffer_key:
+PUBLIC asm_push_buffer_key
+asm_push_buffer_key:
    
    push bc                 ; store stack registers
    push de

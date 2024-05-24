@@ -1,7 +1,5 @@
 SECTION code_user
 
-PUBLIC _print_buffer_keys         ; export C decl "extern void print_buffer_keys();"
-
 EXTERN asm_pop_buffer_key
 
 EXTERN asm_print_char
@@ -9,13 +7,15 @@ EXTERN asm_font_inc_x
 EXTERN asm_font_dec_x
 
 ;-------------------------------------------------------------------------------
-;  Name:		      public _print_buffer_keys
+;  Name:		      internal _print_buffer_keys
 ;  Description:	print string from buffer_keys.
 ;  Input:		   --
 ;  Output: 	      --
 ;  Clobbers: 	   --
 ;-------------------------------------------------------------------------------
-_print_buffer_keys:
+
+PUBLIC asm_print_buffer_keys 
+asm_print_buffer_keys:
  
    push hl                       ; preserve stack
 
