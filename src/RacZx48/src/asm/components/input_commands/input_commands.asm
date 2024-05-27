@@ -6,11 +6,26 @@ public _hide_input_commands         ; export C decl "extern void disable_input_c
 PUBLIC _input_commands_update       ; export C decl "extern void input_commands_update(void) __z88dk_fastcall;"
 PUBLIC _input_commands_render       ; export C decl "extern void input_commands_render(void) __z88dk_fastcall;"
 
-EXTERN _ROM_LAST_KEY
+
 EXTERN asm_zx_cls_wc
-EXTERN asm_show_shell_prompt
+EXTERN asm_show_prompt
+EXTERN asm_show_cursor
+EXTERN asm_font_inc_x
 EXTERN asm_push_buffer_key
 EXTERN asm_print_buffer_keys
+
+;;; Constants
+EXTERN _ROM_LAST_KEY
+EXTERN _SYS_LOWRES_SCR_HEIGHT;
+EXTERN _SYS_LOWRES_SCR_WIDTH;
+EXTERN _ROM_CHARSET
+EXTERN _DEFAULT_FONT_ATTRIBUTES
+
+;;; Font vars
+EXTERN _GLOBAL_FONT_CHARSET
+EXTERN _GLOBAL_FONT_X         
+EXTERN _GLOBAL_FONT_ATTRIBUTES
+EXTERN _GLOBAL_FONT_STYLE    
 
 ;-------------------------------------------------------------------------------
 ;  Name:		public _is_visible_input_commands
@@ -37,8 +52,14 @@ _show_input_commands:
    cp 0x01                                ; show only if not is visible.
    jr z, exit_show
 
-   call asm_clear_input_commands_region   ; clear region
-   call asm_show_shell_prompt             ; show shell prompt
+   call asm_clear_input_commands_region         ; clear region
+
+   call asm_set_input_command_font_properties   ; set font properties
+
+   call asm_show_prompt                         ; show shell prompt
+
+   call asm_font_inc_x                          ; set cursor position 
+   call asm_show_cursor                         ; show cursor
 
    ld a, 0x01                             ; set as visible
    ld (State), a
@@ -85,6 +106,12 @@ _input_commands_update:
    cp 0x00                                
    jr z, exit_update             ; execute only if is visible.
 
+   ld a, (CursorIndex)
+   cp INPUT_MAX_LENGTH           ; compare with max length
+   jr nc, exit_update            ; if index > max length, exit routine
+   or a
+   jr z, exit_update             ; if index == 0, exit routine
+
    ld hl, (_ROM_LAST_KEY)
    call asm_push_buffer_key      ; push last key to input buffer
 
@@ -127,9 +154,35 @@ asm_clear_input_commands_region:
    pop iy               ; restore iy register
    ret
 
+;-------------------------------------------------------------------------------
+;  Name:		private asm_set_input_command_font_properties
+;  Description:	routine for set character font properties for input commands
+;  Input:		--
+;  Output: 	   --
+;-------------------------------------------------------------------------------
+asm_set_input_command_font_properties:
+
+   ld hl, _ROM_CHARSET                
+   ld (_GLOBAL_FONT_CHARSET), hl
+
+   ld a, _DEFAULT_FONT_ATTRIBUTES                    
+   ld (_GLOBAL_FONT_ATTRIBUTES), a
+
+   ld a, 0
+   ld (_GLOBAL_FONT_STYLE), a
+
+   ld c, 0
+   ld b, _SYS_LOWRES_SCR_HEIGHT - 1
+   ld (_GLOBAL_FONT_X), bc
+
+   ret
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; VARIABLES 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+.INPUT_MAX_LENGTH    equ _SYS_LOWRES_SCR_WIDTH - 2     ; all width except prompt and cursor
+.CursorIndex         db 0
 
 .State   db 0
 
