@@ -18,6 +18,6 @@ PUBLIC _GLOBAL_FONT_STYLE
     _GLOBAL_FONT_STYLE:         db 0
 
 PUBLIC _GLOBAL_FONT_X
-    _GLOBAL_FONT_X:             db 0       ; FontX and FontY should be togheter on this order for use in pair registers, don't change
+    _GLOBAL_FONT_X:             db 0       ; NOTE FontX and FontY should be togheter on this order for use in pair registers, don't change
 PUBLIC _GLOBAL_FONT_Y
     _GLOBAL_FONT_Y:             db 0  

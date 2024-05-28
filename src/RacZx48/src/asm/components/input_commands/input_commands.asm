@@ -106,13 +106,13 @@ _input_commands_update:
    cp 0x00                                
    jr z, exit_update             ; execute only if is visible.
 
-   ld a, (CursorIndex)
-   cp INPUT_MAX_LENGTH           ; compare with max length
-   jr nc, exit_update            ; if index > max length, exit routine
-   or a
-   jr z, exit_update             ; if index == 0, exit routine
+   ; ld a, (CursorIndex)
+   ; cp INPUT_MAX_LENGTH           ; compare with max length
+   ; jr nc, exit_update            ; if index > max length, exit routine
+   ; or a
+   ; jr z, exit_update             ; if index == 0, exit routine
 
-   ld hl, (_ROM_LAST_KEY)
+   ld a, (_ROM_LAST_KEY)
    call asm_push_buffer_key      ; push last key to input buffer
 
 .exit_update
@@ -181,8 +181,8 @@ asm_set_input_command_font_properties:
 ; VARIABLES 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-.INPUT_MAX_LENGTH    equ _SYS_LOWRES_SCR_WIDTH - 2     ; all width except prompt and cursor
-.CursorIndex         db 0
+;.INPUT_MAX_LENGTH    equ _SYS_LOWRES_SCR_WIDTH - 2     ; all width except prompt and cursor
+;.CursorIndex         db 0
 
 .State   db 0
 
