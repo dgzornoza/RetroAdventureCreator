@@ -26,7 +26,7 @@ asm_push_buffer_key:
    ld e, a
    add hl, de              ; add index offset to HL
    
-   inc a                   ; increment buffer index
+   inc a                   ; @label increment buffer index:
    ld (BufferIndex), a
 
    ex af, af'
@@ -39,10 +39,15 @@ asm_push_buffer_key:
 
 ;-------------------------------------------------------------------------------
 ;  Name:		      internal _print_buffer_keys
-;  Description:	print string from buffer_keys.
+;  Description:	print string from input_buffer.
+;                 The input buffer has 2 pointers: 
+;                 cursor pointer: pointing to the last printed character.
+;                 buffer pointer: pointing to the last key pressed
+;                 this buffer can be used for keystrokes and screen printing
+;
+;  Remarks: diagram is in file 'print_buffer.drawio.svg'
 ;  Input:		   --
 ;  Output: 	      --
-;  Clobbers: 	   --
 ;-------------------------------------------------------------------------------
 PUBLIC asm_print_buffer_keys 
 asm_print_buffer_keys:
@@ -52,32 +57,33 @@ asm_print_buffer_keys:
    push bc                    
 
 loop:
-   ld de, (PrintedIndex)         ; get buffer indexes (D = buffer index, E = printed index)
+   ld bc, (CursorIndex)          ; get buffer indexes (B = buffer index, C = cursor index)
 
-   ld a, e                       ; increment printed index
-   inc a
-   ld (PrintedIndex), a
-
-   ld a, e                       
-   cp d                          ; compare buffer index with printed index
+   ld a, c                       
+   cp b                          ; compare buffer index with cursor index
    jr z, end                     ; if equal, exit routine
 
    ld hl, Buffer                 ; HL = pointer to buffer
    ld d, 00h
-   add hl, de                    ; add printed index offset to HL
+   ld e, c
+   add hl, de                    ; add cursor index offset to HL
 
    ld a, (hl)                    ; get char from printer index
    cp 12
    jr z, print_buffer_keys_delete         ; is delete?, delete char
  
    cp 32
-   jr c, print_buffer_keys_remove_char    ; is char control (ascii < 32)?, delete char from buffer
+   jr c, print_buffer_keys_control_code   ; is char control (ascii < 32)?, delete char from buffer
 
    ;;; here is valid char (ascii >= 32)
-   call asm_print_char
+   call asm_print_char        ; print char
    call asm_font_inc_x
 
-   jr loop                    ; repeat loop
+   inc c
+   ld a, c                
+   ld (CursorIndex), a       ; increment cursor index
+   
+   jr loop                   ; repeat loop
  
 ;;; end of routine
 .end:     
@@ -93,15 +99,15 @@ loop:
    call asm_print_char
    
 ;;; Displace keys to the left for remove current char
-.print_buffer_keys_remove_char:
-   ld de, (PrintedIndex)      ; get buffer indexes (D = buffer index, E = printed index)
+.print_buffer_keys_control_code:
+   ld de, (CursorIndex)      ; get buffer indexes (D = buffer index, E = printed index)
 
    ld a, d                    ; decrement buffer index
    dec a
-   ld (BufferIndex), a
+   ld (BufferIndex), a        ; WPMEM BufferIndex, 10 
    ld a, e                    ; decrement printer index
    dec a
-   ld (PrintedIndex), a
+   ld (CursorIndex), a
 
    ld a, d
    sub e                      ; calculate difference for displace
@@ -123,8 +129,8 @@ loop:
 ; VARIABLES 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-.PrintedIndex         db 0  ; NOTE: PrintedIndex and BufferIndex  should be togheter on this order for use in pair registers, don't change
-.BufferIndex          db 0
+.CursorIndex         db 0  ; NOTE: CursorIndex and BufferIndex  should be togheter on this order for use in pair registers, don't change
+.BufferIndex         db 0
 
 .Buffer              ds BUFFER_LENGTH - 1
                      db 0
