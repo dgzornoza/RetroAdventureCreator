@@ -66,7 +66,7 @@ loop:
    ld d, 00h
    add hl, de                    ; add printed index offset to HL
 
-   ld a, (hl)                    ; get char from buffer
+   ld a, (hl)                    ; get char from printer index
    cp 12
    jr z, print_buffer_keys_delete         ; is delete?, delete char
  
