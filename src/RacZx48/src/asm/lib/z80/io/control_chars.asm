@@ -289,7 +289,7 @@ asm_font_backspace:
    push bc
    push de
    push hl
-   call asm_print_char         ; override char with space
+   call asm_print_char     ; override char with space
    pop hl
    pop de
    pop bc

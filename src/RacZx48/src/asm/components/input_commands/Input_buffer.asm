@@ -76,8 +76,10 @@ loop:
    jr c, print_buffer_keys_control_code   ; is char control (ascii < 32)?, delete char from buffer
 
    ;;; here is valid char (ascii >= 32)
+   exx
    call asm_print_char        ; print char
    call asm_font_inc_x
+   exx
 
    inc c
    ld a, c                
@@ -93,31 +95,32 @@ loop:
    ret
  
 ;;; Code to execute when delete key is pressed (delete char)
-.print_buffer_keys_delete:                  
+.print_buffer_keys_delete:        
+
+   dec c
+   ld a, c                
+   ld (CursorIndex), a           ; decrement cursor index
+
    call asm_font_dec_x
-   ld a, ' '                     ; delete previous char
-   call asm_print_char
+   ld a, ' '                     
+   call asm_print_char           ; delete last printed char
    
 ;;; Displace keys to the left for remove current char
 .print_buffer_keys_control_code:
-   ld de, (CursorIndex)      ; get buffer indexes (D = buffer index, E = printed index)
 
-   ld a, d                    ; decrement buffer index
-   dec a
-   ld (BufferIndex), a        ; WPMEM BufferIndex, 10 
-   ld a, e                    ; decrement printer index
-   dec a
-   ld (CursorIndex), a
+   ld a, b
+   sub c                      ; calculate difference for shift
 
-   ld a, d
-   sub e                      ; calculate difference for displace
-
-   ld de, hl                  ; Set the start address
-   inc hl                     ; Set the next address      
-   ld b, 00h
-   ld c, a                    ; Set the number of bytes to displace
+   ld c, a                    ; Set the number of bytes to shift
+   ld a, b                    ; store Buffer Index in A for decrement last
+   ld b, 00h                  ; pair BC with number of bytes to shift for LDIR instruction
+   ld de, hl                  ; Set the start and next address for shift left
+   inc hl                     
    ldir                       ; Repeat for the rest of the bytes
    
+   dec a
+   ld (BufferIndex), a        ; decrement buffer index
+
    jr loop                    ; go loop
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
