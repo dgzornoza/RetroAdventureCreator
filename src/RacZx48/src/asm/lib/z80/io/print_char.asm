@@ -1,7 +1,7 @@
 SECTION code_user
 
 ; TODO: revisar si hace falta, en principio no deberia de necesitarse
-PUBLIC _print_char    ; export C decl "extern void print_char(char *ascii) __z88dk_fastcall;"
+;PUBLIC _print_char    ; export C decl "extern void print_char(char *ascii) __z88dk_fastcall;"
 PUBLIC asm_print_char
 
 EXTERN _GLOBAL_FONT_X
@@ -22,14 +22,15 @@ EXTERN _GLOBAL_FONT_ATTRIBUTES
 ;                 _GLOBAL_FONT_ATTRIBUTES     = Print attributes to use
 ;                 _GLOBAL_FONT_STYLE          = Font style to use.
 ;-------------------------------------------------------------------------------
-_print_char:
-   push bc
-   push de
-   ld a, (hl)                ; store in A char to print
-   call asm_print_char       ; print char
-   pop de
-   pop bc
-   ret
+; TODO: dgzornoza - actualmente no se usa
+; _print_char:
+;    push bc
+;    push de
+;    ld a, (hl)                ; store in A char to print
+;    call asm_print_char       ; print char
+;    pop de
+;    pop bc
+;    ret
 
 
 

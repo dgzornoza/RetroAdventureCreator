@@ -6,9 +6,13 @@ EXTERN asm_font_dec_x
 
 ;-------------------------------------------------------------------------------
 ;  Name:		      internal _push_buffer_key
-;  Description:	insert key into input buffer
+;  Description:	insert key into input buffer.
+;                 the buffer for keys is BUFFER_LENGTH + 1 for posible control char.
+;                 if buffer is full, the key is not inserted, only can insert a control char for delete, etc.
+;
 ;  Input:		   a = key to push into input buffer
 ;  Output: 	      --
+;  Clobbers: 	   AF, BC', DE', HL'
 ;-------------------------------------------------------------------------------
 PUBLIC asm_push_buffer_key
 asm_push_buffer_key:
@@ -37,6 +41,33 @@ asm_push_buffer_key:
    pop de
    ret
 
+;    exx                     ; store BC, DE, HL registers
+
+;    cp 32                   ; is char control (ascii < 32)?, C Flag = 1
+;    ld b, a                 ; move input key to b
+;    ld a, (BufferIndex)
+;    ld c, a                 ; move buffer index to c
+;    adc a, 0                ; A = BufferIndex + 0 + Carry flag, if control char, Carry flag = 1 (BUFFER_LENGTH + 1)
+
+;    cp BUFFER_LENGTH        ; compare with buffer size
+;    jr nc, push_exit        ; if index > buffer, exit routine
+
+;    ld hl, Buffer           ; HL = pointer to buffer
+;    ld d, 00h 
+;    ld e, c
+;    add hl, de              ; add index offset to HL
+   
+;    inc c                   ; increment buffer index:
+;    ld a, c
+;    ld (BufferIndex), a
+
+;    ld (hl), b              ; add key ascii to buffer
+
+; .push_exit:
+   
+;    exx         ; restore BC, DE, HL registers
+;    ret
+
 ;-------------------------------------------------------------------------------
 ;  Name:		      internal _print_buffer_keys
 ;  Description:	print string from input_buffer.
@@ -48,6 +79,7 @@ asm_push_buffer_key:
 ;  Remarks: diagram is in file 'print_buffer.drawio.svg'
 ;  Input:		   --
 ;  Output: 	      --
+;	Clobbers: 	   AF, BC', DE', HL'
 ;-------------------------------------------------------------------------------
 PUBLIC asm_print_buffer_keys 
 asm_print_buffer_keys:
@@ -73,7 +105,7 @@ loop:
    jr z, print_buffer_keys_delete         ; is delete?, delete char
  
    cp 32
-   jr c, print_buffer_keys_control_code   ; is char control (ascii < 32)?, delete char from buffer
+   jr c, print_buffer_keys_control_code   ; is char control (ascii < 32)?, process control code
 
    ;;; here is valid char (ascii >= 32)
    exx
@@ -97,13 +129,22 @@ loop:
 ;;; Code to execute when delete key is pressed (delete char)
 .print_buffer_keys_delete:        
 
+   ld a, b                       
+   cp 1                                  ; compare buffer index with 1
+   jr z, print_buffer_keys_control_code  ; if equal 1, is first char, process control code and not delete char
+
    dec c
    ld a, c                
    ld (CursorIndex), a           ; decrement cursor index
+   dec b
+   ld a, b                
+   ld (BufferIndex), a           ; decrement buffer index
 
+   exx
    call asm_font_dec_x
    ld a, ' '                     
    call asm_print_char           ; delete last printed char
+   exx
    
 ;;; Displace keys to the left for remove current char
 .print_buffer_keys_control_code:
@@ -126,7 +167,7 @@ loop:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; CONSTANTS 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
-.BUFFER_LENGTH       equ 20
+BUFFER_LENGTH equ 33    ; buffer length = screen width + 1 for control char
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; VARIABLES 
@@ -135,5 +176,5 @@ loop:
 .CursorIndex         db 0  ; NOTE: CursorIndex and BufferIndex  should be togheter on this order for use in pair registers, don't change
 .BufferIndex         db 0
 
-.Buffer              ds BUFFER_LENGTH - 1
+.Buffer              ds 31   ; buffer for input keys is BUFFER_LENGTH - 1 prompt - 1 cursor 
                      db 0

@@ -169,18 +169,14 @@ flash_1:
 ;-------------------------------------------------------------------------------
 ;	Name:		      internal asm_font_blank
 ;	Description:	print space, override current position in cursor and increment X (updating y if need)
-;	Clobbers: 	   AF
+;	Clobbers: 	   AF, BC', DE', HL'
 ;-------------------------------------------------------------------------------
 PUBLIC asm_font_blank
 asm_font_blank:
    ld a, ' '               ; set char space
-   push bc
-   push de
-   push hl
+   exx
    call asm_print_char     ; print char
-   pop hl
-   pop de
-   pop bc
+   exx
    call asm_font_inc_x     ; increment x coord
    ret
  
@@ -195,7 +191,7 @@ PUBLIC asm_font_inc_x
 asm_font_inc_x:
    ld a, (_GLOBAL_FONT_X)           ; increment x
    inc a                     
-   cp _SYS_LOWRES_SCR_WIDTH - 1     ; Compare with right border (x > 31)
+   cp _SYS_LOWRES_SCR_WIDTH         ; Compare with right border (x > 32)
    jr c, update_x                   ; jump if not is in right border
    call asm_font_crlf
    ret
@@ -280,19 +276,15 @@ asm_font_dec_x:
 ;	Name:		      internal asm_font_backspace
 ;	Description:	decrement X cursor, deleting char backspace)
 ;                 delete char printing space.
-;	Clobbers: 	   AF
+;	Clobbers: 	   AF, BC', DE', HL'
 ;-------------------------------------------------------------------------------
 PUBLIC asm_font_backspace
 asm_font_backspace:
    call asm_font_dec_x
    ld a, ' '               ; space to print
-   push bc
-   push de
-   push hl
+   exx
    call asm_print_char     ; override char with space
-   pop hl
-   pop de
-   pop bc
+   exx
    ret                     ; exit
 
 
