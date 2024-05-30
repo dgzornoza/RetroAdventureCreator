@@ -17,7 +17,6 @@ EXTERN asm_font_dec_x
 PUBLIC asm_push_buffer_key
 asm_push_buffer_key:
    
-   ;exx                     ; store BC, DE, HL registers
    ld b, a                 ; move input key to b
 
    cp 32                   ; is char control (ascii < 32)?, C Flag = 1   
@@ -41,7 +40,6 @@ asm_push_buffer_key:
 
 .push_exit:
    
-   ;exx         ; restore BC, DE, HL registers
    ret
 
 ;-------------------------------------------------------------------------------

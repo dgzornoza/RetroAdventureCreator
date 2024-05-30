@@ -59,7 +59,6 @@ _show_input_commands:
    call asm_show_prompt                         ; show shell prompt
 
    call asm_font_inc_x                          ; set cursor position 
-   call asm_show_cursor                         ; show cursor
 
    ld a, 0x01                             ; set as visible
    ld (State), a
@@ -128,9 +127,6 @@ _input_commands_render:
    jr z, exit_render             ; execute only if is visible.
 
    call asm_print_buffer_keys    ; print buffer keys
-
-   ; call asm_font_inc_x           ; set cursor position 
-   ; call asm_show_cursor          ; show cursor
 
 .exit_render
    ret

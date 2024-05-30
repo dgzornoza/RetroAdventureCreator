@@ -11,17 +11,15 @@ EXTERN _GLOBAL_FONT_ATTRIBUTES
 ;  Output: 	      --
 ;	Clobbers: 	   DE, BC
 ;-------------------------------------------------------------------------------
-PUBLIC asm_show_cursor
-asm_show_cursor:
+; TODO: dgzornoza, queda implementar correctamente, posiblemente se tenga que usar en input_buffer
+; ya que al borrar debe eliminarse el ultimo cursor puesto.
+; PUBLIC asm_show_cursor
+; asm_show_cursor:
 
-   ; ld a, (_GLOBAL_FONT_ATTRIBUTES) 
-   ; or a, 0xFF                       
-   ; ld (_GLOBAL_FONT_ATTRIBUTES), a  ; set cursor flash attribute  
+;    ld a, '_'               ; print cursor 
+;    call asm_print_char
 
-   ld a, '_'               ; print cursor 
-   call asm_print_char
-
-   ret
+;    ret
    
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; VARIABLES 
