@@ -7,6 +7,7 @@ EXTERN asm_print_char
 ;  Description:	routine for show input command prompt
 ;  Input:		--
 ;  Output: 	    --
+;	Clobbers: 	   DE, BC
 ;-------------------------------------------------------------------------------
 PUBLIC asm_show_prompt
 asm_show_prompt:

@@ -99,18 +99,13 @@ _hide_input_commands:
 ;  Description: routine for manage input commands component update events, should be called in main update loop
 ;  Input:		--
 ;  Output: 	   --
+;	Clobbers: 	   AF, BC, DE, HL
 ;-------------------------------------------------------------------------------
 _input_commands_update:
 
    ld a, (State)
    cp 0x00                                
    jr z, exit_update             ; execute only if is visible.
-
-   ; ld a, (CursorIndex)
-   ; cp INPUT_MAX_LENGTH           ; compare with max length
-   ; jr nc, exit_update            ; if index > max length, exit routine
-   ; or a
-   ; jr z, exit_update             ; if index == 0, exit routine
 
    ld a, (_ROM_LAST_KEY)
    call asm_push_buffer_key      ; push last key to input buffer
@@ -120,10 +115,11 @@ _input_commands_update:
 
 
 ;-------------------------------------------------------------------------------
-;  Name:		public _input_commands_render
-;  Description: routine for manage input commands component render events, should be called in main render loop
-;  Input:		--
-;  Output: 	   --
+;  Name:		      public _input_commands_render
+;  Description:   routine for manage input commands component render events, should be called in main render loop
+;  Input:		   --
+;  Output: 	      --
+;	Clobbers: 	   AF, BC, DE
 ;-------------------------------------------------------------------------------
 _input_commands_render:
 
@@ -132,6 +128,9 @@ _input_commands_render:
    jr z, exit_render             ; execute only if is visible.
 
    call asm_print_buffer_keys    ; print buffer keys
+
+   ; call asm_font_inc_x           ; set cursor position 
+   ; call asm_show_cursor          ; show cursor
 
 .exit_render
    ret
@@ -157,8 +156,9 @@ asm_clear_input_commands_region:
 ;-------------------------------------------------------------------------------
 ;  Name:		private asm_set_input_command_font_properties
 ;  Description:	routine for set character font properties for input commands
-;  Input:		--
-;  Output: 	   --
+;  Input:		   --
+;  Output: 	      --
+;	Clobbers: 	   AF, BC, HL
 ;-------------------------------------------------------------------------------
 asm_set_input_command_font_properties:
 

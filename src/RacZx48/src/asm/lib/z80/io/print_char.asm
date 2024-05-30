@@ -39,7 +39,7 @@ EXTERN _GLOBAL_FONT_ATTRIBUTES
 ;	Description:	print 8x8 pixels char from charset.
 ;	Input:		   A = ASCII char to print
 ;	Output: 	      --
-;	Clobbers: 	   DE, BC
+;	Clobbers: 	   DE, BC, HL
 ;  Remarks:       _GLOBAL_FONT_CHARSET define charset memory address to use.
 ;                 _GLOBAL_FONT_X              = X Coordinate in low-res (0-31)
 ;                 _GLOBAL_FONT_Y              = Y Coordinate in low-res (0-23)

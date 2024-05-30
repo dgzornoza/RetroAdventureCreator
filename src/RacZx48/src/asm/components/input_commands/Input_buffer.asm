@@ -12,17 +12,21 @@ EXTERN asm_font_dec_x
 ;
 ;  Input:		   a = key to push into input buffer
 ;  Output: 	      --
-;  Clobbers: 	   AF, BC', DE', HL'
+;  Clobbers: 	   AF, BC, DE, HL
 ;-------------------------------------------------------------------------------
 PUBLIC asm_push_buffer_key
 asm_push_buffer_key:
    
-   push de                 ; store stack registers
+   ;exx                     ; store BC, DE, HL registers
+   ld b, a                 ; move input key to b
 
-   ex af, af'              ; A' = input key
+   cp 32                   ; is char control (ascii < 32)?, C Flag = 1   
+   ld a, 0                 ; NOTE: can not use xor because can change carry flag for next instruction
+   adc a, BUFFER_LENGTH    ; A = 0 + BUFFER_LENGTH + Carry flag, if control char, Carry flag = 1 (BUFFER_LENGTH + 1)
+   ld c, a
 
    ld a, (BufferIndex)
-   cp BUFFER_LENGTH        ; compare with buffer size
+   cp c                    ; compare with buffer size
    jr nc, push_exit        ; if index > buffer, exit routine
    
    ld hl, Buffer           ; HL = pointer to buffer
@@ -30,43 +34,15 @@ asm_push_buffer_key:
    ld e, a
    add hl, de              ; add index offset to HL
    
-   inc a                   ; @label increment buffer index:
+   inc a                   ; increment buffer index:
    ld (BufferIndex), a
 
-   ex af, af'
-   ld (hl), a              ; add key ascii to buffer
+   ld (hl), b              ; add key ascii to buffer
 
 .push_exit:
    
-   pop de
+   ;exx         ; restore BC, DE, HL registers
    ret
-
-;    exx                     ; store BC, DE, HL registers
-
-;    cp 32                   ; is char control (ascii < 32)?, C Flag = 1
-;    ld b, a                 ; move input key to b
-;    ld a, (BufferIndex)
-;    ld c, a                 ; move buffer index to c
-;    adc a, 0                ; A = BufferIndex + 0 + Carry flag, if control char, Carry flag = 1 (BUFFER_LENGTH + 1)
-
-;    cp BUFFER_LENGTH        ; compare with buffer size
-;    jr nc, push_exit        ; if index > buffer, exit routine
-
-;    ld hl, Buffer           ; HL = pointer to buffer
-;    ld d, 00h 
-;    ld e, c
-;    add hl, de              ; add index offset to HL
-   
-;    inc c                   ; increment buffer index:
-;    ld a, c
-;    ld (BufferIndex), a
-
-;    ld (hl), b              ; add key ascii to buffer
-
-; .push_exit:
-   
-;    exx         ; restore BC, DE, HL registers
-;    ret
 
 ;-------------------------------------------------------------------------------
 ;  Name:		      internal _print_buffer_keys
@@ -167,14 +143,14 @@ loop:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; CONSTANTS 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
-BUFFER_LENGTH equ 33    ; buffer length = screen width + 1 for control char
+BUFFER_LENGTH equ 30       ; buffer length = screen width - 1 prompt - 1 cursor
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; VARIABLES 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-.CursorIndex         db 0  ; NOTE: CursorIndex and BufferIndex  should be togheter on this order for use in pair registers, don't change
+.CursorIndex         db 0     ; NOTE: CursorIndex and BufferIndex  should be togheter on this order for use in pair registers, don't change
 .BufferIndex         db 0
 
-.Buffer              ds 31   ; buffer for input keys is BUFFER_LENGTH - 1 prompt - 1 cursor 
+.Buffer              ds 31    ; buffer for input keys is BUFFER_LENGTH + 1 for posible control char
                      db 0
