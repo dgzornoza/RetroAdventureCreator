@@ -21,7 +21,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Data:
-/// Commands = Command/commandGroup id bytes (end with 0x00)
+/// Commands = Command id bytes (end with 0x00)
 /// InputCommands = InputCommand id bytes (end with 0x00) (only in AfterInputCommandDispatchers)
 /// 
 /// </remarks>

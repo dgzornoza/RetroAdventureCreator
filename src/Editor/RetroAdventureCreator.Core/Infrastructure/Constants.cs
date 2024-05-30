@@ -11,8 +11,9 @@ namespace RetroAdventureCreator.Core.Infrastructure
         public const byte EndToken = 0x00;
         public const byte EndTokenLength = 0x01;
 
-        // TODO: dgzornoza - En principio puede ser cualquiera, hay que ver si se requiere limirar los tamaños.
-        public const int MaxLengthIds = byte.MaxValue;
+        // Is limited to a byte -1 because indices are used as reference to messages, vocabularies, etc.
+        // and index 0 is used as null value.
+        public const int MaxLengthIds = byte.MaxValue - 1;
 
         // Vocabulary
         public const int MaxLengthVocabularyNounsAllowed = MaxLengthIds;

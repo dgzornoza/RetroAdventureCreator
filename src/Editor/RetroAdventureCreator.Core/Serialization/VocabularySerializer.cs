@@ -41,7 +41,7 @@ internal abstract class VocabularySerializer : Serializer<IEnumerable<Vocabulary
         var result = new List<GameComponentPointerModel>();
         var pointer = 0;
 
-        foreach (var vocabulary in GameComponent)
+        foreach (var vocabulary in GameComponent.SortByKey())
         {
             EnsureGameComponentProperties(vocabulary, result);
 
