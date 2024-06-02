@@ -67,6 +67,6 @@ internal class MessagesSerializer : Serializer<IEnumerable<MessageModel>>
         EnsureHelpers.EnsureNotNullOrWhiteSpace(message.Code, Properties.Resources.CodeIsRequiredError);
 
         EnsureHelpers.EnsureNotNullOrEmpty(message.Text, Properties.Resources.TextIsRequiredError);
-        EnsureHelpers.EnsureNotFound(message.Text, item => item == Constants.EndToken, Properties.Resources.StringEndCharDuplicatedError);
+        //EnsureHelpers.EnsureNotFound(message.Text, item => item == Constants.EndToken, Properties.Resources.StringEndCharDuplicatedError);
     }
 }

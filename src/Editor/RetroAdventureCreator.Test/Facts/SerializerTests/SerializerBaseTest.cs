@@ -12,8 +12,6 @@ namespace RetroAdventureCreator.Test.Facts.SerializerTests;
 
 public abstract class SerializerBaseTest
 {
-    protected readonly string EndTokenString = Encoding.ASCII.GetString(new byte[] { Constants.EndToken });
-
     protected GameBuilder builder = default!;
     protected GameModel game = default!;
 

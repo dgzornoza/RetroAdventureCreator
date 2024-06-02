@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using RetroAdventureCreator.Core;
 using RetroAdventureCreator.Core.Extensions;
 using RetroAdventureCreator.Core.Infrastructure;
@@ -23,21 +24,31 @@ public class VocabularySerializerTest : SerializerBaseTest
         CreateGame<GameInPawsTutorialBuilder>();
         var serializerFactory = new SerializerFactory(game);
 
-        var vocabularyNouns = game.Vocabulary.Where(item => item.WordType == WordType.Noun);
-        var expectedNounsDataLength = vocabularyNouns.Where(item => item.Synonyms != null).SortByKey().Sum(item => string.Join('|', item.Synonyms!).Length + Constants.EndTokenLength);
-        var expectedSynonymsBytes = encoding.GetBytes(string.Join(EndTokenString, 
+        var vocabularyNouns = game.Vocabulary.Where(item => item.WordType == WordType.Noun).SortByKey();
+
+        var expectedNounsDataLength = vocabularyNouns.Where(item => item.Synonyms != null)
+            .Sum(item => string.Join('|', item.Synonyms!).Length);
+
+        var expectedSynonymsBytes = encoding.GetBytes(string.Join(string.Empty, 
             vocabularyNouns.Where(item => item.Synonyms != null)
-            .SortByKey().Select(item => string.Join('|', item.Synonyms!))) + EndTokenString);
+            .Select(item => string.Join('|', item.Synonyms!))));
+
         var expectedSynonymsText = encoding.GetString(expectedSynonymsBytes);
         
         // Act
         var actual = serializerFactory.Serialize<VocabularyNounsSerializer>();
+        var splitedData = serializerFactory.GameComponentsPointersModel.VocabularyNouns.SplitData(actual.Data);
 
         // Assert
         Assert.NotNull(actual);
         Assert.NotNull(actual.Data);
         Assert.True(actual.Data.Length == expectedNounsDataLength);
         Assert.Equal(expectedSynonymsText, encoding.GetString(actual.Data));
+
+        for (int i = 0; i < vocabularyNouns.Count(); i++)
+        {
+            Assert.Equal(string.Join('|', vocabularyNouns.ElementAt(i).Synonyms), encoding.GetString(splitedData.ElementAt(i)));
+        }
     }
 
     [Fact]
@@ -47,18 +58,27 @@ public class VocabularySerializerTest : SerializerBaseTest
         CreateGame<GameInPawsTutorialBuilder>();
         var serializerFactory = new SerializerFactory(game);
 
-        var vocabularyVerbs = game.Vocabulary.Where(item => item.WordType == WordType.Verb);
-        var expectedVerbsDataLength = vocabularyVerbs.Where(item => item.Synonyms != null).SortByKey().Sum(item => string.Join('|', item.Synonyms!).Length + Constants.EndTokenLength);
-        var expectedSynonyms = string.Join(EndTokenString, vocabularyVerbs.Where(item => item.Synonyms != null).SortByKey().Select(item => string.Join('|', item.Synonyms!))) + EndTokenString;
+        var vocabularyVerbs = game.Vocabulary.Where(item => item.WordType == WordType.Verb).SortByKey();
+        var expectedVerbsDataLength = vocabularyVerbs.Where(item => item.Synonyms != null)
+            .Sum(item => string.Join('|', item.Synonyms!).Length);
+
+        var expectedSynonyms = string.Join(string.Empty, 
+            vocabularyVerbs.Where(item => item.Synonyms != null).Select(item => string.Join('|', item.Synonyms!)));
 
         // Act
         var actual = serializerFactory.Serialize<VocabularyVerbsSerializer>();
+        var splitedData = serializerFactory.GameComponentsPointersModel.VocabularyVerbs.SplitData(actual.Data);
 
         // Assert
         Assert.NotNull(actual);
         Assert.NotNull(actual.Data);
         Assert.True(actual.Data.Length == expectedVerbsDataLength);
         Assert.Equal(expectedSynonyms, encoding.GetString(actual.Data));
+
+        for (int i = 0; i < vocabularyVerbs.Count(); i++)
+        {
+            Assert.Equal(string.Join('|', vocabularyVerbs.ElementAt(i).Synonyms), encoding.GetString(splitedData.ElementAt(i)));
+        }
     }
     
     [Fact]

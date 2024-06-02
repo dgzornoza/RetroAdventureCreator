@@ -68,7 +68,7 @@ public class FlagsSerializerTest : SerializerBaseTest
         var messageError = string.Format(Core.Properties.Resources.MaxLengthFlagsAllowedError, Constants.MaxLengthFlagsAllowed);
 
         // Act && Assert
-        Assert.True(Assert.Throws<InvalidOperationException>(() => new FlagsSerializer(game.Flags)).Message == messageError);
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new FlagsSerializer(game.Flags).GenerateGameComponentPointers()).Message == messageError);
     }
 
 

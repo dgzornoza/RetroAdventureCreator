@@ -207,9 +207,6 @@
   <data name="NameIsRequiredError" xml:space="preserve">
     <value>Name property is required</value>
   </data>
-  <data name="StringEndCharDuplicatedError" xml:space="preserve">
-    <value>Can not be set 0x00 char into string, is reserved byte</value>
-  </data>
   <data name="SysnonymsAreRequiredError" xml:space="preserve">
     <value>Synonyms property is required</value>
   </data>

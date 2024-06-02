@@ -331,15 +331,6 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can not be set 0x00 char into string, is reserved byte.
-        /// </summary>
-        internal static string StringEndCharDuplicatedError {
-            get {
-                return ResourceManager.GetString("StringEndCharDuplicatedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Synonyms property is required.
         /// </summary>
         internal static string SysnonymsAreRequiredError {

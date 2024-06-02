@@ -8,8 +8,12 @@ namespace RetroAdventureCreator.Core.Infrastructure
 {
     public static class Constants
     {
-        public const byte EndToken = 0x00;
+        /// <summary>
+        /// End game component pointer code, for empty game component data used for calculate last component data length.
+        /// </summary>
+        public const string EndComponentPointerCode = "_END_COMPONENT";
         public const byte EndTokenLength = 0x01;
+        public const byte EndToken = 0x01;
 
         public const int MaxLengthIds = byte.MaxValue;
 

@@ -28,7 +28,7 @@
 
 ## Game Components Serializers
 
-**Remarks:** *All strings are encoded as ASCII*
+**Remarks:** *All strings are encoded as ASCII by default, can specify encode in SerializerFactory*
 
 ### FlagsSerializer
 
@@ -36,18 +36,18 @@
         Flags = 1 bit per flag
         
     Limnits: 
-        MaxLengthFlagsAllowed = 255
+        MaxLengthFlagsAllowed = 256
 
-### VocabularySerializer
+### VocabularySerializer (nouns and verbs)
 
 **Remarks:** *Exists two volcabuilary models: 'VocabularyNouns' and 'VocabularyVerbs'*
 
     Data:
-        Synonyms => synonym bytes splitted by '|' (end with 0x00)
+        Synonyms => synonym bytes splitted by '|'
 
     Limits:
-        MaxLengthVocabularyNounsAllowed = 255
-        MaxLengthVocabularyVerbsAllowed = 255
+        MaxLengthVocabularyNounsAllowed = 256
+        MaxLengthVocabularyVerbsAllowed = 256
         MaxLengthVocabularySynonymsAllowed = 16
 
 ### MessageSerializer
@@ -56,7 +56,7 @@
         Text: Mesage text bytes (end with 0x00)
 
     Limits:
-        MaxLengthMessagesAllowed = 255
+        MaxLengthMessagesAllowed = 256
 
 ### CommandSerializer
 
@@ -66,7 +66,7 @@
         Arguments = ids bytes (end with 0x00)
 
     Limits:
-        MaxLengthCommandsAllowed = 255;
+        MaxLengthCommandsAllowed = 256;
 
 ### InputCommandSerializer
 
@@ -75,7 +75,7 @@
         Nouns = vocabulary id bytes (end with 0x00)
 
     Limits:
-        MaxLengthInputCommandsAllowed = 255
+        MaxLengthInputCommandsAllowed = 256
 
 ### DispatcherSerializer
 
@@ -84,8 +84,8 @@
         InputCommands = InputCommand id bytes (end with 0x00) (only in AfterInputCommandDispatchers)
 
     Limits:
-        MaxLengthAfterInputCommandDispatchersAllowed = 255
-        MaxLengthBeforeInputCommandDispatchersAllowed = 255
+        MaxLengthAfterInputCommandDispatchersAllowed = 256
+        MaxLengthBeforeInputCommandDispatchersAllowed = 256
 
 ### ObjectSerializer
 
@@ -133,3 +133,54 @@
         Color = 4 bits
         BackgroundColor = 4 bits
         BorderColor = 4 bits    
+
+## Game Components Database
+
+### Global header
+
+Contains pointer to addresses of all components in the database
+
+    Data (2 bytes each one with component address)
+
+    | ----------------- |
+    | FlagsModel        |
+    | VocabularyModel   |    
+    | MessageModel      |
+    | CommandModel      |
+    | InputCommandModel |    
+    | DispatcherModel   |    
+    | ObjectModel       |
+    | SceneModel        |
+    | PlayerModel       |
+    | SettingsModel     |   
+
+### Orderer addresses
+
+Orderer addresses for common reused components. This section is used for optimize stored memory in reused components that no require more of 256 (1 byte) of elements in compoent.
+
+This allows you to use an index (1 byte) instead of a memory address (2 bytes) to save memory on commonly common data such as verbs and nouns.
+
+The data of the components that use this section may use a byte indicating the index where the memory address of the data is, so that this section will contain a map from 1 byte index to 2 bytes memory address.
+
+    Data (2 byte each one with component data address)
+
+    | ----------------- |
+    | VocabularyModel   |    
+
+### Components Data
+
+Section with serialized data of all components
+
+    Data (variable length), see each component serializer
+
+    | ----------------- | 
+    | FlagsModel        | 
+    | VocabularyModel   | 
+    | MessageModel      | 
+    | CommandModel      | 
+    | InputCommandModel |    
+    | DispatcherModel   |    
+    | ObjectModel       |
+    | SceneModel        |
+    | PlayerModel       |
+    | SettingsModel     |

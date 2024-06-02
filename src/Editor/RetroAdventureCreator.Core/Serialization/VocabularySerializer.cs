@@ -24,8 +24,9 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Data:
-/// Synonyms = synonym bytes splitted by '|' (end with 0x00)
+/// Synonyms = synonym bytes splitted by '|'
 /// 
+/// NOTE: This component use Orderer addresses with ponters to data, should be use index to orderer addresses for find vocabulary data.
 /// </remarks>
 internal abstract class VocabularySerializer : Serializer<IEnumerable<VocabularyModel>>
 {
@@ -47,8 +48,11 @@ internal abstract class VocabularySerializer : Serializer<IEnumerable<Vocabulary
 
             result.Add(new GameComponentPointerModel(vocabulary.Code, pointer));
 
-            pointer += encoding.GetBytes(JoinSynonyms(vocabulary)).Length + Constants.EndTokenLength;
+            pointer += encoding.GetBytes(JoinSynonyms(vocabulary)).Length;
         }
+
+        // add end vocabulary pointer
+        result.Add(new GameComponentPointerModel(Constants.EndComponentPointerCode, pointer));
 
         return result;
     }
@@ -59,7 +63,7 @@ internal abstract class VocabularySerializer : Serializer<IEnumerable<Vocabulary
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    protected byte[] CreateDataBytes(VocabularyModel vocabulary) => encoding.GetBytes(JoinSynonyms(vocabulary)).Concat(new byte[] { Constants.EndToken }).ToArray();
+    protected byte[] CreateDataBytes(VocabularyModel vocabulary) => encoding.GetBytes(JoinSynonyms(vocabulary));
 
     private void EnsureGameComponentProperties(VocabularyModel vocabulary, IEnumerable<GameComponentPointerModel> gameComponentPointers)
     {
@@ -69,9 +73,6 @@ internal abstract class VocabularySerializer : Serializer<IEnumerable<Vocabulary
         EnsureHelpers.EnsureNotNullOrEmpty(vocabulary.Synonyms, Properties.Resources.SysnonymsAreRequiredError);
         EnsureHelpers.EnsureMaxLength(vocabulary.Synonyms.Count(), Constants.MaxLengthVocabularySynonymsAllowed,
             string.Format(Properties.Resources.MaxLengthVocabularySynonymsError, Constants.MaxLengthVocabularySynonymsAllowed));
-
-        var synonymsBytes = encoding.GetBytes(JoinSynonyms(vocabulary));
-        EnsureHelpers.EnsureNotFound(synonymsBytes, item => item == Constants.EndToken, Properties.Resources.StringEndCharDuplicatedError);
     }
 
     private static string JoinSynonyms(VocabularyModel vocabulary) => string.Join('|', vocabulary.Synonyms);
