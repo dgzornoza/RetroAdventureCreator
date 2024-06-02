@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Runtime.ConstrainedExecution;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using System.Text;
 using RetroAdventureCreator.Core.Extensions;
 using RetroAdventureCreator.Core.Helpers;
 using RetroAdventureCreator.Core.Infrastructure;

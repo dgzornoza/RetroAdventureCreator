@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace RetroAdventureCreator.Core.Extensions;
 
-namespace RetroAdventureCreator.Core.Extensions;
-
-    internal static class NumberExtensions
+internal static class NumberExtensions
     {
         public static string ToHexString(this int number, int numDigits) => string.Format($"{{0:X{numDigits}}}", number);
 

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using RetroAdventureCreator.Core.Extensions;
-using RetroAdventureCreator.Core.Infrastructure;
-using RetroAdventureCreator.Infrastructure.Game.Enums;
+﻿using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Test.Infrastructure.Builders

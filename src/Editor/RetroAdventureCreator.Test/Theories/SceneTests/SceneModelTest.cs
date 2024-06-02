@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RetroAdventureCreator.Infrastructure.Game.Enums;
-using RetroAdventureCreator.Infrastructure.Game.Models;
-using RetroAdventureCreator.Test.Helpers;
-
-namespace RetroAdventureCreator.Test.Theories.SceneTests;
+﻿namespace RetroAdventureCreator.Test.Theories.SceneTests;
 
 public class SceneModelTest
 {
