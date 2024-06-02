@@ -33,7 +33,7 @@ public class VocabularySerializerTest : SerializerBaseTest
         
         // Act
         var actual = serializerFactory.Serialize<VocabularyNounsSerializer>();
-        var splitedData = serializerFactory.GameComponentsPointersModel.VocabularyNouns.SplitData(actual.Data);
+        var splitedData = SplitData(serializerFactory.GameComponentsPointersModel.VocabularyNouns, actual.Data);
 
         // Assert
         Assert.NotNull(actual);
@@ -63,7 +63,7 @@ public class VocabularySerializerTest : SerializerBaseTest
 
         // Act
         var actual = serializerFactory.Serialize<VocabularyVerbsSerializer>();
-        var splitedData = serializerFactory.GameComponentsPointersModel.VocabularyVerbs.SplitData(actual.Data);
+        var splitedData = SplitData(serializerFactory.GameComponentsPointersModel.VocabularyVerbs, actual.Data);
 
         // Assert
         Assert.NotNull(actual);
@@ -164,6 +164,31 @@ public class VocabularySerializerTest : SerializerBaseTest
         CreateGame<GameCodeNullBuilder>();
 
         var messageError = RetroAdventureCreator.Core.Properties.Resources.CodeIsRequiredError;        
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyVerbsSerializer(game.Vocabulary, encoding).GenerateGameComponentPointers()).Message == messageError);
+    }
+
+    [Fact]
+    public void VocabularyNounsSerializer_GenerateGameComponentPointers_DuplicateCode_throwsExcepion()
+    {
+        // Arrange        
+        CreateGame<GameDuplicateCodeBuilder>();
+
+        var messageError = string.Format(Core.Properties.Resources.DuplicateCodeError, "VocabularyNounsCodeDuplicated");
+
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyNounsSerializer(game.Vocabulary, encoding).GenerateGameComponentPointers()).Message == messageError);
+    }
+
+    [Fact]
+    public void VocabularyVerbsSerializer_GenerateGameComponentPointers_DuplicateCode_throwsExcepion()
+    {
+        // Arrange        
+        CreateGame<GameDuplicateCodeBuilder>();
+
+        var messageError = string.Format(Core.Properties.Resources.DuplicateCodeError, "VocabularyVerbsCodeDuplicated");
 
         // Act && Assert
         Assert.True(Assert.Throws<InvalidOperationException>(() => new VocabularyVerbsSerializer(game.Vocabulary, encoding).GenerateGameComponentPointers()).Message == messageError);

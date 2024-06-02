@@ -21,7 +21,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Code: Flag code
 /// RelativePointer: index to the flag bit, relative to the Flags component bytes.
 /// </remarks>
-internal class FlagsSerializer : Serializer<IEnumerable<FlagModel>>
+internal class FlagsSerializer : SerializerList<FlagModel>
 {
     public FlagsSerializer(IEnumerable<FlagModel> gameComponent) : base(gameComponent)
     {
@@ -36,7 +36,7 @@ internal class FlagsSerializer : Serializer<IEnumerable<FlagModel>>
 
         EnsureGameComponentProperties();        
 
-        foreach (var flag in GameComponent.SortByKey())
+        foreach (var flag in GameComponent)
         {
 
             result.Add(new GameComponentPointerModel(flag.Code, pointer));
@@ -48,7 +48,7 @@ internal class FlagsSerializer : Serializer<IEnumerable<FlagModel>>
 
     public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
-        var sortedFlags = GameComponent.SortByKey();
+        var sortedFlags = GameComponent;
         var dataBytes = CreateDataBytes(sortedFlags);
         return new SerializerResultModel(dataBytes.ToArray());
     }

@@ -27,7 +27,7 @@ public class MessagesSerializerTest : SerializerBaseTest
 
         // Act
         var actual = serializerFactory.Serialize<MessagesSerializer>();
-        var splitedData = serializerFactory.GameComponentsPointersModel.Messages.SplitData(actual.Data);
+        var splitedData = SplitData(serializerFactory.GameComponentsPointersModel.Messages, actual.Data);
 
         // Assert
         Assert.NotNull(actual);
@@ -71,6 +71,18 @@ public class MessagesSerializerTest : SerializerBaseTest
         CreateGame<GameCodeNullBuilder>();
 
         var messageError = Core.Properties.Resources.CodeIsRequiredError;
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(game.Messages, encoding).GenerateGameComponentPointers()).Message == messageError);
+    }
+
+    [Fact]
+    public void MessagesSerializer_GenerateGameComponentPointers_DuplicateCode_throwsExcepion()
+    {
+        // Arrange        
+        CreateGame<GameDuplicateCodeBuilder>();
+
+        var messageError = string.Format(Core.Properties.Resources.DuplicateCodeError, "MessageCodeDuplicated");
 
         // Act && Assert
         Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(game.Messages, encoding).GenerateGameComponentPointers()).Message == messageError);

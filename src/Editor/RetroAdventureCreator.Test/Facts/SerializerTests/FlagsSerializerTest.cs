@@ -79,6 +79,18 @@ public class FlagsSerializerTest : SerializerBaseTest
         Assert.True(Assert.Throws<InvalidOperationException>(() => new FlagsSerializer(game.Flags).GenerateGameComponentPointers()).Message == messageError);
     }
 
+    [Fact]
+    public void FlagsSerializerTest_GenerateGameComponentPointers_DuplicateCode_throwsExcepion()
+    {
+        // Arrange        
+        CreateGame<GameDuplicateCodeBuilder>();
+
+        var messageError = string.Format(Core.Properties.Resources.DuplicateCodeError, "FlagCodeDuplicated");
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new FlagsSerializer(game.Flags).GenerateGameComponentPointers()).Message == messageError);
+    }
+
     private static BitArray CreateRandomBits()
     {
         Random rnd = new Random();

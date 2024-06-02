@@ -19,7 +19,7 @@ public class CommandModel : IUniqueKey, ICommandModel
     public CommandToken Token { get; init; }
 
     /// <summary>
-    /// Arguments (based in command token)
+    /// Arguments (based in command token, description in serializer)
     /// </summary>
     public IEnumerable<string>? Arguments { get; init; }
 }

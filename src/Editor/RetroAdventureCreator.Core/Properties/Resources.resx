@@ -153,9 +153,6 @@
   <data name="MaxLengthCommandsAllowedError" xml:space="preserve">
     <value>The maximum length of commands allowed is {0}</value>
   </data>
-  <data name="MaxLengthCommandsGroupsAllowedError" xml:space="preserve">
-    <value>The maximum length of commands groups allowed is {0}</value>
-  </data>
   <data name="MaxLengthFlagsAllowedError" xml:space="preserve">
     <value>The maximum length of flags allowed is {0}</value>
   </data>

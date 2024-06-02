@@ -169,15 +169,6 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The maximum length of commands groups allowed is {0}.
-        /// </summary>
-        internal static string MaxLengthCommandsGroupsAllowedError {
-            get {
-                return ResourceManager.GetString("MaxLengthCommandsGroupsAllowedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The maximum length of flags allowed is {0}.
         /// </summary>
         internal static string MaxLengthFlagsAllowedError {

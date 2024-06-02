@@ -14,12 +14,11 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Data:
-/// 1 bit = 0 (Command)
-/// Token = 7 byte (128)
-/// Arguments = ids bytes (end with 0x00)
+/// Token = 8 bits (256)
+/// Arguments = ids bytes
 /// 
 /// </remarks>
-internal class CommandsSerializer : Serializer<IEnumerable<CommandModel>>
+internal class CommandsSerializer : SerializerList<CommandModel>
 {
     public CommandsSerializer(IEnumerable<CommandModel> gameComponent) : base(gameComponent)
     {
@@ -32,14 +31,14 @@ internal class CommandsSerializer : Serializer<IEnumerable<CommandModel>>
         var result = new List<GameComponentPointerModel>();
         var pointer = 0;
 
-        foreach (var command in GameComponent.SortByKey())
+        foreach (var command in GameComponent)
         {
             EnsureGameComponentProperties(command, result);
 
             result.Add(new GameComponentPointerModel(command.Code, pointer));
             pointer +=
-                1 + // flag command + token
-                (command.Arguments?.Count() ?? 0) + 1; // Arguments + EndTokenByte
+                1 + // token
+                command.Arguments?.Count() ?? 0; // Arguments
         }
 
         return result;
@@ -47,7 +46,7 @@ internal class CommandsSerializer : Serializer<IEnumerable<CommandModel>>
 
     public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
-        var dataBytes = GameComponent.SortByKey().SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
+        var dataBytes = GameComponent.SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
