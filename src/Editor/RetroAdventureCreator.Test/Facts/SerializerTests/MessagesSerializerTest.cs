@@ -2,7 +2,9 @@
 using RetroAdventureCreator.Core.Extensions;
 using RetroAdventureCreator.Core.Infrastructure;
 using RetroAdventureCreator.Core.Serialization;
+using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
+using RetroAdventureCreator.Test.Helpers;
 using RetroAdventureCreator.Test.Infrastructure.Builders;
 
 namespace RetroAdventureCreator.Test.Facts.SerializerTests;
@@ -18,18 +20,26 @@ public class MessagesSerializerTest : SerializerBaseTest
         CreateGame<GameInPawsTutorialBuilder>();
         var serializerFactory = new SerializerFactory(game);
 
-        var expectedDataLength = game.Messages.SortByKey().Sum(item => item.Text.Length + Constants.EndTokenLength);
-        var expectedBytes = encoding.GetBytes(string.Join("\0", game.Messages.SortByKey().Select(item => item.Text)) + "\0");
+        var gameMessages = game.Messages.SortByKey();
+        var expectedDataLength = gameMessages.Sum(item => item.Text.Length);
+        var expectedBytes = encoding.GetBytes(string.Join(string.Empty, gameMessages.Select(item => item.Text)));
         var expectedText = encoding.GetString(expectedBytes);
 
         // Act
         var actual = serializerFactory.Serialize<MessagesSerializer>();
+        var splitedData = serializerFactory.GameComponentsPointersModel.Messages.SplitData(actual.Data);
 
         // Assert
         Assert.NotNull(actual);
         Assert.NotNull(actual.Data);
         Assert.True(actual.Data.Length == expectedDataLength);
         Assert.Equal(expectedText, encoding.GetString(actual.Data));
+
+        for (int i = 0; i < gameMessages.Count(); i++)
+        {
+            var asciiText = encoding.GetString(encoding.GetBytes(gameMessages.ElementAt(i).Text));
+            Assert.Equal(asciiText, encoding.GetString(splitedData.ElementAt(i)));
+        }
     }
 
     [Fact]

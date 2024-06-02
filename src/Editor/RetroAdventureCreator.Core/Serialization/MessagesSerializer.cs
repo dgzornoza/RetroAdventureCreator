@@ -15,10 +15,10 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Data:
-/// Text: Mesage text bytes (end with 0x00)
+/// Text: Mesage text bytes
 /// 
 /// </remarks>
-internal class MessagesSerializer : Serializer<IEnumerable<MessageModel>>
+internal class MessagesSerializer : SerializerList<MessageModel>
 {
     private readonly Encoding encoding;
 
@@ -35,25 +35,28 @@ internal class MessagesSerializer : Serializer<IEnumerable<MessageModel>>
         var result = new List<GameComponentPointerModel>();
         var pointer = 0;
 
-        foreach (var message in GameComponent.SortByKey())
+        foreach (var message in GameComponent)
         {
             EnsureGameComponentProperties(message, result);
 
             result.Add(new GameComponentPointerModel(message.Code, pointer));
 
-            pointer += (message.Text).Length + Constants.EndTokenLength;
+            pointer += (message.Text).Length;
         }
+
+        // add end messages pointer
+        result.Add(new GameComponentPointerModel(Constants.EndComponentPointerCode, pointer));
 
         return result;
     }
 
     public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
-        var dataBytes = GameComponent.SortByKey().SelectMany(CreateDataBytes);
+        var dataBytes = GameComponent.SelectMany(CreateDataBytes);
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    private byte[] CreateDataBytes(MessageModel message) => encoding.GetBytes(message.Text).Concat(new byte[] { Constants.EndToken }).ToArray();
+    private byte[] CreateDataBytes(MessageModel message) => encoding.GetBytes(message.Text).ToArray();
 
     private static void EnsureGameComponentProperties(MessageModel message, IEnumerable<GameComponentPointerModel> gameComponentPointers)
     {
@@ -61,6 +64,5 @@ internal class MessagesSerializer : Serializer<IEnumerable<MessageModel>>
         EnsureHelpers.EnsureNotNullOrWhiteSpace(message.Code, Properties.Resources.CodeIsRequiredError);
 
         EnsureHelpers.EnsureNotNullOrEmpty(message.Text, Properties.Resources.TextIsRequiredError);
-        //EnsureHelpers.EnsureNotFound(message.Text, item => item == Constants.EndToken, Properties.Resources.StringEndCharDuplicatedError);
     }
 }

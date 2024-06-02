@@ -20,7 +20,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// 
 /// NOTE: This component use Orderer addresses with ponters to data, should be use index to orderer addresses for find vocabulary data.
 /// </remarks>
-internal abstract class VocabularySerializer : Serializer<IEnumerable<VocabularyModel>>
+internal abstract class VocabularySerializer : SerializerList<VocabularyModel>
 {
     private readonly Encoding encoding;
 
@@ -34,7 +34,7 @@ internal abstract class VocabularySerializer : Serializer<IEnumerable<Vocabulary
         var result = new List<GameComponentPointerModel>();
         var pointer = 0;
 
-        foreach (var vocabulary in GameComponent.SortByKey())
+        foreach (var vocabulary in GameComponent)
         {
             EnsureGameComponentProperties(vocabulary, result);
 
@@ -51,7 +51,7 @@ internal abstract class VocabularySerializer : Serializer<IEnumerable<Vocabulary
 
     public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
-        var dataBytes = GameComponent.SortByKey().SelectMany(CreateDataBytes);
+        var dataBytes = GameComponent.SelectMany(CreateDataBytes);
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
