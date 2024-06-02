@@ -1,5 +1,6 @@
 # Game Model Description
 
+- **FlagsModel**: Contains the flags that the game can use. It is used to store the game state.
 - **VocabularyModel**: Contains the words that the game can understand. It is used to parse the input commands and to generate the output messages.
 - **MessageModel**: Contains the messages that the game can show to the player. It is used to generate the output messages.
 - **CommandModel**: Contains execution commands that the game can use.
@@ -7,13 +8,13 @@
 - **DispatcherModel**: Contains the dispatchers that the game can use to process the input commands. It is used to parse the input commands.
 - **ObjectModel**: Contains the objects that the game can use. It is used to store the game player objects.
 - **SceneModel**: Contains the scenes that the game can use. It is used to store the game scenes.
-- **FlagsModel**: Contains the flags that the game can use. It is used to store the game state.
 - **PlayerModel**: Contains the player data that the game can use. It is used to store the game player.
 - **SettingsModel**: Contains the settings that the game can use. It is used to store the game settings.
 - **GameModel**: Contains the all game data.
 
 ## Game Components Creation Dependencies
 
+    FlagsModel
     VocabularyModel
     MessageModel
     CommandModel
@@ -21,7 +22,6 @@
     DispatcherModel -> InputCommandModel, CommandGroupModel
     ObjectModel -> MessageModel, VocabularyModel
     SceneModel -> MessageModel, DispatcherModel, ObjectModel
-    FlagsModel
     PlayerModel -> ObjectModel
     SettingsModel
     GameModel -> PlayerModel, SettingsModel, VocabularyModel, MessageModel, CommandModel, InputCommandModel, DispatcherModel, ObjectModel, SceneModel
@@ -29,6 +29,14 @@
 ## Game Components Serializers
 
 **Remarks:** *All strings are encoded as ASCII*
+
+### FlagsSerializer
+
+    Data:
+        Flags = 1 bit per flag
+        
+    Limnits: 
+        MaxLengthFlagsAllowed = 255
 
 ### VocabularySerializer
 
@@ -105,14 +113,6 @@
 
     Limits:
         MaxLengthScenesAllowed = 255
-
-### FlagsSerializer
-
-    Data:
-        Flags = 1 bit per flag
-        
-    Limnits: 
-        MaxLengthFlagsAllowed = 255
 
 ### PlayerSerializer
 

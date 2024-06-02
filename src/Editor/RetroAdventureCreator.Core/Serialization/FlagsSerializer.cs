@@ -24,17 +24,34 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Data:
 /// Flags = 1 bit per flag
 /// 
+/// GenerateGameComponentPointers returns a list of pointers with:
+/// Code: Flag code
+/// RelativePointer: index to the flag bit, relative to the Flags component bytes.
 /// </remarks>
 internal class FlagsSerializer : Serializer<IEnumerable<FlagModel>>
 {
     public FlagsSerializer(IEnumerable<FlagModel> gameComponent) : base(gameComponent)
     {
-        EnsureGameComponentProperties();
     }
 
     private byte TotalBytes => (byte)Math.Ceiling(GameComponent.Count() / 8M);
 
-    public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers() => Enumerable.Empty<GameComponentPointerModel>();
+    public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers()
+    {
+        var result = new List<GameComponentPointerModel>();
+        var pointer = 0;
+
+        EnsureGameComponentProperties();        
+
+        foreach (var flag in GameComponent.SortByKey())
+        {
+
+            result.Add(new GameComponentPointerModel(flag.Code, pointer));
+            pointer += 1;
+        }
+
+        return result;
+    }
 
     public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
@@ -44,13 +61,13 @@ internal class FlagsSerializer : Serializer<IEnumerable<FlagModel>>
     }
 
     private byte[] CreateDataBytes(IEnumerable<FlagModel> flags)
-    {        
+    {
         var bits = new BitArray(flags.Select(item => item.Value).ToArray());
         var result = new byte[TotalBytes];
         bits.CopyTo(result, 0);
 
         return result;
-    }    
+    }
 
     private void EnsureGameComponentProperties()
     {
@@ -59,8 +76,8 @@ internal class FlagsSerializer : Serializer<IEnumerable<FlagModel>>
 
         foreach (var flag in GameComponent)
         {
-            EnsureHelpers.EnsureSingle(GameComponent, item => item.Code == flag.Code, string.Format(Properties.Resources.DuplicateCodeError, flag.Code));
             EnsureHelpers.EnsureNotNullOrWhiteSpace(flag.Code, Properties.Resources.CodeIsRequiredError);
+            EnsureHelpers.EnsureSingle(GameComponent, item => item.Code == flag.Code, string.Format(Properties.Resources.DuplicateCodeError, flag.Code));
         }
     }
 }

@@ -17,6 +17,9 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
 
         protected override string MainSceneCode => "MainScene";
 
+        protected override IEnumerable<FlagModel> CreateFlags() =>
+            Enumerable.Range(0, elements).Select((item, index) => new FlagModel() { });
+
         protected override IEnumerable<VocabularyModel> CreateVocabulary()
         {
             var nouns = Enumerable.Range(0, elements)
@@ -51,9 +54,6 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
 
         protected override IEnumerable<SceneModel> CreateScenes() =>
             Enumerable.Range(0, elements).Select((item, index) => new SceneModel() { });
-
-        protected override IEnumerable<FlagModel> CreateFlags() =>
-            Enumerable.Range(0, elements).Select((item, index) => new FlagModel() { });
 
         protected override PlayerModel CreatePlayer() => new()
         {

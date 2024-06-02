@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RetroAdventureCreator.Core.Infrastructure;
 using RetroAdventureCreator.Core.Models;
 using RetroAdventureCreator.Core.Serialization;
 using RetroAdventureCreator.Infrastructure.Game.Models;
@@ -57,6 +58,30 @@ public class FlagsSerializerTest : SerializerBaseTest
         Assert.NotNull(actual.Data);
         Assert.True(actual.Data.Length == expectedDataLength);        
         Assert.Equal(actual.Data, expectedData);
+    }
+
+    [Fact]
+    public void FlagsSerializerTest_MaxMessages_throwsExcepion()
+    {
+        // Arrange
+        CreateGame<GameMaxLengthLimitsBuilder>();
+        var messageError = string.Format(Core.Properties.Resources.MaxLengthFlagsAllowedError, Constants.MaxLengthFlagsAllowed);
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new FlagsSerializer(game.Flags)).Message == messageError);
+    }
+
+
+    [Fact]
+    public void FlagsSerializerTest_GenerateGameComponentPointers_CodeNull_throwsExcepion()
+    {
+        // Arrange        
+        CreateGame<GameCodeNullBuilder>();
+
+        var messageError = Core.Properties.Resources.CodeIsRequiredError;
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new FlagsSerializer(game.Flags).GenerateGameComponentPointers()).Message == messageError);
     }
 
     private static BitArray CreateRandomBits()

@@ -14,6 +14,11 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
     {
         protected override string MainSceneCode => "EntradaScene";
 
+        protected override IEnumerable<FlagModel> CreateFlags() => new List<FlagModel>
+        {
+            new() { Code = "openEntry", Value = false }
+        };
+
         protected override IEnumerable<VocabularyModel> CreateVocabulary() => new List<VocabularyModel>
         {
             new() { Code = "GuantesVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "GUANT" } },
@@ -304,11 +309,6 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                 Code = "InteriorScene",
                 Description = Messages.Find("InteriorSceneDescription"),
             }
-        };
-
-        protected override IEnumerable<FlagModel> CreateFlags() => new List<FlagModel>
-        {
-            new() { Code = "openEntry", Value = false }
         };
 
         protected override PlayerModel CreatePlayer() => new()
