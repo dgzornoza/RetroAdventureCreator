@@ -46,42 +46,42 @@
         Synonyms => synonym bytes splitted by '|'
 
     Limits:
-        MaxLengthVocabularyNounsAllowed = 256
-        MaxLengthVocabularyVerbsAllowed = 256
+        MaxLengthVocabularyNounsAllowed = 256   (limited by orderer addresses)
+        MaxLengthVocabularyVerbsAllowed = 256   (limited by orderer addresses)
         MaxLengthVocabularySynonymsAllowed = 16
 
 ### MessageSerializer
 
     Data:
-        Text: Mesage text bytes (end with 0x00)
+        Text: Mesage text bytes
 
     Limits:
-        MaxLengthMessagesAllowed = 256
+        MaxLengthMessagesAllowed = 256  (can change limits)
 
 ### CommandSerializer
 
     Data:
         1 bit = 0 (Command)
         Token = 7 bits (127)
-        Arguments = ids bytes (end with 0x00)
+        Arguments = ids bytes
 
     Limits:
-        MaxLengthCommandsAllowed = 256;
+        MaxLengthCommandsAllowed = 256; (can change limits)
 
 ### InputCommandSerializer
 
     Data:
-        Verb = 8 bits (id verb vocabulary)
-        Nouns = vocabulary id bytes (end with 0x00)
+        Verb = 1 byte (index orderer addresses verb vocabulary)
+        Nouns = vocabulary id bytes (indexes orderer addresses nouns vocabulary)
 
     Limits:
-        MaxLengthInputCommandsAllowed = 256
+        MaxLengthInputCommandsAllowed = 256 (can change limits)
 
 ### DispatcherSerializer
 
     Data:
-        Commands = Command/commandGroup id bytes (end with 0x00)
-        InputCommands = InputCommand id bytes (end with 0x00) (only in AfterInputCommandDispatchers)
+        Commands = Command/commandGroup id bytes
+        InputCommands = InputCommand id bytes (only in AfterInputCommandDispatchers)
 
     Limits:
         MaxLengthAfterInputCommandDispatchersAllowed = 256
@@ -107,9 +107,9 @@
 
     Data:
         Description = message id byte
-        AfterInputCommandDispatchers = dispatcher id bytes (end with 0x00)
-        BeforeInputCommandDispatchers = dispatcher id bytes (end with 0x00)
-        Objects = object id bytes (end with 0x00)
+        AfterInputCommandDispatchers = dispatcher id bytes
+        BeforeInputCommandDispatchers = dispatcher id bytes
+        Objects = object id bytes
 
     Limits:
         MaxLengthScenesAllowed = 255
@@ -164,8 +164,9 @@ The data of the components that use this section may use a byte indicating the i
 
     Data (2 byte each one with component data address)
 
-    | ----------------- |
-    | VocabularyModel   |    
+    | ---------------------- |
+    | VocabularyVerbsModel   |
+    | VocabularyNounsModel   |
 
 ### Components Data
 

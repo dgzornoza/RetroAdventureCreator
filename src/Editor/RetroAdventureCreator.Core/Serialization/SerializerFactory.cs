@@ -54,14 +54,14 @@ internal class SerializerFactory
             VocabularyVerbs: vocabularyVerbsSerializer.GenerateGameComponentPointers());
     }
 
-    internal GameComponentsPointersModel GameComponentsPointersModel { get; init; }
-
     /// <summary>
     /// Serialize the game components.
     /// </summary>
     /// <typeparam name="T">Game component type</typeparam>
     /// <returns>Serialization result model</returns>
     public SerializerResultModel Serialize<T>() where T : ISerializer => GetSerializer<T>().Serialize(GameComponentsPointersModel);
+
+    internal GameComponentsPointersModel GameComponentsPointersModel { get; init; }
 
     private T GetSerializer<T>() => typeof(T).Name switch
     {
@@ -79,4 +79,6 @@ internal class SerializerFactory
         nameof(VocabularyVerbsSerializer) => (T)Convert.ChangeType(vocabularyVerbsSerializer, typeof(T)),
         _ => throw new ArgumentException($"Serializer of type {typeof(T).Name} not found"),
     };
+
+
 }

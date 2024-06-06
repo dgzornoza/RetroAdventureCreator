@@ -2,6 +2,8 @@
 
 internal static class NumberExtensions
     {
+        public static byte ToBaseZero(this byte number) => (byte)(number - 1);
+
         public static string ToHexString(this int number, int numDigits) => string.Format($"{{0:X{numDigits}}}", number);
 
         public static string ToHexString(this uint number, int numDigits) => string.Format($"{{0:X{numDigits}}}", number);

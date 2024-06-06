@@ -14,11 +14,8 @@ namespace RetroAdventureCreator.Core.Extensions
         /// <param name="code">code to find</param>
         /// <returns></returns>
         public static byte IndexOf<T>(this IEnumerable<T> list, string code) where T : IUniqueKey
-        {
-            EnsureHelpers.EnsureMaxLength(list, Constants.MaxLengthIds, string.Format(Properties.Resources.MaxLengthIdsError, Constants.MaxLengthIds));
-            return (byte)(list.Select((item, index) => (item.Code, index)).First(item => item.Code == code).index + 1);
-        }
-        
+            => (byte)(list.Select((item, index) => (item.Code, index)).First(item => item.Code == code).index + 1);
+
         public static T Find<T>(this IEnumerable<T> list, string code) where T : IUniqueKey
             => list.First(item => item.Code == code);
 
