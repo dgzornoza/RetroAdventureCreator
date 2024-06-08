@@ -106,43 +106,43 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
         {
             new() {
                 Code = "AbreEntradaInputCommand",
-                Verb = Vocabulary.Find("AbreVocabulary"),
-                Nouns = new List<VocabularyModel> { Vocabulary.Find("EntraVocabulary") },
+                Verbs = Vocabulary.Find("AbreVocabulary"),
+                Nouns = Vocabulary.Find("EntraVocabulary"),
             },
             new()
             {
                 Code = "AbreBloqueInputCommand",
-                Verb = Vocabulary.Find("AbreVocabulary"),
-                Nouns = new List<VocabularyModel> { Vocabulary.Find("BloqueVocabulary") },
+                Verbs = Vocabulary.Find("AbreVocabulary"),
+                Nouns = Vocabulary.Find("BloqueVocabulary"),
             },
             new()
             {
                 Code = "ExaminarBoquete",
-                Verb = Vocabulary.Find("ExaminaVocabulary"),
-                Nouns = new List<VocabularyModel> { Vocabulary.Find("BoqueteVocabulary") },
+                Verbs = Vocabulary.Find("ExaminaVocabulary"),
+                Nouns = Vocabulary.Find("BoqueteVocabulary"),
             },
             new()
             {
                 Code = "MuevePalanca",
-                Verb = Vocabulary.Find("MueveVocabulary"),
-                Nouns = new List<VocabularyModel> { Vocabulary.Find("PalancaVocabulary") },
+                Verbs = Vocabulary.Find("MueveVocabulary"),
+                Nouns = Vocabulary.Find("PalancaVocabulary"),
             },
             new()
             {
                 Code = "EmpujaPalanca",
-                Verb =  Vocabulary.Find("EmpujaVocabulary"),
-                Nouns = new List<VocabularyModel> { Vocabulary.Find("PalancaVocabulary") },
+                Verbs = Vocabulary.Find("EmpujaVocabulary"),
+                Nouns = Vocabulary.Find("PalancaVocabulary"),
             },
             new()
             {
                 Code = "TiraPalanca",
-                Verb =  Vocabulary.Find("TiraVocabulary"),
-                Nouns = new List<VocabularyModel> { Vocabulary.Find("PalancaVocabulary") },
+                Verbs = Vocabulary.Find("TiraVocabulary"),
+                Nouns = Vocabulary.Find("PalancaVocabulary"),
             },
             new()
             {
                 Code = "Entra",
-                Verb = Vocabulary.Find("EntraVocabulary"),
+                Verbs = Vocabulary.Find("EntraVocabulary"),
             },
         };
 

@@ -10,12 +10,12 @@ public class InputCommandModel : IUniqueKey
     public string Code { get; init; } = default!;
 
     /// <summary>
-    /// Verb to recognize
+    /// Verbs to recognize
     /// </summary>
-    public VocabularyModel Verb { get; init; } = default!;
+    public VocabularyModel Verbs { get; init; } = default!;
 
     /// <summary>
-    /// Noun list to recognize
+    /// Nouns to recognize
     /// </summary>
-    public IEnumerable<VocabularyModel>? Nouns { get; init; }
+    public VocabularyModel? Nouns { get; init; }
 }

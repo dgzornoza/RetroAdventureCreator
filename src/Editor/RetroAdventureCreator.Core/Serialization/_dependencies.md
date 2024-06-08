@@ -71,8 +71,8 @@
 ### InputCommandSerializer
 
     Data:
-        Verb = 1 byte (index orderer addresses verb vocabulary)
-        Nouns = vocabulary id bytes (indexes orderer addresses nouns vocabulary)
+        Verbs = 1 byte (index orderer addresses verbs vocabulary)
+        Nouns = 1 byte (index orderer addresses nouns vocabulary)
 
     Limits:
         MaxLengthInputCommandsAllowed = 256 (can change limits)

@@ -37,10 +37,10 @@ public class InputCommandsSerializerTest : SerializerBaseTest
         for (int i = 0; i < inputCommands.Count(); i++)
         {
             var element = inputCommands.ElementAt(i);
-            List<string> codes = [element.Verb.Code];
+            List<string> codes = [element.Verbs.Code];
             if (element.Nouns != null)
             {
-                codes.AddRange(element.Nouns.Select(item => item.Code));
+                codes.Add(element.Nouns.Code);
             }
 
             for (int j = 0; j < codes.Count; j++)
@@ -63,15 +63,14 @@ public class InputCommandsSerializerTest : SerializerBaseTest
             var result = new List<byte>
             {
                 // Verb
-                serializerFactory.GameComponentsPointersModel.VocabularyVerbs.IndexOf(inputCommand.Verb.Code).ToBaseZero()
+                serializerFactory.GameComponentsPointersModel.VocabularyVerbs.IndexOf(inputCommand.Verbs.Code).ToBaseZero()
             };
 
             // Nouns
-            if (inputCommand.Nouns != null && inputCommand.Nouns.Any())
+            if (inputCommand.Nouns != null)
             {
-                result.AddRange(inputCommand.Nouns.Select(item => serializerFactory.GameComponentsPointersModel.VocabularyNouns.IndexOf(item.Code).ToBaseZero()));
+                result.Add(serializerFactory.GameComponentsPointersModel.VocabularyNouns.IndexOf(inputCommand.Nouns.Code).ToBaseZero());
             }
-            result.Add(Constants.EndToken);
 
             return result.ToArray();
 

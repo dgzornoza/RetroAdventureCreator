@@ -15,8 +15,8 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Data:
-/// Verb = 1 byte (index orderer addresses verb vocabulary)
-/// Nouns = vocabulary id bytes(indexes orderer addresses nouns vocabulary)
+/// Verbs = 1 byte (index orderer addresses verbs vocabulary)
+/// Nouns = 1 byte (index orderer addresses nouns vocabulary)
 /// 
 /// </remarks>
 internal class InputCommandsSerializer : Serializer<IEnumerable<InputCommandModel>>
@@ -38,9 +38,12 @@ internal class InputCommandsSerializer : Serializer<IEnumerable<InputCommandMode
 
             result.Add(new GameComponentPointerModel(inputCommand.Code, pointer));
             pointer +=
-                1 + // Verb
-                inputCommand.Nouns?.Count() ?? 0; // Nouns
+                1 + // Verb (required)
+                (inputCommand.Nouns == null ? 0 : 1); // Nouns (optional)
         }
+
+        // add end Vocabulary pointer
+        result.Add(new GameComponentPointerModel(Constants.EndComponentPointerCode, pointer));
 
         return result;
     }
@@ -55,16 +58,15 @@ internal class InputCommandsSerializer : Serializer<IEnumerable<InputCommandMode
     {
         var result = new List<byte>
         {
-            // Verb
-            gameComponentsIndexes.VocabularyVerbs.IndexOf(inputCommand.Verb.Code).ToBaseZero()
+            // Verbs
+            gameComponentsIndexes.VocabularyVerbs.IndexOf(inputCommand.Verbs.Code).ToBaseZero(),
         };
 
         // Nouns
-        if (inputCommand.Nouns != null && inputCommand.Nouns.Any())
+        if (inputCommand.Nouns != null)
         {
-            result.AddRange(inputCommand.Nouns.Select(item => gameComponentsIndexes.VocabularyNouns.IndexOf(item.Code).ToBaseZero()));
+            result.Add(gameComponentsIndexes.VocabularyNouns.IndexOf(inputCommand.Nouns.Code).ToBaseZero());
         }
-        result.Add(Constants.EndToken);
 
         return result.ToArray();
     }
