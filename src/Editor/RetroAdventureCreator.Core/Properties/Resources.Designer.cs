@@ -313,6 +313,15 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exceded maximum (16 bits) pointer length for store component {0}. Reduce number of components..
+        /// </summary>
+        internal static string MaxPointerExceededError {
+            get {
+                return ResourceManager.GetString("MaxPointerExceededError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name property is required.
         /// </summary>
         internal static string NameIsRequiredError {

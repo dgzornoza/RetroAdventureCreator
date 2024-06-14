@@ -38,9 +38,12 @@ internal class ObjectsSerializer : Serializer<IEnumerable<ObjectModel>>
 
         foreach (var @object in GameComponent.SortByKey())
         {
+            if (pointer > short.MaxValue)
+                throw new InvalidOperationException(string.Format(Properties.Resources.MaxPointerExceededError, nameof(CommandsSerializer)));
+
             EnsureGameComponentProperties(@object, result);
 
-            result.Add(new GameComponentPointerModel(@object.Code, pointer));
+            result.Add(new GameComponentPointerModel(@object.Code, (short)pointer));
 
             pointer +=
                 1 + // Name

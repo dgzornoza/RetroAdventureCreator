@@ -34,16 +34,19 @@ internal class InputCommandsSerializer : Serializer<IEnumerable<InputCommandMode
 
         foreach (var inputCommand in GameComponent.SortByKey())
         {
+            if (pointer > short.MaxValue)
+                throw new InvalidOperationException(string.Format(Properties.Resources.MaxPointerExceededError, nameof(CommandsSerializer)));
+
             EnsureGameComponentProperties(inputCommand, result);
 
-            result.Add(new GameComponentPointerModel(inputCommand.Code, pointer));
+            result.Add(new GameComponentPointerModel(inputCommand.Code, (short)pointer));
             pointer +=
-                1 + // Verb (required)
+                1 + // Verbs (required)
                 (inputCommand.Nouns == null ? 0 : 1); // Nouns (optional)
         }
 
-        // add end Vocabulary pointer
-        result.Add(new GameComponentPointerModel(Constants.EndComponentPointerCode, pointer));
+        // add end pointer
+        result.Add(new GameComponentPointerModel(Constants.EndComponentPointerCode, (short)pointer));
 
         return result;
     }

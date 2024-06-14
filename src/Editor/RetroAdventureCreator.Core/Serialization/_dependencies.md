@@ -61,8 +61,7 @@
 ### CommandSerializer
 
     Data:
-        1 bit = 0 (Command)
-        Token = 7 bits (127)
+        Token = 8 bits (256)
         Arguments = ids bytes
 
     Limits:
@@ -80,12 +79,12 @@
 ### DispatcherSerializer
 
     Data:
-        Commands = Command/commandGroup id bytes
-        InputCommands = InputCommand id bytes (only in AfterInputCommandDispatchers)
+        InputCommands = InputCommand pointers (2 bytes each one) (only in AfterInputCommandDispatchers)
+        Commands = Commands pointers (2 bytes each one)
 
     Limits:
-        MaxLengthAfterInputCommandDispatchersAllowed = 256
-        MaxLengthBeforeInputCommandDispatchersAllowed = 256
+        MaxLengthAfterInputCommandDispatchersAllowed = 256 (can change limits)
+        MaxLengthBeforeInputCommandDispatchersAllowed = 256 (can change limits)
 
 ### ObjectSerializer
 

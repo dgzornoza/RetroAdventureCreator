@@ -38,8 +38,10 @@ internal class FlagsSerializer : SerializerList<FlagModel>
 
         foreach (var flag in GameComponent)
         {
+            if (pointer > short.MaxValue)
+                throw new InvalidOperationException(string.Format(Properties.Resources.MaxPointerExceededError, nameof(CommandsSerializer)));
 
-            result.Add(new GameComponentPointerModel(flag.Code, pointer));
+            result.Add(new GameComponentPointerModel(flag.Code, (short)pointer));
             pointer += 1;
         }
 

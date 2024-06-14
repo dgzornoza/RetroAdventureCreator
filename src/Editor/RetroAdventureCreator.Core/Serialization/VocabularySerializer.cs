@@ -36,15 +36,18 @@ internal abstract class VocabularySerializer : SerializerList<VocabularyModel>
 
         foreach (var vocabulary in GameComponent)
         {
+            if (pointer > short.MaxValue)
+                throw new InvalidOperationException(string.Format(Properties.Resources.MaxPointerExceededError, nameof(CommandsSerializer)));
+
             EnsureGameComponentProperties(vocabulary, result);
 
-            result.Add(new GameComponentPointerModel(vocabulary.Code, pointer));
+            result.Add(new GameComponentPointerModel(vocabulary.Code, (short)pointer));
 
             pointer += encoding.GetBytes(JoinSynonyms(vocabulary)).Length;
         }
 
         // add end vocabulary pointer
-        result.Add(new GameComponentPointerModel(Constants.EndComponentPointerCode, pointer));
+        result.Add(new GameComponentPointerModel(Constants.EndComponentPointerCode, (short)pointer));
 
         return result;
     }

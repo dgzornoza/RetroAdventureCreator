@@ -37,15 +37,18 @@ internal class MessagesSerializer : SerializerList<MessageModel>
 
         foreach (var message in GameComponent)
         {
+            if (pointer > short.MaxValue)
+                throw new InvalidOperationException(string.Format(Properties.Resources.MaxPointerExceededError, nameof(CommandsSerializer)));
+
             EnsureGameComponentProperties(message, result);
 
-            result.Add(new GameComponentPointerModel(message.Code, pointer));
+            result.Add(new GameComponentPointerModel(message.Code, (short)pointer));
 
             pointer += (message.Text).Length;
         }
 
         // add end messages pointer
-        result.Add(new GameComponentPointerModel(Constants.EndComponentPointerCode, pointer));
+        result.Add(new GameComponentPointerModel(Constants.EndComponentPointerCode, (short)pointer));
 
         return result;
     }

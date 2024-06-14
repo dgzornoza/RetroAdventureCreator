@@ -1,4 +1,5 @@
-﻿using RetroAdventureCreator.Core.Extensions;
+﻿using System.Collections.Generic;
+using RetroAdventureCreator.Core.Extensions;
 using RetroAdventureCreator.Core.Helpers;
 using RetroAdventureCreator.Core.Infrastructure;
 using RetroAdventureCreator.Core.Models;
@@ -15,11 +16,11 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Data:
-/// Commands = Command id bytes (end with 0x00)
-/// InputCommands = InputCommand id bytes (end with 0x00) (only in AfterInputCommandDispatchers)
+/// InputCommands = InputCommand pointers (2 bytes each one) (only in AfterInputCommandDispatchers)
+/// Commands = Commands pointers (2 bytes each one)
 /// 
 /// </remarks>
-internal class DispatchersSerializer : Serializer<IEnumerable<DispatcherModel>>
+internal abstract class DispatchersSerializer : Serializer<IEnumerable<DispatcherModel>>
 {
     public DispatchersSerializer(IEnumerable<DispatcherModel> gameComponent) : base(gameComponent)
     {
@@ -32,13 +33,21 @@ internal class DispatchersSerializer : Serializer<IEnumerable<DispatcherModel>>
 
         foreach (var dispatcher in GameComponent)
         {
+            if (pointer > short.MaxValue)
+                throw new InvalidOperationException(string.Format(Properties.Resources.MaxPointerExceededError, nameof(CommandsSerializer)));
+
             EnsureGameComponentProperties(dispatcher, result);
 
-            result.Add(new GameComponentPointerModel(dispatcher.Code, pointer));
+            result.Add(new GameComponentPointerModel(dispatcher.Code, (short)pointer));
 
             pointer +=
-                (dispatcher.Commands?.Count() ?? 0) + 1 + // Commands + EndTokenByte 
-                (dispatcher.Trigger != Trigger.AfterInputCommand ? 0 : (dispatcher.InputCommands?.Count() ?? 0) + 1); // InputCommands + EndTokenByte
+                // InputCommands (only AfterInputCommand, 2 bytes each one)
+                (dispatcher.Trigger != Trigger.AfterInputCommand ?
+                    0 :
+                    (dispatcher.InputCommands?.Count() * 2 ?? 0)) +
+                // Commands (2 bytes each one)
+                (dispatcher.Commands?.Count() * 2 ?? 0);
+
         }
 
         return result;
@@ -54,28 +63,29 @@ internal class DispatchersSerializer : Serializer<IEnumerable<DispatcherModel>>
     {
         var result = new List<byte>();
 
+        // after input commands
+        if (dispatcher.Trigger == Trigger.AfterInputCommand && dispatcher.InputCommands != null && dispatcher.InputCommands.Any())
+        {
+            result.AddRange(GetInputCommandsPointers(dispatcher, gameComponentsIndexes));
+        }
+
         // Commands
         if (dispatcher.Commands != null && dispatcher.Commands.Any())
         {
-            result.AddRange(GetCommandsIndexes(dispatcher, gameComponentsIndexes));
+            result.AddRange(GetCommandsPointers(dispatcher, gameComponentsIndexes));
         }
         result.Add(Constants.EndToken);
-
-        // after input commands
-        if (dispatcher.Trigger == Trigger.AfterInputCommand)
-        {
-            if (dispatcher.InputCommands != null && dispatcher.InputCommands.Any())
-            {
-                result.AddRange(dispatcher.InputCommands.Select(item => gameComponentsIndexes.InputCommands.IndexOf(item.Code)));
-            }
-            result.Add(Constants.EndToken);
-        }
 
         return result.ToArray();
     }
 
-    private static IEnumerable<byte> GetCommandsIndexes(DispatcherModel dispatcher, GameComponentsPointersModel gameComponentsIndexes) =>
-        dispatcher.Commands.Select(item => gameComponentsIndexes.Commands.IndexOf(item.Code));
+    private static IEnumerable<byte> GetInputCommandsPointers(DispatcherModel dispatcher, GameComponentsPointersModel gameComponentsIndexes) =>
+        dispatcher.InputCommands?.SelectMany(item =>
+            gameComponentsIndexes.InputCommands.Find(item.Code).RelativePointer.GetBytes()) ?? Enumerable.Empty<byte>();
+
+    private static IEnumerable<byte> GetCommandsPointers(DispatcherModel dispatcher, GameComponentsPointersModel gameComponentsIndexes) =>
+        dispatcher.Commands.SelectMany(item =>
+            gameComponentsIndexes.Commands.Find(item.Code).RelativePointer.GetBytes());
 
     protected static void EnsureGameComponentProperties(DispatcherModel dispatcher, IEnumerable<GameComponentPointerModel> gameComponentPointers)
     {

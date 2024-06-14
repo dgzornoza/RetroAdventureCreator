@@ -33,7 +33,7 @@ public class InputCommandsSerializerTest : SerializerBaseTest
         Assert.True(actual.Data.Length == expectedDataBytes.Length);
         Assert.Equal(expectedDataBytes, actual.Data);
 
-
+        // validate data
         for (int i = 0; i < inputCommands.Count(); i++)
         {
             var element = inputCommands.ElementAt(i);
@@ -55,6 +55,41 @@ public class InputCommandsSerializerTest : SerializerBaseTest
                 }
             }   
         }
+    }
+
+    [Fact]
+    public void InputCommandsSerializer_MaxInputCommands_throwsExcepion()
+    {
+        // Arrange
+        CreateGame<GameMaxLengthLimitsBuilder>();
+        var messageError = string.Format(Core.Properties.Resources.MaxLengthInputCommandsAllowedError, Constants.MaxLengthInputCommandsAllowed);
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new InputCommandsSerializer(game.InputCommands)).Message == messageError);
+    }
+
+    [Fact]
+    public void InputCommandsSerializer_GenerateGameComponentPointers_CodeNull_throwsExcepion()
+    {
+        // Arrange        
+        CreateGame<GameCodeNullBuilder>();
+
+        var messageError = Core.Properties.Resources.CodeIsRequiredError;
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new InputCommandsSerializer(game.InputCommands).GenerateGameComponentPointers()).Message == messageError);
+    }
+
+    [Fact]
+    public void InputCommandsSerializer_GenerateGameComponentPointers_DuplicateCode_throwsExcepion()
+    {
+        // Arrange        
+        CreateGame<GameDuplicateCodeBuilder>();
+
+        var messageError = string.Format(Core.Properties.Resources.DuplicateCodeError, "InputCommandCodeDuplicated");
+
+        // Act && Assert
+        Assert.True(Assert.Throws<InvalidOperationException>(() => new InputCommandsSerializer(game.InputCommands).GenerateGameComponentPointers()).Message == messageError);
     }
 
     private byte[] GetInputCommandData(IEnumerable<InputCommandModel> inputCommands, SerializerFactory serializerFactory) =>

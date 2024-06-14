@@ -201,6 +201,9 @@
   <data name="MaxLengthVocabularyVerbsAllowedError" xml:space="preserve">
     <value>El número máximo de verbos en vocabularios permitido es de {0}</value>
   </data>
+  <data name="MaxPointerExceededError" xml:space="preserve">
+    <value>Se ha excedido el tamaño máximo para los punteros (16 bits) del componente '{0}', hay que reducir el número de elementos.</value>
+  </data>
   <data name="NameIsRequiredError" xml:space="preserve">
     <value>La propiedad 'Name' es requerida</value>
   </data>

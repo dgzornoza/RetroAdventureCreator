@@ -34,9 +34,12 @@ internal class ScenesSerializer : Serializer<IEnumerable<SceneModel>>
 
         foreach (var scene in GameComponent.SortByKey())
         {
+            if (pointer > short.MaxValue)
+                throw new InvalidOperationException(string.Format(Properties.Resources.MaxPointerExceededError, nameof(CommandsSerializer)));
+
             EnsureGameComponentProperties(scene, result);
 
-            result.Add(new GameComponentPointerModel(scene.Code, pointer));
+            result.Add(new GameComponentPointerModel(scene.Code, (short)pointer));
 
             pointer +=
                 1 + // description

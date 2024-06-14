@@ -15,6 +15,12 @@ public abstract class SerializerBaseTest
         game = builder.BuildGame();
     }
 
+    /// <summary>
+    /// Split game component data into elements
+    /// </summary>
+    /// <param name="gameComponentPointers">Game component pointers</param>
+    /// <param name="data">Game component data</param>
+    /// <returns>Game component data splited into elements</returns>
     internal IEnumerable<byte[]> SplitData(IEnumerable<GameComponentPointerModel> gameComponentPointers, byte[] data)
     {
         var pointers = gameComponentPointers.ToArray();

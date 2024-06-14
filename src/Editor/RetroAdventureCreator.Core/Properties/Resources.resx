@@ -201,6 +201,9 @@
   <data name="MaxLengthVocabularyVerbsAllowedError" xml:space="preserve">
     <value>The maximum length of vocabulary verbs is {0}</value>
   </data>
+  <data name="MaxPointerExceededError" xml:space="preserve">
+    <value>Exceded maximum (16 bits) pointer length for store component {0}. Reduce number of components.</value>
+  </data>
   <data name="NameIsRequiredError" xml:space="preserve">
     <value>Name property is required</value>
   </data>

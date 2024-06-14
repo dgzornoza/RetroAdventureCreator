@@ -33,9 +33,12 @@ internal class CommandsSerializer : SerializerList<CommandModel>
 
         foreach (var command in GameComponent)
         {
+            if (pointer > short.MaxValue)
+                throw new InvalidOperationException(string.Format(Properties.Resources.MaxPointerExceededError, nameof(CommandsSerializer)));
+
             EnsureGameComponentProperties(command, result);
 
-            result.Add(new GameComponentPointerModel(command.Code, pointer));
+            result.Add(new GameComponentPointerModel(command.Code, (short)pointer));
             pointer +=
                 1 + // token
                 command.Arguments?.Count() ?? 0; // Arguments
