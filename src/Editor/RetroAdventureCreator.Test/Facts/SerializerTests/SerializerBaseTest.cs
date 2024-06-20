@@ -1,4 +1,5 @@
-﻿using RetroAdventureCreator.Core.Models;
+﻿using RetroAdventureCreator.Core.Extensions;
+using RetroAdventureCreator.Core.Models;
 using RetroAdventureCreator.Infrastructure.Game.Models;
 using RetroAdventureCreator.Test.Infrastructure.Builders;
 
@@ -16,12 +17,12 @@ public abstract class SerializerBaseTest
     }
 
     /// <summary>
-    /// Split game component data into elements
+    /// Split game component data into element bytes
     /// </summary>
     /// <param name="gameComponentPointers">Game component pointers</param>
     /// <param name="data">Game component data</param>
-    /// <returns>Game component data splited into elements</returns>
-    internal IEnumerable<byte[]> SplitData(IEnumerable<GameComponentPointerModel> gameComponentPointers, byte[] data)
+    /// <returns>Game component data splited into elements bytes</returns>
+    internal static IEnumerable<byte[]> SplitDataBytes(IEnumerable<GameComponentPointerModel> gameComponentPointers, byte[] data)
     {
         var pointers = gameComponentPointers.ToArray();
         List<byte[]> result = new List<byte[]>(pointers.Length);
@@ -35,4 +36,13 @@ public abstract class SerializerBaseTest
 
         return result;
     }
+
+    /// <summary>
+    /// Split game component data into two bytes addresses (16 bits)
+    /// </summary>
+    /// <param name="gameComponentPointers">Game component pointers</param>
+    /// <param name="data">Game component data</param>
+    /// <returns>Game component data splited into adresses (16 bits)</returns>
+    internal static IEnumerable<short[]> SplitDataAddresses(IEnumerable<GameComponentPointerModel> gameComponentPointers, byte[] data) =>
+        SplitDataBytes(gameComponentPointers, data).Select(item => item.Chunk(2).Select(bytes => bytes.ToShort()).ToArray());
 }

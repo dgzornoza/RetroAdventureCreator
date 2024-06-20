@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using RetroAdventureCreator.Core.Extensions;
 using RetroAdventureCreator.Core.Helpers;
 using RetroAdventureCreator.Core.Infrastructure;
@@ -20,7 +21,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Commands = Commands pointers (2 bytes each one)
 /// 
 /// </remarks>
-internal abstract class DispatchersSerializer : Serializer<IEnumerable<DispatcherModel>>
+internal abstract class DispatchersSerializer : SerializerList<DispatcherModel>
 {
     public DispatchersSerializer(IEnumerable<DispatcherModel> gameComponent) : base(gameComponent)
     {
@@ -50,12 +51,15 @@ internal abstract class DispatchersSerializer : Serializer<IEnumerable<Dispatche
 
         }
 
+        // add end pointer
+        result.Add(new GameComponentPointerModel(Constants.EndComponentPointerCode, (short)pointer));
+
         return result;
     }
 
     public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
-        var dataBytes = GameComponent.SortByKey().SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
+        var dataBytes = GameComponent.SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
@@ -74,7 +78,6 @@ internal abstract class DispatchersSerializer : Serializer<IEnumerable<Dispatche
         {
             result.AddRange(GetCommandsPointers(dispatcher, gameComponentsIndexes));
         }
-        result.Add(Constants.EndToken);
 
         return result.ToArray();
     }

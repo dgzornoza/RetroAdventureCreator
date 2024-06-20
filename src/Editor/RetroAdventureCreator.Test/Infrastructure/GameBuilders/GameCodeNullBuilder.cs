@@ -1,4 +1,5 @@
-﻿using RetroAdventureCreator.Infrastructure.Game.Enums;
+﻿using RetroAdventureCreator.Core.Extensions;
+using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Test.Infrastructure.Builders
@@ -34,9 +35,9 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
         protected override IEnumerable<DispatcherModel> CreateDispatchers()
         {
             var afterDispatchers = Enumerable.Range(0, elements)
-                .Select((item, index) => new DispatcherModel() { Trigger = Trigger.AfterInputCommand });
+                .Select((item, index) => new DispatcherModel() { Trigger = Trigger.AfterInputCommand, Commands = new List<CommandModel>() });
             var beforeDipatchers = Enumerable.Range(0, elements)
-                .Select((item, index) => new DispatcherModel() { Trigger = Trigger.BeforeInputCommand });
+                .Select((item, index) => new DispatcherModel() { Trigger = Trigger.BeforeInputCommand, Commands = new List<CommandModel>() });
 
             return afterDispatchers.Concat(beforeDipatchers);
         }

@@ -19,7 +19,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Nouns = 1 byte (index orderer addresses nouns vocabulary)
 /// 
 /// </remarks>
-internal class InputCommandsSerializer : Serializer<IEnumerable<InputCommandModel>>
+internal class InputCommandsSerializer : SerializerList<InputCommandModel>
 {
     public InputCommandsSerializer(IEnumerable<InputCommandModel> gameComponent) : base(gameComponent)
     {
@@ -32,7 +32,7 @@ internal class InputCommandsSerializer : Serializer<IEnumerable<InputCommandMode
         var result = new List<GameComponentPointerModel>();
         var pointer = 0;
 
-        foreach (var inputCommand in GameComponent.SortByKey())
+        foreach (var inputCommand in GameComponent)
         {
             if (pointer > short.MaxValue)
                 throw new InvalidOperationException(string.Format(Properties.Resources.MaxPointerExceededError, nameof(CommandsSerializer)));
@@ -53,7 +53,7 @@ internal class InputCommandsSerializer : Serializer<IEnumerable<InputCommandMode
 
     public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
     {
-        var dataBytes = GameComponent.SortByKey().SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
+        var dataBytes = GameComponent.SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
         return new SerializerResultModel(dataBytes.ToArray());
     }
 

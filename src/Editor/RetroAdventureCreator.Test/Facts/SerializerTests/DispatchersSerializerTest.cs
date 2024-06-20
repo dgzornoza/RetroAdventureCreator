@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using RetroAdventureCreator.Core.Extensions;
 using RetroAdventureCreator.Core.Infrastructure;
+using RetroAdventureCreator.Core.Models;
 using RetroAdventureCreator.Core.Serialization;
 using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
@@ -13,45 +14,41 @@ public class DispatchersSerializerTest : SerializerBaseTest
     [Fact]
     public void AfterInputCommandDispatchersSerializerTest_Serialize_AsExpected()
     {
-        // TODO: implementar dispatcher test
         // Arrange
         CreateGame<GameInPawsTutorialBuilder>();
         var serializerFactory = new SerializerFactory(game);
-        var AfterInputCommandDispatcher = game.Dispatchers.Where(item => item.Trigger == Trigger.AfterInputCommand).SortByKey();
 
-        var verbsVocabularies = game.Vocabulary.Where(item => item.WordType == WordType.Verb).SortByKey();
-        var nounsVocabularies = game.Vocabulary.Where(item => item.WordType == WordType.Noun).SortByKey();
+        var afterInputCommandDispatcher = game.Dispatchers.Where(item => item.Trigger == Trigger.AfterInputCommand).SortByKey();
 
         // Act
         var actual = serializerFactory.Serialize<AfterInputCommandDispatchersSerializer>();
-        var splitedData = SplitData(serializerFactory.GameComponentsPointersModel.InputCommands, actual.Data);
+        var splitedData = SplitDataAddresses(serializerFactory.GameComponentsPointersModel.AfterInputCommandDispatchers, actual.Data);
 
         // Assert
         Assert.NotNull(actual);
         Assert.NotNull(actual.Data);
 
-        // validate data
-        for (int i = 0; i < AfterInputCommandDispatcher.Count(); i++)
-        {
-            var element = AfterInputCommandDispatcher.ElementAt(i);
-            List<string> codes = [element.Verbs.Code];
-            if (element.Nouns != null)
-            {
-                codes.Add(element.Nouns.Code);
-            }
+        ValidateSplittedInputCommandDispatchers(serializerFactory.GameComponentsPointersModel, afterInputCommandDispatcher, splitedData);
+    }
 
-            for (int j = 0; j < codes.Count; j++)
-            {
-                if (j == 0)
-                {
-                    Assert.Equal(verbsVocabularies.IndexOf(codes[j]).ToBaseZero(), splitedData.ElementAt(i)[j]);
-                }
-                else
-                {
-                    Assert.Equal(nounsVocabularies.IndexOf(codes[j]).ToBaseZero(), splitedData.ElementAt(i)[j]);
-                }
-            }
-        }
+    [Fact]
+    public void BeforeInputCommandDispatchersSerializerTest_Serialize_AsExpected()
+    {
+        // Arrange
+        CreateGame<GameInPawsTutorialBuilder>();
+        var serializerFactory = new SerializerFactory(game);
+
+        var beforeInputCommandDispatcher = game.Dispatchers.Where(item => item.Trigger == Trigger.BeforeInputCommand).SortByKey();
+
+        // Act
+        var actual = serializerFactory.Serialize<BeforeInputCommandDispatchersSerializer>();
+        var splitedData = SplitDataAddresses(serializerFactory.GameComponentsPointersModel.BeforeInputCommandDispatchers, actual.Data);
+
+        // Assert
+        Assert.NotNull(actual);
+        Assert.NotNull(actual.Data);
+
+        ValidateSplittedInputCommandDispatchers(serializerFactory.GameComponentsPointersModel, beforeInputCommandDispatcher, splitedData);
     }
 
     [Fact]
@@ -122,5 +119,37 @@ public class DispatchersSerializerTest : SerializerBaseTest
 
         // Act && Assert
         Assert.True(Assert.Throws<InvalidOperationException>(() => new BeforeInputCommandDispatchersSerializer(game.Dispatchers).GenerateGameComponentPointers()).Message == messageError);
+    }
+    internal static void ValidateSplittedInputCommandDispatchers(
+        GameComponentsPointersModel gameComponentsPointersModel,
+        IEnumerable<DispatcherModel> inputCommands,
+        IEnumerable<short[]> splitedData)
+    {
+        for (int i = 0; i < inputCommands.Count(); i++)
+        {
+            var element = inputCommands.ElementAt(i);
+
+            // input commands
+            if (element.InputCommands != null)
+            {
+                var inputCommandCodes = element.InputCommands.Select(item => item.Code).ToArray();
+                for (int j = 0; j < inputCommandCodes.Length; j++)
+                {
+                    var address = gameComponentsPointersModel.InputCommands
+                        .First(item => item.Code == inputCommandCodes[j]).RelativePointer;
+                    Assert.Equal(address, splitedData.ElementAt(i)[j]);
+                }
+            }
+
+            // commands
+            var commandCodes = element.Commands.Select(item => item.Code).ToArray();
+            var offset = element.InputCommands?.Count() ?? 0;
+            for (int j = offset; j < offset + commandCodes.Length; j++)
+            {
+                var address = gameComponentsPointersModel.Commands
+                    .First(item => item.Code == commandCodes[j - offset]).RelativePointer;
+                Assert.Equal(address, splitedData.ElementAt(i)[j]);
+            }
+        }
     }
 }

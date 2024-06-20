@@ -27,7 +27,7 @@ public class MessagesSerializerTest : SerializerBaseTest
 
         // Act
         var actual = serializerFactory.Serialize<MessagesSerializer>();
-        var splitedData = SplitData(serializerFactory.GameComponentsPointersModel.Messages, actual.Data);
+        var splittedData = SplitDataBytes(serializerFactory.GameComponentsPointersModel.Messages, actual.Data);
 
         // Assert
         Assert.NotNull(actual);
@@ -35,11 +35,7 @@ public class MessagesSerializerTest : SerializerBaseTest
         Assert.True(actual.Data.Length == expectedDataLength);
         Assert.Equal(expectedText, encoding.GetString(actual.Data));
 
-        for (int i = 0; i < gameMessages.Count(); i++)
-        {
-            var asciiText = encoding.GetString(encoding.GetBytes(gameMessages.ElementAt(i).Text));
-            Assert.Equal(asciiText, encoding.GetString(splitedData.ElementAt(i)));
-        }
+        ValidateSplittedData(gameMessages, splittedData);
     }
 
     [Fact]
@@ -86,5 +82,14 @@ public class MessagesSerializerTest : SerializerBaseTest
 
         // Act && Assert
         Assert.True(Assert.Throws<InvalidOperationException>(() => new MessagesSerializer(game.Messages, encoding).GenerateGameComponentPointers()).Message == messageError);
+    }
+
+    internal static void ValidateSplittedData(IEnumerable<MessageModel> gameMessages, IEnumerable<byte[]> splitedData)
+    {
+        for (int i = 0; i < gameMessages.Count(); i++)
+        {
+            var asciiText = encoding.GetString(encoding.GetBytes(gameMessages.ElementAt(i).Text));
+            Assert.Equal(asciiText, encoding.GetString(splitedData.ElementAt(i)));
+        }
     }
 }

@@ -34,9 +34,9 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
         protected override IEnumerable<DispatcherModel> CreateDispatchers()
         {
             var afterDispatchers = Enumerable.Range(0, Constants.MaxLengthAfterInputCommandDispatchersAllowed + 1)
-                .Select((item, index) => new DispatcherModel() { Code = $"AfterDispatcher{index}", Trigger = Trigger.AfterInputCommand });
+                .Select((item, index) => new DispatcherModel() { Code = $"AfterDispatcher{index}", Trigger = Trigger.AfterInputCommand, Commands = new List<CommandModel>() });
             var beforeDipatchers = Enumerable.Range(0, Constants.MaxLengthBeforeInputCommandDispatchersAllowed + 1)
-                .Select((item, index) => new DispatcherModel() { Code = $"BeforeDispatcher{index}", Trigger = Trigger.BeforeInputCommand });
+                .Select((item, index) => new DispatcherModel() { Code = $"BeforeDispatcher{index}", Trigger = Trigger.BeforeInputCommand, Commands = new List<CommandModel>() });
 
             return afterDispatchers.Concat(beforeDipatchers);
         }

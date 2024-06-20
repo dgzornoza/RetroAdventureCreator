@@ -22,7 +22,7 @@ public class DispatcherModel : IUniqueKey
     /// Commands to execute. Can be a command or group of commands.
     /// will be executed in cascade as long as one does not return false.
     /// </summary>
-    public IEnumerable<ICommandModel> Commands { get; init; } = default!;
+    public required IEnumerable<ICommandModel> Commands { get; init; }
 
     /// <summary>
     /// Input commands (only in triggers AfterInputCommand)
