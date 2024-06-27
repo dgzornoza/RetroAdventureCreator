@@ -15,8 +15,8 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Data:
-/// Verbs = 1 byte (index orderer addresses verbs vocabulary)
-/// Nouns = 1 byte (index orderer addresses nouns vocabulary)
+/// Verbs = index orderer addresses verbs vocabulary (1 byte)
+/// Nouns = index orderer addresses nouns vocabulary (1 byte)
 /// 
 /// </remarks>
 internal class InputCommandsSerializer : SerializerList<InputCommandModel>

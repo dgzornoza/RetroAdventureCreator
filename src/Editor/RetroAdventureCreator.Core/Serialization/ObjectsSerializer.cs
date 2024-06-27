@@ -15,11 +15,11 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// ----------------------------------------------
 /// 
 /// Data:
-/// Name = 8 bits (id vocabulary)
-/// Description = 8 bits (id message)
+/// Name = index orderer addresses nouns vocabulary (1 byte)
+/// Description = Message pointer (2 bytes)
 /// Weight = 5 bits (31)
 /// Health = 3 bits (7)
-/// Properties = 8 bits (flag 8 properties)
+/// Properties = 8 bits (8 properties) (mutable properties)
 /// ChildObjects = (Optional, only if properties has 'IsContainer') 8 object id bytes
 /// 
 /// </remarks>

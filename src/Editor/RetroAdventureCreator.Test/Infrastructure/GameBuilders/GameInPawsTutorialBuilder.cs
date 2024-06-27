@@ -8,13 +8,13 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
     {
         protected override string MainSceneCode => "EntradaScene";
 
-        protected override IEnumerable<FlagModel> CreateFlags() => new List<FlagModel>
-        {
+        protected override IEnumerable<FlagModel> CreateFlags() =>
+        [
             new() { Code = "openEntry", Value = false }
-        };
+        ];
 
-        protected override IEnumerable<VocabularyModel> CreateVocabulary() => new List<VocabularyModel>
-        {
+        protected override IEnumerable<VocabularyModel> CreateVocabulary() =>
+        [
             new() { Code = "GuantesVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "GUANT" } },
             new() { Code = "BoqueteVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "BOQUE", "PALAN" }},
             new() { Code = "PalancaVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "PALAN" }},
@@ -27,10 +27,10 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             new() { Code = "MueveVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "MUEVE" } },
             new() { Code = "EmpujaVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "EMPUJ" } },
             new() { Code = "TiraVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "TIRA" } },
-        };
+        ];
 
-        protected override IEnumerable<MessageModel> CreateMessages() => new List<MessageModel>
-        {
+        protected override IEnumerable<MessageModel> CreateMessages() =>
+        [
             new() { Code = "globDescriptionMessage", Text = "Unos guantes" },
             new()
             {
@@ -82,10 +82,10 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                 Code = "MessagePalancaUsada",
                 Text = "No necesitas volver a meter la mano en \"eso\".",
             },
-        };
+        ];
 
-        protected override IEnumerable<CommandModel> CreateCommands() => new List<CommandModel>
-        {
+        protected override IEnumerable<CommandModel> CreateCommands() =>
+        [
             new() { Code = "IsSetOpenEntry", Token = CommandToken.IsSet, Arguments = new List<string> { "openEntry" } },
             new() { Code = "IsUnSetOpenEntry", Token = CommandToken.IsUnset, Arguments = new List<string> { "openEntry" } },
             new() { Code = "SetOpenEntry", Token = CommandToken.Set, Arguments = new List<string> { "openEntry" } },
@@ -100,10 +100,10 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             new() { Code = "IsInUseGuantes", Token = CommandToken.InUse, Arguments = new List<string> { "GuantesObject" } },
             new() { Code = "GotoInteriorScene", Token = CommandToken.Goto, Arguments = new List<string> { "InteriorScene" } },
             new() { Code = "EndGame", Token = CommandToken.EndGame },
-        };
+        ];
 
-        protected override IEnumerable<InputCommandModel> CreateInputCommands() => new List<InputCommandModel>
-        {
+        protected override IEnumerable<InputCommandModel> CreateInputCommands() =>
+        [
             new() {
                 Code = "AbreEntradaInputCommand",
                 Verbs = Vocabulary.Find("AbreVocabulary"),
@@ -144,10 +144,10 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                 Code = "Entra",
                 Verbs = Vocabulary.Find("EntraVocabulary"),
             },
-        };
+        ];
 
-        protected override IEnumerable<DispatcherModel> CreateDispatchers() => new List<DispatcherModel>
-        {
+        protected override IEnumerable<DispatcherModel> CreateDispatchers() =>
+        [
             new()
             {
                 Code = $"{MainSceneCode}-1",
@@ -276,10 +276,10 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                     Commands.Find("GotoInteriorScene"),
                 },
             },
-        };
+        ];
 
-        protected override IEnumerable<ObjectModel> CreateObjects() => new List<ObjectModel>
-        {
+        protected override IEnumerable<ObjectModel> CreateObjects() =>
+        [
             new()
             {
                 Code = "GuantesObject",
@@ -287,10 +287,10 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                 Description = Messages.Find("globDescriptionMessage"),
                 Weight = 1,
             }
-        };
+        ];
 
-        protected override IEnumerable<SceneModel> CreateScenes() => new List<SceneModel>
-        {
+        protected override IEnumerable<SceneModel> CreateScenes() =>
+        [
             new()
             {
                 Code = MainSceneCode,
@@ -303,7 +303,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                 Code = "InteriorScene",
                 Description = Messages.Find("InteriorSceneDescription"),
             }
-        };
+        ];
 
         protected override PlayerModel CreatePlayer() => new()
         {
