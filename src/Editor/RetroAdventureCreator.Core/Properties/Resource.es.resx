@@ -130,7 +130,7 @@
     <value>La propiedad Comandos es requerida</value>
   </data>
   <data name="DescriptionIsRequiredError" xml:space="preserve">
-    <value>La propiedad 'Description' es requerida</value>
+    <value>La propiedad 'Description' del objeto {0} es requerida</value>
   </data>
   <data name="DuplicateCodeError" xml:space="preserve">
     <value>El Codigo '{0}' esta duplicado, el Codigo debe ser unico en las partes del juego.</value>
@@ -211,7 +211,10 @@
     <value>Se ha excedido el tamaño máximo para los punteros (16 bits) del componente '{0}', hay que reducir el número de elementos.</value>
   </data>
   <data name="NameIsRequiredError" xml:space="preserve">
-    <value>La propiedad 'Name' es requerida</value>
+    <value>La propiedad 'Name' del objeto {0} es requerida</value>
+  </data>
+  <data name="OwnerIsRequiredError" xml:space="preserve">
+    <value>El dueño del objeto {0} es requerido</value>
   </data>
   <data name="SysnonymsAreRequiredError" xml:space="preserve">
     <value>La propiedad 'Synonyms' es requerida</value>

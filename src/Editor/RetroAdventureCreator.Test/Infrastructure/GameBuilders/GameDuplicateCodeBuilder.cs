@@ -42,7 +42,13 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
         }
 
         protected override IEnumerable<ObjectModel> CreateObjects() =>
-            Enumerable.Range(0, elements).Select((item, index) => new NormalObjectModel() { Code = "ObjectCodeDuplicated" });
+            Enumerable.Range(0, elements).Select((item, index) => new ObjectModel() 
+            {
+                Code = "ObjectCodeDuplicated", 
+                Name = Vocabulary.First(item => item.WordType == WordType.Noun), 
+                Description = Messages.First(),
+                OwnerCode = "ActorCodeDuplicated",
+            });
 
         protected override IEnumerable<SceneModel> CreateScenes() =>
             Enumerable.Range(0, elements).Select((item, index) => new SceneModel() { Code = "SceneCodeDuplicated" });

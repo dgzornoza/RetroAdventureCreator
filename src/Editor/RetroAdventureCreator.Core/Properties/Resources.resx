@@ -130,7 +130,7 @@
     <value>Commands property are required</value>
   </data>
   <data name="DescriptionIsRequiredError" xml:space="preserve">
-    <value>Description property is required</value>
+    <value>Description property in {0} is required</value>
   </data>
   <data name="DuplicateCodeError" xml:space="preserve">
     <value>Code '{0}' is duplicated, code property should be unique in game parts.</value>
@@ -211,7 +211,10 @@
     <value>Exceded maximum (16 bits) pointer length for store component {0}. Reduce number of components.</value>
   </data>
   <data name="NameIsRequiredError" xml:space="preserve">
-    <value>Name property is required</value>
+    <value>Name property in {0} is required</value>
+  </data>
+  <data name="OwnerIsRequiredError" xml:space="preserve">
+    <value>Owner property is required in {0}</value>
   </data>
   <data name="SysnonymsAreRequiredError" xml:space="preserve">
     <value>Synonyms property is required</value>

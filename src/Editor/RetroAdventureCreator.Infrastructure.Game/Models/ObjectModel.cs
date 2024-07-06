@@ -6,7 +6,7 @@ namespace RetroAdventureCreator.Infrastructure.Game.Models;
 /// <summary>
 /// Model for define object in game
 /// </summary>
-public abstract class ObjectModel : IUniqueKey
+public class ObjectModel : IUniqueKey
 {
     /// <summary>
     /// Unique Code for identify Object
@@ -35,16 +35,9 @@ public abstract class ObjectModel : IUniqueKey
 }
 
 /// <summary>
-/// Model for define normal object in game
-/// </summary>
-public class NormalObjectModel : ObjectModel
-{
-}
-
-/// <summary>
 /// Model for define comoplex object in game
 /// </summary>
-public class ComplexObjectModel : NormalObjectModel
+public class ComplexObjectModel : ObjectModel
 {
     /// <summary>
     /// Object Weight 256 max

@@ -43,7 +43,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
         }
 
         protected override IEnumerable<ObjectModel> CreateObjects() =>
-            Enumerable.Range(0, elements).Select((item, index) => new NormalObjectModel() { });
+            Enumerable.Range(0, elements).Select((item, index) => new ObjectModel() { });
 
         protected override IEnumerable<SceneModel> CreateScenes() =>
             Enumerable.Range(0, elements).Select((item, index) => new SceneModel() { });

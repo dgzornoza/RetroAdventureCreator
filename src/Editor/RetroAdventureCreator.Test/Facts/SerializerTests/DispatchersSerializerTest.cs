@@ -98,7 +98,7 @@ public class DispatchersSerializerTest : SerializerBaseTest
     }
 
     [Fact]
-    public void BeforeInputCommandDispatchersSerializer_GenerateGameComponentPointers_DuplicateCode_throwsExcepion()
+    public void AfterInputCommandDispatchersSerializer_GenerateGameComponentPointers_DuplicateCode_throwsExcepion()
     {
         // Arrange        
         CreateGame<GameDuplicateCodeBuilder>();
@@ -110,7 +110,7 @@ public class DispatchersSerializerTest : SerializerBaseTest
     }
 
     [Fact]
-    public void AfterInputCommandDispatchersSerializer_GenerateGameComponentPointers_DuplicateCode_throwsExcepion()
+    public void BeforeInputCommandDispatchersSerializer_GenerateGameComponentPointers_DuplicateCode_throwsExcepion()
     {
         // Arrange        
         CreateGame<GameDuplicateCodeBuilder>();

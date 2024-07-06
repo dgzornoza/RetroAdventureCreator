@@ -34,7 +34,7 @@ internal class SerializerFactory
         flagsSerializer = new FlagsSerializer(gameModel.Flags);
         inputCommandsSerializer = new InputCommandsSerializer(gameModel.InputCommands);
         messagesSerializer = new MessagesSerializer(gameModel.Messages, encoding);
-        objectsSerializer = new NormalObjectsSerializer(gameModel.Objects);
+        objectsSerializer = new ObjectsSerializer(gameModel.Objects);
         actorsSerializer = new ActorsSerializer(gameModel.Actors);
         scenesSerializer = new ScenesSerializer(gameModel.Scenes);
         settingsSerializer = new SettingsSerializer(gameModel.Settings);
@@ -72,7 +72,7 @@ internal class SerializerFactory
         nameof(FlagsSerializer) => (T)Convert.ChangeType(flagsSerializer, typeof(T)),
         nameof(InputCommandsSerializer) => (T)Convert.ChangeType(inputCommandsSerializer, typeof(T)),
         nameof(MessagesSerializer) => (T)Convert.ChangeType(messagesSerializer, typeof(T)),
-        nameof(NormalObjectsSerializer) => (T)Convert.ChangeType(objectsSerializer, typeof(T)),
+        nameof(ObjectsSerializer) => (T)Convert.ChangeType(objectsSerializer, typeof(T)),
         nameof(ActorsSerializer) => (T)Convert.ChangeType(actorsSerializer, typeof(T)),
         nameof(ScenesSerializer) => (T)Convert.ChangeType(scenesSerializer, typeof(T)),
         nameof(SettingsSerializer) => (T)Convert.ChangeType(settingsSerializer, typeof(T)),

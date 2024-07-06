@@ -300,9 +300,9 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             },
         ];
 
-        protected override IEnumerable<NormalObjectModel> CreateObjects() =>
+        protected override IEnumerable<ObjectModel> CreateObjects() =>
         [
-            new NormalObjectModel()
+            new ObjectModel()
             {
                 Code = "GuantesObject",
                 Name = Vocabulary.Find("GuantesVocabulary"),

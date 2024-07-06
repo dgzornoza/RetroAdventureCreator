@@ -73,8 +73,9 @@ internal abstract class ObjectsSerializer<T> : SerializerList<T> where T : Objec
         EnsureHelpers.EnsureNotFound(gameComponentPointers, item => item.Code == @object.Code, string.Format(Properties.Resources.DuplicateCodeError, @object.Code));
         EnsureHelpers.EnsureNotNullOrWhiteSpace(@object.Code, Properties.Resources.CodeIsRequiredError);
 
-        EnsureHelpers.EnsureNotNull(@object.Name, Properties.Resources.NameIsRequiredError);
-        EnsureHelpers.EnsureNotNull(@object.Description, Properties.Resources.DescriptionIsRequiredError);
+        EnsureHelpers.EnsureNotNull(@object.Name, string.Format(Properties.Resources.NameIsRequiredError, @object.Code));
+        EnsureHelpers.EnsureNotNull(@object.Description, string.Format(Properties.Resources.DescriptionIsRequiredError, @object.Code));
+        EnsureHelpers.EnsureNotNull(@object.OwnerCode, string.Format(Properties.Resources.OwnerIsRequiredError, @object.Code));
     }
 
     private static byte[] FindOwnerPointer(T @object, GameComponentsPointersModel gameComponentsPointers)
@@ -93,7 +94,7 @@ internal abstract class ObjectsSerializer<T> : SerializerList<T> where T : Objec
 }
 
 /// <summary>
-/// Normal Object model serializer
+/// Object model serializer
 /// </summary>
 /// <remarks>
 /// Format Object serializer:
@@ -106,9 +107,9 @@ internal abstract class ObjectsSerializer<T> : SerializerList<T> where T : Objec
 /// OwnerCode = 2 bytes
 /// 
 /// </remarks>
-internal class NormalObjectsSerializer : ObjectsSerializer<ObjectModel>
+internal class ObjectsSerializer : ObjectsSerializer<ObjectModel>
 {
-    public NormalObjectsSerializer(IEnumerable<ObjectModel> gameComponent) :
+    public ObjectsSerializer(IEnumerable<ObjectModel> gameComponent) :
         base(gameComponent)
     {
     }

@@ -97,7 +97,7 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Description property is required.
+        ///   Looks up a localized string similar to Description property in {0} is required.
         /// </summary>
         internal static string DescriptionIsRequiredError {
             get {
@@ -340,11 +340,20 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name property is required.
+        ///   Looks up a localized string similar to Name property in {0} is required.
         /// </summary>
         internal static string NameIsRequiredError {
             get {
                 return ResourceManager.GetString("NameIsRequiredError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Owner property is required in {0}.
+        /// </summary>
+        internal static string OwnerIsRequiredError {
+            get {
+                return ResourceManager.GetString("OwnerIsRequiredError", resourceCulture);
             }
         }
         
