@@ -135,8 +135,14 @@
   <data name="DuplicateCodeError" xml:space="preserve">
     <value>El Codigo '{0}' esta duplicado, el Codigo debe ser unico en las partes del juego.</value>
   </data>
+  <data name="DuplicatedOwnerCodeError" xml:space="preserve">
+    <value>El Codigo del compoente dueño '{0}' esta duplicado, el Codigo debe ser unico en las partes del juego.</value>
+  </data>
   <data name="InputCommandVerbIsRequired" xml:space="preserve">
     <value>El verbo es requerido en el comando de entrada</value>
+  </data>
+  <data name="MaxLengthActorsAllowedError" xml:space="preserve">
+    <value>El número máximo de actores permitido es de {0}</value>
   </data>
   <data name="MaxLengthAfterInputCommandDispatchersAllowedError" xml:space="preserve">
     <value>El número máximo de dispatchers anteriores a comando permitido es de {0}</value>

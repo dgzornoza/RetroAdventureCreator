@@ -52,7 +52,7 @@ internal abstract class VocabularySerializer : SerializerList<VocabularyModel>
         return result;
     }
 
-    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsPointers)
     {
         var dataBytes = GameComponent.SelectMany(CreateDataBytes);
         return new SerializerResultModel(dataBytes.ToArray());
@@ -60,9 +60,9 @@ internal abstract class VocabularySerializer : SerializerList<VocabularyModel>
 
     protected byte[] CreateDataBytes(VocabularyModel vocabulary) => encoding.GetBytes(JoinSynonyms(vocabulary));
 
-    private void EnsureGameComponentProperties(VocabularyModel vocabulary, IEnumerable<GameComponentPointerModel> gameComponentPointers)
+    private void EnsureGameComponentProperties(VocabularyModel vocabulary, IEnumerable<GameComponentPointerModel> gameComponentsPointers)
     {
-        EnsureHelpers.EnsureNotFound(gameComponentPointers, item => item.Code == vocabulary.Code, string.Format(Properties.Resources.DuplicateCodeError, vocabulary.Code));
+        EnsureHelpers.EnsureNotFound(gameComponentsPointers, item => item.Code == vocabulary.Code, string.Format(Properties.Resources.DuplicateCodeError, vocabulary.Code));
         EnsureHelpers.EnsureNotNullOrWhiteSpace(vocabulary.Code, Properties.Resources.CodeIsRequiredError);
 
         EnsureHelpers.EnsureNotNullOrEmpty(vocabulary.Synonyms, Properties.Resources.SysnonymsAreRequiredError);

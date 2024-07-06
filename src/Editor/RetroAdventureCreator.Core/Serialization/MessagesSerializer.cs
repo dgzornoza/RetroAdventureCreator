@@ -53,7 +53,7 @@ internal class MessagesSerializer : SerializerList<MessageModel>
         return result;
     }
 
-    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsPointers)
     {
         var dataBytes = GameComponent.SelectMany(CreateDataBytes);
         return new SerializerResultModel(dataBytes.ToArray());

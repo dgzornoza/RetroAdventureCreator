@@ -11,9 +11,9 @@ public class GameModel
     public string MainSceneCode { get; init; } = default!;
 
     /// <summary>
-    /// Game player
+    /// Game actors
     /// </summary>
-    public PlayerModel Player { get; init; } = default!;
+    public IEnumerable<ActorModel> Actors { get; init; } = default!;
 
     /// <summary>
     /// Default Game Settings

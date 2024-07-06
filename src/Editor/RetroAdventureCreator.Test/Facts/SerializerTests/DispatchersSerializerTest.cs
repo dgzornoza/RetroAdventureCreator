@@ -120,6 +120,7 @@ public class DispatchersSerializerTest : SerializerBaseTest
         // Act && Assert
         Assert.True(Assert.Throws<InvalidOperationException>(() => new BeforeInputCommandDispatchersSerializer(game.Dispatchers).GenerateGameComponentPointers()).Message == messageError);
     }
+
     internal static void ValidateSplittedInputCommandDispatchers(
         GameComponentsPointersModel gameComponentsPointersModel,
         IEnumerable<DispatcherModel> inputCommands,

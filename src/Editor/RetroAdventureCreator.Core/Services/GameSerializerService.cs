@@ -37,8 +37,8 @@ internal class GameSerializerService
         var flagsSerializer = serializerBuilder.Serialize<FlagsSerializer>();
         var inputCommandsSerializer = serializerBuilder.Serialize<InputCommandsSerializer>();
         var messagesSerializer = serializerBuilder.Serialize<MessagesSerializer>();
-        var objectsSerializer = serializerBuilder.Serialize<ObjectsSerializer>();
-        var playerSerializer = serializerBuilder.Serialize<PlayerSerializer>();
+        var objectsSerializer = serializerBuilder.Serialize<NormalObjectsSerializer>();
+        var playerSerializer = serializerBuilder.Serialize<ActorsSerializer>();
         var scenesSerializer = serializerBuilder.Serialize<ScenesSerializer>();
         var settingsSerializer = serializerBuilder.Serialize<SettingsSerializer>();
         var vocabularyNounsSerializer = serializerBuilder.Serialize<VocabularyNounsSerializer>();

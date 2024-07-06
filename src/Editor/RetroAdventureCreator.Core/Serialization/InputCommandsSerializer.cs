@@ -51,24 +51,24 @@ internal class InputCommandsSerializer : SerializerList<InputCommandModel>
         return result;
     }
 
-    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsPointers)
     {
-        var dataBytes = GameComponent.SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
+        var dataBytes = GameComponent.SelectMany(item => CreateDataBytes(item, gameComponentsPointers));
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    private static byte[] CreateDataBytes(InputCommandModel inputCommand, GameComponentsPointersModel gameComponentsIndexes)
+    private static byte[] CreateDataBytes(InputCommandModel inputCommand, GameComponentsPointersModel gameComponentsPointers)
     {
         var result = new List<byte>
         {
             // Verbs
-            gameComponentsIndexes.VocabularyVerbs.IndexOf(inputCommand.Verbs.Code).ToBaseZero(),
+            gameComponentsPointers.VocabularyVerbs.IndexOf(inputCommand.Verbs.Code).ToBaseZero(),
         };
 
         // Nouns
         if (inputCommand.Nouns != null)
         {
-            result.Add(gameComponentsIndexes.VocabularyNouns.IndexOf(inputCommand.Nouns.Code).ToBaseZero());
+            result.Add(gameComponentsPointers.VocabularyNouns.IndexOf(inputCommand.Nouns.Code).ToBaseZero());
         }
 
         return result.ToArray();

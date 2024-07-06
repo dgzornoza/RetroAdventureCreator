@@ -34,7 +34,7 @@ public abstract class GameBuilder
     protected IEnumerable<SceneModel> Scenes { get; private set; }
     protected IEnumerable<FlagModel> Flags { get; private set; }
 
-    protected PlayerModel Player { get; private set; }
+    protected IEnumerable<ActorModel> Actors { get; private set; }
     protected SettingsModel Settings { get; private set; }
 
     protected GameBuilder()
@@ -49,7 +49,7 @@ public abstract class GameBuilder
         Scenes = CreateScenes();
         Flags = CreateFlags();
 
-        Player = CreatePlayer();
+        Actors = CreateActors();
         Settings = CreateSettings();
     }
 
@@ -68,7 +68,7 @@ public abstract class GameBuilder
             Scenes = Scenes,
             Flags = Flags,
 
-            Player = Player,
+            Actors = Actors,
             Settings = Settings,
         };
 
@@ -86,7 +86,7 @@ public abstract class GameBuilder
     protected abstract IEnumerable<SceneModel> CreateScenes();
     protected abstract IEnumerable<FlagModel> CreateFlags();
 
-    protected abstract PlayerModel CreatePlayer();
+    protected abstract IEnumerable<ActorModel> CreateActors();
     protected abstract SettingsModel CreateSettings();
 }
 

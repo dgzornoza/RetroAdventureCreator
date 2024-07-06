@@ -42,14 +42,13 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
         }
 
         protected override IEnumerable<ObjectModel> CreateObjects() =>
-            Enumerable.Range(0, elements).Select((item, index) => new ObjectModel() { Code = "ObjectCodeDuplicated" });
+            Enumerable.Range(0, elements).Select((item, index) => new NormalObjectModel() { Code = "ObjectCodeDuplicated" });
 
         protected override IEnumerable<SceneModel> CreateScenes() =>
             Enumerable.Range(0, elements).Select((item, index) => new SceneModel() { Code = "SceneCodeDuplicated" });
 
-        protected override PlayerModel CreatePlayer() => new()
-        {
-        };
+        protected override IEnumerable<ActorModel> CreateActors() =>
+            Enumerable.Range(0, elements).Select((item, index) => new ActorModel() { Code = "ActorCodeDuplicated" });
 
         protected override SettingsModel CreateSettings() => new()
         {

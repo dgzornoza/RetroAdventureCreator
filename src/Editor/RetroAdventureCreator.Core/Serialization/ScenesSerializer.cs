@@ -51,37 +51,37 @@ internal class ScenesSerializer : Serializer<IEnumerable<SceneModel>>
         return result;
     }
 
-    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsPointers)
     {
-        var dataBytes = GameComponent.SortByKey().SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
+        var dataBytes = GameComponent.SortByKey().SelectMany(item => CreateDataBytes(item, gameComponentsPointers));
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    private static byte[] CreateDataBytes(SceneModel scene, GameComponentsPointersModel gameComponentsIndexes)
+    private static byte[] CreateDataBytes(SceneModel scene, GameComponentsPointersModel gameComponentsPointers)
     {
         var result = new List<byte>
         {
             // description
-            gameComponentsIndexes.Messages.IndexOf(scene.Description.Code),
+            gameComponentsPointers.Messages.IndexOf(scene.Description.Code),
         };
 
         // dispatchers
         if (scene.AfterInputCommandDispatchers != null && scene.AfterInputCommandDispatchers.Any())
         {
-            result.AddRange(scene.AfterInputCommandDispatchers.Select(item => gameComponentsIndexes.AfterInputCommandDispatchers.IndexOf(item.Code)));            
+            result.AddRange(scene.AfterInputCommandDispatchers.Select(item => gameComponentsPointers.AfterInputCommandDispatchers.IndexOf(item.Code)));            
         }
         result.Add(Constants.EndToken);
         
         if (scene.BeforeInputCommandDispatchers != null && scene.BeforeInputCommandDispatchers.Any())
         {
-            result.AddRange(scene.BeforeInputCommandDispatchers.Select(item => gameComponentsIndexes.BeforeInputCommandDispatchers.IndexOf(item.Code)));
+            result.AddRange(scene.BeforeInputCommandDispatchers.Select(item => gameComponentsPointers.BeforeInputCommandDispatchers.IndexOf(item.Code)));
         }
         result.Add(Constants.EndToken);
 
         // objects
         if (scene.Objects != null && scene.Objects.Any())
         {
-            result.AddRange(scene.Objects.Select(item => gameComponentsIndexes.Objects.IndexOf(item.Code)));            
+            result.AddRange(scene.Objects.Select(item => gameComponentsPointers.Objects.IndexOf(item.Code)));            
         }
         result.Add(Constants.EndToken);
 

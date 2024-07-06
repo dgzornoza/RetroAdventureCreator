@@ -47,13 +47,13 @@ internal class CommandsSerializer : SerializerList<CommandModel>
         return result;
     }
 
-    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsPointers)
     {
-        var dataBytes = GameComponent.SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
+        var dataBytes = GameComponent.SelectMany(item => CreateDataBytes(item, gameComponentsPointers));
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    private static byte[] CreateDataBytes(CommandModel command, GameComponentsPointersModel gameComponentsIndexes)
+    private static byte[] CreateDataBytes(CommandModel command, GameComponentsPointersModel gameComponentsPointers)
     {
         var result = new List<byte>
         {

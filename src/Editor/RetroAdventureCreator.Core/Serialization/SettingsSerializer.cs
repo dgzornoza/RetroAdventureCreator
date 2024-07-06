@@ -15,6 +15,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Color = 4 bits
 /// BackgroundColor = 4 bits
 /// BorderColor = 4 bits
+/// MaxChildObjectsLength = 4 bits
 /// 
 /// </remarks>
 internal class SettingsSerializer : Serializer<SettingsModel>
@@ -25,7 +26,7 @@ internal class SettingsSerializer : Serializer<SettingsModel>
 
     public override IEnumerable<GameComponentPointerModel> GenerateGameComponentPointers() => Enumerable.Empty<GameComponentPointerModel>();
 
-    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsPointers)
     {
         var dataBytes = CreateDataBytes();
 

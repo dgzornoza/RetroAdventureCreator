@@ -115,11 +115,29 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ownoer Code &apos;{0}&apos; is duplicated, owner code property should be unique in game parts..
+        /// </summary>
+        internal static string DuplicatedOwnerCodeError {
+            get {
+                return ResourceManager.GetString("DuplicatedOwnerCodeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Input command verb is required.
         /// </summary>
         internal static string InputCommandVerbIsRequired {
             get {
                 return ResourceManager.GetString("InputCommandVerbIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum number of actors allowed is {0}.
+        /// </summary>
+        internal static string MaxLengthActorsAllowedError {
+            get {
+                return ResourceManager.GetString("MaxLengthActorsAllowedError", resourceCulture);
             }
         }
         

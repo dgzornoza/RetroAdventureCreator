@@ -48,7 +48,7 @@ internal class FlagsSerializer : SerializerList<FlagModel>
         return result;
     }
 
-    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsPointers)
     {
         var sortedFlags = GameComponent;
         var dataBytes = CreateDataBytes(sortedFlags);

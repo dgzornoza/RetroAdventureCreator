@@ -10,14 +10,26 @@ public enum CommandToken : byte
     CommandGroupAnd = 1,
     /// <summary>Token para agrupar comandos mediante un Or</summary>
     CommandGroupOr,
-    At,
-    Message,
+    /// <summary>Command to show message</summary>
+    ShowMessage,
+    /// <summary>Command to verify is set a flag</summary>
     IsSet,
+    /// <summary>Command to verify is unset a flag</summary>
     IsUnset,
+    /// <summary>Command to verify is in use a object</summary>
     InUse,
+    /// <summary>Command to verify is not in use a object</summary>
     NotInUse,
+    /// <summary>Command to use a object</summary>
+    Use,
+    /// <summary>Command to not use a object</summary>
+    NotUse,
+    /// <summary>Command to end the game</summary>
     EndGame,
+    /// <summary>Command to set a flag</summary>
     Set,
+    /// <summary>Command to unset a flag</summary>
     Unset,
+    /// <summary>Command to navigate to scene</summary>
     Goto,
 }

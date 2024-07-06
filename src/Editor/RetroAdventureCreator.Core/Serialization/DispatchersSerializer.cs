@@ -57,38 +57,38 @@ internal abstract class DispatchersSerializer : SerializerList<DispatcherModel>
         return result;
     }
 
-    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsIndexes)
+    public override SerializerResultModel Serialize(GameComponentsPointersModel gameComponentsPointers)
     {
-        var dataBytes = GameComponent.SelectMany(item => CreateDataBytes(item, gameComponentsIndexes));
+        var dataBytes = GameComponent.SelectMany(item => CreateDataBytes(item, gameComponentsPointers));
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    protected static byte[] CreateDataBytes(DispatcherModel dispatcher, GameComponentsPointersModel gameComponentsIndexes)
+    protected static byte[] CreateDataBytes(DispatcherModel dispatcher, GameComponentsPointersModel gameComponentsPointers)
     {
         var result = new List<byte>();
 
         // after input commands
         if (dispatcher.Trigger == Trigger.AfterInputCommand && dispatcher.InputCommands != null && dispatcher.InputCommands.Any())
         {
-            result.AddRange(GetInputCommandsPointers(dispatcher, gameComponentsIndexes));
+            result.AddRange(GetInputCommandsPointers(dispatcher, gameComponentsPointers));
         }
 
         // Commands
         if (dispatcher.Commands != null && dispatcher.Commands.Any())
         {
-            result.AddRange(GetCommandsPointers(dispatcher, gameComponentsIndexes));
+            result.AddRange(GetCommandsPointers(dispatcher, gameComponentsPointers));
         }
 
         return result.ToArray();
     }
 
-    private static IEnumerable<byte> GetInputCommandsPointers(DispatcherModel dispatcher, GameComponentsPointersModel gameComponentsIndexes) =>
+    private static IEnumerable<byte> GetInputCommandsPointers(DispatcherModel dispatcher, GameComponentsPointersModel gameComponentPointers) =>
         dispatcher.InputCommands?.SelectMany(item =>
-            gameComponentsIndexes.InputCommands.Find(item.Code).RelativePointer.GetBytes()) ?? Enumerable.Empty<byte>();
+            gameComponentPointers.InputCommands.Find(item.Code).RelativePointer.GetBytes()) ?? Enumerable.Empty<byte>();
 
-    private static IEnumerable<byte> GetCommandsPointers(DispatcherModel dispatcher, GameComponentsPointersModel gameComponentsIndexes) =>
+    private static IEnumerable<byte> GetCommandsPointers(DispatcherModel dispatcher, GameComponentsPointersModel gameComponentPointers) =>
         dispatcher.Commands.SelectMany(item =>
-            gameComponentsIndexes.Commands.Find(item.Code).RelativePointer.GetBytes());
+            gameComponentPointers.Commands.Find(item.Code).RelativePointer.GetBytes());
 
     protected static void EnsureGameComponentProperties(DispatcherModel dispatcher, IEnumerable<GameComponentPointerModel> gameComponentPointers)
     {

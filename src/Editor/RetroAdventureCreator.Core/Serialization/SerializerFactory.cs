@@ -15,8 +15,8 @@ internal class SerializerFactory
     private readonly FlagsSerializer flagsSerializer;
     private readonly InputCommandsSerializer inputCommandsSerializer;
     private readonly MessagesSerializer messagesSerializer;
-    private readonly ObjectsSerializer objectsSerializer;
-    private readonly PlayerSerializer playerSerializer;
+    private readonly ObjectsSerializer<ObjectModel> objectsSerializer;
+    private readonly ActorsSerializer actorsSerializer;
     private readonly ScenesSerializer scenesSerializer;
     private readonly SettingsSerializer settingsSerializer;
     private readonly VocabularyNounsSerializer vocabularyNounsSerializer;
@@ -34,8 +34,8 @@ internal class SerializerFactory
         flagsSerializer = new FlagsSerializer(gameModel.Flags);
         inputCommandsSerializer = new InputCommandsSerializer(gameModel.InputCommands);
         messagesSerializer = new MessagesSerializer(gameModel.Messages, encoding);
-        objectsSerializer = new ObjectsSerializer(gameModel.Objects);
-        playerSerializer = new PlayerSerializer(gameModel.Player);
+        objectsSerializer = new NormalObjectsSerializer(gameModel.Objects);
+        actorsSerializer = new ActorsSerializer(gameModel.Actors);
         scenesSerializer = new ScenesSerializer(gameModel.Scenes);
         settingsSerializer = new SettingsSerializer(gameModel.Settings);
         vocabularyNounsSerializer = new VocabularyNounsSerializer(gameModel.Vocabulary, encoding);
@@ -43,10 +43,11 @@ internal class SerializerFactory
 
         GameComponentsPointersModel = new GameComponentsPointersModel(
             Commands: commandsSerializer.GenerateGameComponentPointers(),
-            Flags: flagsSerializer.GenerateGameComponentPointers(),
+            Flags: flagsSerializer.GenerateGameComponentPointers(),            
             InputCommands: inputCommandsSerializer.GenerateGameComponentPointers(),
             Messages: messagesSerializer.GenerateGameComponentPointers(),
             Objects: objectsSerializer.GenerateGameComponentPointers(),
+            Actors: actorsSerializer.GenerateGameComponentPointers(),
             Scenes: scenesSerializer.GenerateGameComponentPointers(),
             AfterInputCommandDispatchers: afterInputCommandDispatchersSerializer.GenerateGameComponentPointers(),
             BeforeInputCommandDispatchers: beforeInputCommandDispatchersSerializer.GenerateGameComponentPointers(),
@@ -71,8 +72,8 @@ internal class SerializerFactory
         nameof(FlagsSerializer) => (T)Convert.ChangeType(flagsSerializer, typeof(T)),
         nameof(InputCommandsSerializer) => (T)Convert.ChangeType(inputCommandsSerializer, typeof(T)),
         nameof(MessagesSerializer) => (T)Convert.ChangeType(messagesSerializer, typeof(T)),
-        nameof(ObjectsSerializer) => (T)Convert.ChangeType(objectsSerializer, typeof(T)),
-        nameof(PlayerSerializer) => (T)Convert.ChangeType(playerSerializer, typeof(T)),
+        nameof(NormalObjectsSerializer) => (T)Convert.ChangeType(objectsSerializer, typeof(T)),
+        nameof(ActorsSerializer) => (T)Convert.ChangeType(actorsSerializer, typeof(T)),
         nameof(ScenesSerializer) => (T)Convert.ChangeType(scenesSerializer, typeof(T)),
         nameof(SettingsSerializer) => (T)Convert.ChangeType(settingsSerializer, typeof(T)),
         nameof(VocabularyNounsSerializer) => (T)Convert.ChangeType(vocabularyNounsSerializer, typeof(T)),

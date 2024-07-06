@@ -15,18 +15,19 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
 
         protected override IEnumerable<VocabularyModel> CreateVocabulary() =>
         [
-            new() { Code = "GuantesVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "GUANT" } },
-            new() { Code = "BoqueteVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "BOQUE", "PALAN" }},
-            new() { Code = "PalancaVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "PALAN" }},
-            new() { Code = "TemploVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "TEMPL" }},
-            new() { Code = "BloqueVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "BLOQU", "PIEDR" }},
-            new() { Code = "AbreVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "ABRE"  } },
-            new() { Code = "EntraVocabulary", WordType = WordType.Noun, Synonyms = new List<string> { "ENTRA" } },
-            new() { Code = "EntraVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "ENTRA" } },
-            new() { Code = "ExaminaVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "EX" } },
-            new() { Code = "MueveVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "MUEVE" } },
-            new() { Code = "EmpujaVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "EMPUJ" } },
-            new() { Code = "TiraVocabulary", WordType = WordType.Verb, Synonyms = new List<string> { "TIRA" } },
+            new() { Code = "GuantesVocabulary", WordType = WordType.Noun, Synonyms = ["GUANT"] },
+            new() { Code = "BoqueteVocabulary", WordType = WordType.Noun, Synonyms = ["BOQUE", "PALAN"]},
+            new() { Code = "PalancaVocabulary", WordType = WordType.Noun, Synonyms = ["PALAN"]},
+            new() { Code = "TemploVocabulary", WordType = WordType.Noun, Synonyms = ["TEMPL"]},
+            new() { Code = "BloqueVocabulary", WordType = WordType.Noun, Synonyms = ["BLOQU", "PIEDR"]},
+            new() { Code = "AbreVocabulary", WordType = WordType.Verb, Synonyms = ["ABRE"] },
+            new() { Code = "EntraVocabulary", WordType = WordType.Noun, Synonyms = ["ENTRA"] },
+            new() { Code = "EntraVocabulary", WordType = WordType.Verb, Synonyms = ["ENTRA"] },
+            new() { Code = "ExaminaVocabulary", WordType = WordType.Verb, Synonyms = ["EX"] },
+            new() { Code = "MueveVocabulary", WordType = WordType.Verb, Synonyms = ["MUEVE"] },
+            new() { Code = "EmpujaVocabulary", WordType = WordType.Verb, Synonyms = ["EMPUJ"] },
+            new() { Code = "TiraVocabulary", WordType = WordType.Verb, Synonyms = ["TIRA"] },
+            new() { Code = "UsarVocabulary", WordType = WordType.Verb, Synonyms = ["USE"] },
         ];
 
         protected override IEnumerable<MessageModel> CreateMessages() =>
@@ -89,15 +90,17 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             new() { Code = "IsSetOpenEntry", Token = CommandToken.IsSet, Arguments = new List<string> { "openEntry" } },
             new() { Code = "IsUnSetOpenEntry", Token = CommandToken.IsUnset, Arguments = new List<string> { "openEntry" } },
             new() { Code = "SetOpenEntry", Token = CommandToken.Set, Arguments = new List<string> { "openEntry" } },
-            new() { Code = "ShowMessageBloquePiedra", Token = CommandToken.Message, Arguments = new List<string> { "MessageBloquePiedra" } },
-            new() { Code = "ShowMessageInteriorTemplo", Token = CommandToken.Message, Arguments = new List<string> { "MessageInteriorTemplo" } },
-            new() { Code = "ShowMessageFuerza", Token = CommandToken.Message, Arguments = new List<string> { "MessageFuerza" } },
-            new() { Code = "ShowMessageNoBloque", Token = CommandToken.Message, Arguments = new List<string> { "MessageNoBloque" } },
-            new() { Code = "ShowMessageBoquete", Token = CommandToken.Message, Arguments = new List<string> { "MessageBoquete" } },
-            new() { Code = "ShowMessageAraña", Token = CommandToken.Message, Arguments = new List<string> { "MessageAraña" } },
-            new() { Code = "ShowMessageTiraPalanca", Token = CommandToken.Message, Arguments = new List<string> { "MessageTiraPalanca" } },
-            new() { Code = "ShowMessagePalancaUsada", Token = CommandToken.Message, Arguments = new List<string> { "MessagePalancaUsada" } },
+            new() { Code = "ShowMessageBloquePiedra", Token = CommandToken.ShowMessage, Arguments = new List<string> { "MessageBloquePiedra" } },
+            new() { Code = "ShowMessageInteriorTemplo", Token = CommandToken.ShowMessage, Arguments = new List<string> { "MessageInteriorTemplo" } },
+            new() { Code = "ShowMessageFuerza", Token = CommandToken.ShowMessage, Arguments = new List<string> { "MessageFuerza" } },
+            new() { Code = "ShowMessageNoBloque", Token = CommandToken.ShowMessage, Arguments = new List<string> { "MessageNoBloque" } },
+            new() { Code = "ShowMessageBoquete", Token = CommandToken.ShowMessage, Arguments = new List<string> { "MessageBoquete" } },
+            new() { Code = "ShowMessageAraña", Token = CommandToken.ShowMessage, Arguments = new List<string> { "MessageAraña" } },
+            new() { Code = "ShowMessageTiraPalanca", Token = CommandToken.ShowMessage, Arguments = new List<string> { "MessageTiraPalanca" } },
+            new() { Code = "ShowMessagePalancaUsada", Token = CommandToken.ShowMessage, Arguments = new List<string> { "MessagePalancaUsada" } },
             new() { Code = "IsInUseGuantes", Token = CommandToken.InUse, Arguments = new List<string> { "GuantesObject" } },
+            new() { Code = "IsNotInUseGuantes", Token = CommandToken.NotInUse, Arguments = new List<string> { "GuantesObject" } },
+            new() { Code = "UseGuantes", Token = CommandToken.Use, Arguments = new List<string> { "GuantesObject" } },
             new() { Code = "GotoInteriorScene", Token = CommandToken.Goto, Arguments = new List<string> { "InteriorScene" } },
             new() { Code = "EndGame", Token = CommandToken.EndGame },
         ];
@@ -108,6 +111,11 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                 Code = "AbreEntradaInputCommand",
                 Verbs = Vocabulary.Find("AbreVocabulary"),
                 Nouns = Vocabulary.Find("EntraVocabulary"),
+            },
+            new() {
+                Code = "UsaGuantesInputCommand",
+                Verbs = Vocabulary.Find("UsarVocabulary"),
+                Nouns = Vocabulary.Find("GuantesVocabulary"),
             },
             new()
             {
@@ -224,6 +232,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                 Commands = new List<CommandModel>
                 {
                     Commands.Find("IsUnSetOpenEntry"),
+                    Commands.Find("IsNotInUseGuantes"),
                     Commands.Find("ShowMessageAraña"),
                     Commands.Find("EndGame"),
                 },
@@ -276,16 +285,30 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
                     Commands.Find("GotoInteriorScene"),
                 },
             },
+            new()
+            {
+                Code = $"Common-1",
+                Trigger = Trigger.AfterInputCommand,
+                InputCommands = new List<InputCommandModel>
+                {
+                    InputCommands.Find("UsaGuantesInputCommand"),
+                },
+                Commands = new List<CommandModel>
+                {
+                    Commands.Find("UseGuantes"),
+                },
+            },
         ];
 
-        protected override IEnumerable<ObjectModel> CreateObjects() =>
+        protected override IEnumerable<NormalObjectModel> CreateObjects() =>
         [
-            new()
+            new NormalObjectModel()
             {
                 Code = "GuantesObject",
                 Name = Vocabulary.Find("GuantesVocabulary"),
                 Description = Messages.Find("globDescriptionMessage"),
-                Weight = 1,
+                OwnerCode = "PlayerActor",
+                Properties = ObjectProperties.None,
             }
         ];
 
@@ -305,11 +328,15 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             }
         ];
 
-        protected override PlayerModel CreatePlayer() => new()
-        {
-            Health = 7,
-            Objects = Objects,
-        };
+        protected override IEnumerable<ActorModel> CreateActors() =>
+        [
+            new()
+            {
+                Code = "PlayerActor",
+                Health = 7,
+                Objects = Objects,
+            }
+        ];
 
         protected override SettingsModel CreateSettings() => new()
         {
