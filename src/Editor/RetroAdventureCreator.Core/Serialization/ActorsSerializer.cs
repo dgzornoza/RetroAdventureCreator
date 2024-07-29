@@ -2,6 +2,7 @@
 using RetroAdventureCreator.Core.Helpers;
 using RetroAdventureCreator.Core.Infrastructure;
 using RetroAdventureCreator.Core.Models;
+using RetroAdventureCreator.Infrastructure.Game.Enums;
 using RetroAdventureCreator.Infrastructure.Game.Models;
 
 namespace RetroAdventureCreator.Core.Serialization;
@@ -13,10 +14,11 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Format Actors serializer:
 /// ----------------------------------------------
 /// 
-/// Data (actor data can be modified in game for update properties):
-/// Health: 4 bits (15)
-/// ExperiencePoints: 4 bits (15)
-/// Objects: 8 object id bytes
+/// Data:
+/// 
+/// Health: 1 byte  (mutable data)
+/// ExperiencePoints: 1 byte  (mutable data)
+/// ActorType: 1 byte
 ///  
 /// </remarks>
 internal class ActorsSerializer : SerializerList<ActorModel>
@@ -24,7 +26,9 @@ internal class ActorsSerializer : SerializerList<ActorModel>
     public ActorsSerializer(IEnumerable<ActorModel> gameComponent) : base(gameComponent)
     {
         EnsureHelpers.EnsureMaxLength(GameComponent, Constants.MaxLengthActorsAllowed,
-    string.Format(Properties.Resources.MaxLengthActorsAllowedError, Constants.MaxLengthActorsAllowed));
+            string.Format(Properties.Resources.MaxLengthActorsAllowedError, Constants.MaxLengthActorsAllowed));
+
+        EnsureHelpers.EnsureSingle(GameComponent, item => item.ActorType == ActorType.Player, Properties.Resources.DuplicatedPlayerTypeError);
     }
 
     private record struct Data(IEnumerable<byte>? ObjectsIndexes);
@@ -43,7 +47,10 @@ internal class ActorsSerializer : SerializerList<ActorModel>
 
             result.Add(new GameComponentPointerModel(actor.Code, (short)pointer));
 
-            //pointer += GetPointerSize();
+            pointer +=
+                1 + // Health
+                1 + // ExperiencePoints
+                1;  // ActorType
         }
 
         // add end objects pointer
@@ -63,19 +70,10 @@ internal class ActorsSerializer : SerializerList<ActorModel>
         var result = new List<byte>
         {
             // health + experience points
-            (byte)(actor.Health << 4 | actor.ExperiencePoints),
+            actor.Health,
+            actor.ExperiencePoints,
+            (byte)actor.ActorType,
         };
-
-        // Objects        
-        if (actor.Objects != null && actor.Objects.Any())
-        {
-            result.AddRange(actor.Objects.Select(item => gameComponentsPointers.Objects.IndexOf(item.Code)));
-        }
-        var objectsCount = actor.Objects?.Count() ?? 0;
-        if (objectsCount < Constants.MaxLengthPlayerObjectsAllowed)
-        {
-            result.AddRange(Enumerable.Range(0, Constants.MaxLengthPlayerObjectsAllowed - objectsCount).Select(item => (byte)0x00));
-        }
 
         return result.ToArray();
     }
@@ -84,16 +82,10 @@ internal class ActorsSerializer : SerializerList<ActorModel>
     {
         EnsureHelpers.EnsureNotFound(gameComponentPointers, item => item.Code == actor.Code, string.Format(Properties.Resources.DuplicateCodeError, actor.Code));
 
-        EnsureHelpers.EnsureMaxLength(actor.Health, Constants.MaxLengthPlayerHealthAllowed,
-            string.Format(Properties.Resources.MaxLengthPlayerHealthAllowedError, Constants.MaxLengthPlayerHealthAllowed));
+        EnsureHelpers.EnsureMaxLength(actor.Health, Constants.MaxLengthActorHealthAllowed,
+            string.Format(Properties.Resources.MaxLengthPlayerHealthAllowedError, Constants.MaxLengthActorHealthAllowed));
 
-        EnsureHelpers.EnsureMaxLength(actor.ExperiencePoints, Constants.MaxLengthPlayerExperiencePointsAllowed,
-            string.Format(Properties.Resources.MaxLengthPlayerExperiencePointsAllowedError, Constants.MaxLengthPlayerExperiencePointsAllowed));
-
-        if (actor.Objects != null)
-        {
-            EnsureHelpers.EnsureMaxLength(actor.Objects, Constants.MaxLengthPlayerObjectsAllowed,
-                string.Format(Properties.Resources.MaxLengthPlayerObjectsAllowedError, Constants.MaxLengthPlayerObjectsAllowed));
-        }
+        EnsureHelpers.EnsureMaxLength(actor.ExperiencePoints, Constants.MaxLengthctorExperiencePointsAllowed,
+            string.Format(Properties.Resources.MaxLengthPlayerExperiencePointsAllowedError, Constants.MaxLengthctorExperiencePointsAllowed));
     }
 }

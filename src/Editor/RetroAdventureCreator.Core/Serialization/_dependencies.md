@@ -89,18 +89,15 @@
 ### ObjectSerializer
 
     Data:
-        Name = 8 bits (id vocabulary)
-        Description = 8 bits (id message)
-        Weight = 5 bits (31)
-        Health = 3 bits (7)
-        Properties = 8 bits (flag 8 properties)
-        ChildObjects = (Optional, only if properties has 'IsContainer') 8 object id bytes
+        Name = index orderer addresses nouns vocabulary (1 byte)
+        Description = Message pointer (2 bytes)
+        Properties = 1 byte (8 properties flags) (mutable properties)
+        OwnerCode = 2 bytes
 
     Limits:
-        MaxLengthObjectsAllowed = 64
-        MaxLengthObjectWeightAllowed = 32
-        MaxLengthObjectHealthAllowed = 8
-        MaxLengthChildObjectsAllowed = 8
+        MaxLengthObjectsAllowed = 64        // (can change limits)
+        MaxLengthObjectWeightAllowed = 16   // not used currently
+        MaxLengthObjectHealthAllowed = 16   // not used currently
 
 ### SceneSerializer
 
@@ -113,17 +110,17 @@
     Limits:
         MaxLengthScenesAllowed = 255
 
-### PlayerSerializer
+### ActorsSerializer
 
-    Data (player data can be modified in game for update properties):
-        Health: 4 bits (15)
-        ExperiencePoints: 4 bits (15)
-        Objects: 8 object id bytes
+    Data:
+        Health: 1 byte  (mutable data)
+        ExperiencePoints: 1 byte  (mutable data)
+        ActorType: 1 byte
 
     Limits:
-        MaxLengthPlayerObjectsAllowed = 8
-        MaxLengthPlayerHealthAllowed = 16
-        MaxLengthPlayerExperiencePointsAllowed = 16
+        MaxLengthActorsAllowed = 16;
+        MaxLengthPlayerHealthAllowed = 256
+        MaxLengthPlayerExperiencePointsAllowed = 256
 
 ### SettingsSerializer
 

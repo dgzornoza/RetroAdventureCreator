@@ -59,7 +59,8 @@ internal class MessagesSerializer : SerializerList<MessageModel>
         return new SerializerResultModel(dataBytes.ToArray());
     }
 
-    private byte[] CreateDataBytes(MessageModel message) => encoding.GetBytes(message.Text).ToArray();
+    private byte[] CreateDataBytes(MessageModel message) => encoding.GetBytes(message.Text).
+        Concat(new[] { Constants.EndToken }).ToArray();
 
     private static void EnsureGameComponentProperties(MessageModel message, IEnumerable<GameComponentPointerModel> gameComponentPointers)
     {

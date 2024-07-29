@@ -51,9 +51,15 @@ public class GameModel
     public IEnumerable<CommandModel> Commands { get; init; } = default!;
 
     /// <summary>
-    /// Dispatcher commands
+    /// Common Dispatcher commands
+    /// TODO: a elimnar
     /// </summary>
     public IEnumerable<DispatcherModel> Dispatchers { get; init; } = default!;
+    /// <summary>
+    /// Common Dispatcher commands
+    /// /// TODO: a elimnar
+    /// </summary>
+    public IEnumerable<DispatcherModel> CommonDispatchers { get; init; } = default!;
 
     /// <summary>
     /// Game Flags

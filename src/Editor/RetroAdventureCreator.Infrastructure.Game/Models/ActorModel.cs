@@ -1,4 +1,5 @@
-﻿using RetroAdventureCreator.Infrastructure.Game.Interfaces;
+﻿using RetroAdventureCreator.Infrastructure.Game.Enums;
+using RetroAdventureCreator.Infrastructure.Game.Interfaces;
 
 namespace RetroAdventureCreator.Infrastructure.Game.Models;
 
@@ -13,17 +14,17 @@ public class ActorModel : IUniqueKey
     public string Code { get; init; } = default!;
 
     /// <summary>
-    /// Player Health 256 max
+    /// Health 256 max
     /// </summary>
     public byte Health { get; init; } = byte.MaxValue;
 
     /// <summary>
-    /// Player Experience Points 256 max
+    /// Experience Points 256 max
     /// </summary>
     public byte ExperiencePoints { get; init; } = byte.MinValue;
 
     /// <summary>
-    /// Player equiped objects
+    /// actor type
     /// </summary>
-    public IEnumerable<ObjectModel>? Objects { get; init; }
+    public ActorType ActorType { get; init; }
 }

@@ -20,7 +20,7 @@ public class FlagsSerializerTest : SerializerBaseTest
 
         var flags = game.Flags;
         var expectedDataLength = Math.Ceiling(flags.Count() / 8M);
-        var expectedData = 0b00000000;
+        var expectedData = 0b10000000;
 
         // Act
         var actual = serializerFactory.Serialize<FlagsSerializer>();

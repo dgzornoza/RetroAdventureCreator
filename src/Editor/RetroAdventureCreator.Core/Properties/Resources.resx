@@ -138,6 +138,9 @@
   <data name="DuplicatedOwnerCodeError" xml:space="preserve">
     <value>Ownoer Code '{0}' is duplicated, owner code property should be unique in game parts.</value>
   </data>
+  <data name="DuplicatedPlayerTypeError" xml:space="preserve">
+    <value>Only can exists one player as actor type</value>
+  </data>
   <data name="InputCommandVerbIsRequired" xml:space="preserve">
     <value>Input command verb is required</value>
   </data>

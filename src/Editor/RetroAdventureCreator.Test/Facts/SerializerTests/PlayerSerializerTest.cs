@@ -8,6 +8,7 @@ namespace RetroAdventureCreator.Test.Facts.SerializerTests;
 
 public class PlayerSerializerTest : SerializerBaseTest
 {
+    // TODO: falta implementar
     [Fact]
     public void PlayerSerializerTest_Serialize_AsExpected()
     {
@@ -27,25 +28,25 @@ public class PlayerSerializerTest : SerializerBaseTest
         //Assert.Equal(expectedDataBytes, actual.Data);
     }
 
-    private byte[] GetPlayerData(ActorModel player, SerializerFactory serializerFactory)
-    {
-        var result = new List<byte>
-        {
-            // health + experience points
-            (byte)(player.Health << 4 | player.ExperiencePoints),
-        };
+    //private byte[] GetPlayerData(ActorModel player, SerializerFactory serializerFactory)
+    //{
+    //    var result = new List<byte>
+    //    {
+    //        // health + experience points
+    //        (byte)(player.Health << 4 | player.ExperiencePoints),
+    //    };
 
-        if (player.Objects != null && player.Objects.Any())
-        {
-            result.AddRange(player.Objects.Select(item => serializerFactory.GameComponentsPointersModel.Objects.IndexOf(item.Code)));
-        }
+    //    if (player.Objects != null && player.Objects.Any())
+    //    {
+    //        result.AddRange(player.Objects.Select(item => serializerFactory.GameComponentsPointersModel.Objects.IndexOf(item.Code)));
+    //    }
 
-        var objectsCount = player.Objects?.Count() ?? 0;
-        if (objectsCount < Constants.MaxLengthPlayerObjectsAllowed)
-        {
-            result.AddRange(Enumerable.Range(0, Constants.MaxLengthPlayerObjectsAllowed - objectsCount).Select(item => (byte)0x00));
-        }
+    //    var objectsCount = player.Objects?.Count() ?? 0;
+    //    if (objectsCount < Constants.MaxLengthPlayerObjectsAllowed)
+    //    {
+    //        result.AddRange(Enumerable.Range(0, Constants.MaxLengthPlayerObjectsAllowed - objectsCount).Select(item => (byte)0x00));
+    //    }
 
-        return result.ToArray();
-    }
+    //    return result.ToArray();
+    //}
 }

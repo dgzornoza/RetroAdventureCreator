@@ -124,6 +124,15 @@ namespace RetroAdventureCreator.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only can exists one player as actor type.
+        /// </summary>
+        internal static string DuplicatedPlayerTypeError {
+            get {
+                return ResourceManager.GetString("DuplicatedPlayerTypeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Input command verb is required.
         /// </summary>
         internal static string InputCommandVerbIsRequired {

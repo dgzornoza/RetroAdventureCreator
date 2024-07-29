@@ -21,7 +21,7 @@ public class MessagesSerializerTest : SerializerBaseTest
         var serializerFactory = new SerializerFactory(game);
 
         var gameMessages = game.Messages.SortByKey();
-        var expectedDataLength = gameMessages.Sum(item => item.Text.Length);
+        var expectedDataLength = gameMessages.Sum(item => item.Text.Length) + Constants.EndTokenLength;
         var expectedBytes = encoding.GetBytes(string.Join(string.Empty, gameMessages.Select(item => item.Text)));
         var expectedText = encoding.GetString(expectedBytes);
 

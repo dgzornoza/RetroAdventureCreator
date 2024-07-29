@@ -10,7 +10,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
 
         protected override IEnumerable<FlagModel> CreateFlags() =>
         [
-            new() { Code = "openEntry", Value = false }
+            new() { Code = "openEntry", Value = true }
         ];
 
         protected override IEnumerable<VocabularyModel> CreateVocabulary() =>
@@ -334,7 +334,7 @@ namespace RetroAdventureCreator.Test.Infrastructure.Builders
             {
                 Code = "PlayerActor",
                 Health = 7,
-                Objects = Objects,
+                // Objects = Objects,
             }
         ];
 

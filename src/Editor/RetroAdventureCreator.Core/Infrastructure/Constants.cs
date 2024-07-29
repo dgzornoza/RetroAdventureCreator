@@ -7,8 +7,14 @@
         /// </summary>
         public const string EndComponentPointerCode = "_END_COMPONENT";
         public const byte EndTokenLength = 0x01;
-        public const byte EndToken = 0x01;
+        /// <summary>
+        /// End token 0x00 is reserved for end list items
+        /// </summary>
+        public const byte EndToken = 0x00;
 
+        /// <summary>
+        /// Max length = 1 byte, 0x00 is reserved for end items, can not be used
+        /// </summary>
         public const int MaxLengthIds = byte.MaxValue;
 
         // Vocabulary
@@ -42,8 +48,7 @@
 
         // Actors
         public const int MaxLengthActorsAllowed = 16;
-        public const int MaxLengthPlayerObjectsAllowed = 8;
-        public const int MaxLengthPlayerHealthAllowed = 16;
-        public const int MaxLengthPlayerExperiencePointsAllowed = 16;
+        public const int MaxLengthActorHealthAllowed = 256;
+        public const int MaxLengthctorExperiencePointsAllowed = 256;
     }
 }

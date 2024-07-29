@@ -18,7 +18,7 @@ namespace RetroAdventureCreator.Core.Serialization;
 /// Data:
 /// Synonyms = synonym bytes splitted by '|'
 /// 
-/// NOTE: This component use Orderer addresses with ponters to data, should be use index to orderer addresses for find vocabulary data.
+/// NOTE: This component should be use Orderer addresses with ponters to data, should be use index to orderer addresses for find vocabulary data.
 /// </remarks>
 internal abstract class VocabularySerializer : SerializerList<VocabularyModel>
 {

@@ -138,6 +138,9 @@
   <data name="DuplicatedOwnerCodeError" xml:space="preserve">
     <value>El Codigo del compoente dueño '{0}' esta duplicado, el Codigo debe ser unico en las partes del juego.</value>
   </data>
+  <data name="DuplicatedPlayerTypeError" xml:space="preserve">
+    <value>Solo puede existir un tipo de actor jugador</value>
+  </data>
   <data name="InputCommandVerbIsRequired" xml:space="preserve">
     <value>El verbo es requerido en el comando de entrada</value>
   </data>

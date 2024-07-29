@@ -57,7 +57,14 @@ internal class FlagsSerializer : SerializerList<FlagModel>
 
     private byte[] CreateDataBytes(IEnumerable<FlagModel> flags)
     {
-        var bits = new BitArray(flags.Select(item => item.Value).ToArray());
+        // set bits from left to right
+        var totalBits = TotalBytes * 8;
+        var bits = new BitArray(totalBits);
+        for (int i = 0; i < flags.Count(); i++)
+        {
+            bits[totalBits - i - 1] = flags.ElementAt(i).Value;
+        }
+
         var result = new byte[TotalBytes];
         bits.CopyTo(result, 0);
 
