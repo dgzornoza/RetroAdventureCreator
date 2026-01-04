@@ -6,30 +6,28 @@
 /** INFRASTRUCTURE */
 // -----------------------------------------------------------------------------
 
-/** Enum with font control codes, should be equal to control_chars -> 'FontControlCodeRoutines' */
-enum FontControlCodeEnum
-{
-    /* End of String */
-    EOS = 0,
-    SET_STYLE = 1,
-    SET_X = 2,
-    SET_Y = 3,
-    SET_INK = 4,
-    SET_PAPER = 5,
-    SET_ATTRIB = 6,
-    SET_BRIGHT = 7,
-    SET_FLASH = 8,
-    /* currently unused */
-    UNUSED = 9,
-    LF = 10,
-    CRLF = 11,
-    BLANK = 12,
-    CR = 13,
-    BACKSPACE = 14,
-    TAB = 15,
-    INC_X = 16,
-    /** From 17 to 31 free */
-};
+/** Font control codes, should be equal to control_chars -> 'FontControlCodeRoutines'
+ * See control_chars.asm
+ * use example in print string function: print_string(FONT_CONTROL_CRLF "Hello" FONT_CONTROL_CRLF);
+ */
+#define FONT_CONTROL_EOS "\x00"
+#define FONT_CONTROL_SET_STYLE "\x01"
+#define FONT_CONTROL_SET_X "\x02"
+#define FONT_CONTROL_SET_Y "\x03"
+#define FONT_CONTROL_SET_INK "\x04"
+#define FONT_CONTROL_SET_PAPER "\x05"
+#define FONT_CONTROL_SET_ATTRIB "\x06"
+#define FONT_CONTROL_SET_BRIGHT "\x07"
+#define FONT_CONTROL_SET_FLASH "\x08"
+#define FONT_CONTROL_UNUSED "\x09"
+#define FONT_CONTROL_LF "\x0A"
+#define FONT_CONTROL_CRLF "\x0B"
+#define FONT_CONTROL_BLANK "\x0C"
+#define FONT_CONTROL_CR "\x0D"
+#define FONT_CONTROL_BACKSPACE "\x0E"
+#define FONT_CONTROL_TAB "\x0F"
+#define FONT_CONTROL_INC_X "\x10"
+/** From 17 to 31 free */
 
 /** Enum with font styles */
 enum FontStyleEnum
