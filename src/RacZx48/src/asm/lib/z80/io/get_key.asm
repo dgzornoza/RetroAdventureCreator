@@ -6,13 +6,13 @@ EXTERN _in_inkey
 EXTERN _GLOBAL_TIMER_TICKS
 
 ;-------------------------------------------------------------------------------
-;	Name:		    internal get_key
-;	Description:    Scans the keyboard and returns an ascii code representing a single keypress.  
-;        Operates as a state machine.  
-;        First it get a key. 
-;        The key will be registered and then it will wait until the key has been pressed for a period "_in_KeyStartRepeat" (byte).  
+;	Name:		    public get_key
+;	Description:    Scans the keyboard and returns an ascii code representing a single keypress.
+;        Operates as a state machine.
+;        First it get a key.
+;        The key will be registered and then it will wait until the key has been pressed for a period "_in_KeyStartRepeat" (byte).
 ;        The key will again be registered and then repeated thereafter with period "_in_KeyRepeatPeriod" (byte).
-;        If more than one key is pressed, no key is registered and the state machine returns to default state.  
+;        If more than one key is pressed, no key is registered and the state machine returns to default state.
 ;        If other key is pressed, return new key and state machine returns to default state.
 ;        Time intervals is sync with timer from _GLOBAL_TIMER_TICKS
 ;  Remarks: diagram is in file 'asm_get_key.drawio.svg'
@@ -29,19 +29,19 @@ _get_key:
    jr c, reset_state          ; if multiple key pressed, reset state and exit (hl = 0)
 
    ld a, l                    ; if not exist key, reset state and exit (hl = 0)
-   or a   
-   jr z, reset_state                
+   or a
+   jr z, reset_state
 
    ld a, (KeyboardState)      ; if last key is diferent, jump new key.
    cp l
-   jr nz, new_key    
-   
-.try_repeat_key       
+   jr nz, new_key
+
+.try_repeat_key
    ld a, (LastTimeTick)          ; if last time tick is equal, jump no key
    ld d, a
-   ld a, (_GLOBAL_TIMER_TICKS) 
+   ld a, (_GLOBAL_TIMER_TICKS)
    cp d
-   jr z, nokey  
+   jr z, nokey
 
    ld (LastTimeTick), a          ; store last time tick
    ld a, (KeyboardState + 1)     ; decrement counter, if not zero, return no key
@@ -56,13 +56,13 @@ _get_key:
 .new_key
    ld d, KEY_START_REPEAT        ; reset keyboard state with last key
    ld e, l
-   ld (KeyboardState), de  
+   ld (KeyboardState), de
    jr exit
 
-.reset_state 
+.reset_state
    ld d, KEY_START_REPEAT        ; reset keyboard state
    ld e, 0
-   ld (KeyboardState), de      
+   ld (KeyboardState), de
 
 .nokey
    ; return no key
@@ -71,24 +71,24 @@ _get_key:
    scf
    jr exit
 
-.exit         
+.exit
    pop de      ; recovery registers
    pop af
    ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; CONSTANTS 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                  
+; CONSTANTS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 KEY_START_REPEAT     equ 40
 KEY_REPEAT_PERIOD    equ 5
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; VARIABLES 
+; VARIABLES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 .LastTimeTick:    db 0
 
-; keyboard state: 
+; keyboard state:
 ; first byte => last key
 ; second byte => counter time
 .KeyboardState:   db	0
